@@ -1,0 +1,56 @@
+"""
+Setup script for LCA Test Data Management System
+This script helps initialize the database and verify the setup
+"""
+
+import os
+import sys
+from database import DatabaseManager
+
+def main():
+    print("=" * 60)
+    print("LCA Test Data Management System - Setup")
+    print("=" * 60)
+    
+    # Check if CSV file exists
+    csv_file = "LCA_Test_Data.csv"
+    if not os.path.exists(csv_file):
+        print(f"⚠️  Warning: {csv_file} not found in current directory")
+        print("   Please ensure the CSV file is in the project root.")
+    else:
+        print(f"✓ Found {csv_file}")
+    
+    # Initialize database
+    print("\n📊 Initializing database...")
+    try:
+        db = DatabaseManager()
+        print("✓ Database initialized successfully")
+        
+        # Try to import CSV
+        if os.path.exists(csv_file):
+            print(f"\n📥 Importing data from {csv_file}...")
+            success, message = db.import_csv(csv_file)
+            if success:
+                print(f"✓ {message}")
+            else:
+                print(f"ℹ️  {message}")
+        
+        # Display statistics
+        stats = db.get_statistics()
+        if stats:
+            print("\n📈 Database Statistics:")
+            print(f"   Total Records: {stats.get('total_records', 0)}")
+            print(f"   Projects: {len(stats.get('projects', {}))}")
+            print(f"   Test Rigs: {len(stats.get('test_rigs', {}))}")
+        
+    except Exception as e:
+        print(f"❌ Error: {str(e)}")
+        sys.exit(1)
+    
+    print("\n" + "=" * 60)
+    print("Setup complete! You can now run the application:")
+    print("   streamlit run app.py")
+    print("=" * 60)
+
+if __name__ == "__main__":
+    main()
