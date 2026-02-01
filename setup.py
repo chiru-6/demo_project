@@ -49,7 +49,7 @@ def main():
     
     print("\n" + "=" * 60)
     print("Setup complete! You can now run the application:")
-    print("   streamlit run app.py")
+    print("   python main.py")
     print("=" * 60)
 
 if __name__ == "__main__":
