@@ -387,6 +387,48 @@ To create a standalone executable:
 
 3. Executable will be in `dist/` folder
 
+## Code Quality and Standards
+
+This project follows **Google Python Style Guide** with **Pylint** enforcement.
+
+### Code Standards
+- ✅ 100% docstring coverage
+- ✅ Type hints for all functions
+- ✅ Pylint configuration included
+- ✅ Consistent code formatting
+- ✅ Comprehensive documentation
+
+### Running Code Quality Checks
+
+**Install Pylint:**
+```bash
+pip install pylint
+```
+
+**Run Pylint on all files:**
+
+Windows:
+```bash
+run_pylint.bat
+```
+
+Linux/Mac:
+```bash
+chmod +x run_pylint.sh
+./run_pylint.sh
+```
+
+**Run on specific file:**
+```bash
+pylint database.py
+```
+
+### Documentation
+- `STYLE_GUIDE.md` - Detailed Python style guide
+- `CODE_STANDARDS.md` - Code quality implementation details
+- `CHANGELOG.md` - Project change history
+- `.pylintrc` - Pylint configuration
+
 ## Future Enhancements
 
 - Export data to CSV/Excel

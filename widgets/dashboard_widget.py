@@ -1,25 +1,56 @@
-"""
-Dashboard Widget - Display and filter test data
+"""Dashboard widget module for displaying and filtering test data.
+
+This module provides the DashboardWidget class which displays all test data
+in a table format with filtering capabilities and summary statistics.
 """
 
-from PyQt5.QtWidgets import (QWidget, QVBoxLayout, QHBoxLayout, QLabel, 
-                             QComboBox, QPushButton, QTableWidget, QTableWidgetItem,
-                             QHeaderView, QMessageBox)
-from PyQt5.QtCore import Qt, pyqtSignal
 import pandas as pd
+from PyQt5.QtCore import Qt
+from PyQt5.QtWidgets import (QComboBox, QHeaderView, QHBoxLayout, QLabel,
+                             QMessageBox, QPushButton, QTableWidget,
+                             QTableWidgetItem, QVBoxLayout, QWidget)
 
 
 class DashboardWidget(QWidget):
-    """Dashboard widget showing all test data with filters"""
+    """Dashboard widget showing all test data with filters.
     
-    def __init__(self, db):
+    This widget provides a comprehensive view of all test data with:
+        - Summary statistics (total records, projects, test rigs, OK results)
+        - Filtering by project, test rig, and results
+        - Sortable data table
+        - Refresh functionality
+    
+    Attributes:
+        db: DatabaseManager instance for database operations.
+        df: DataFrame containing all test data.
+        total_label: QLabel displaying total records count.
+        projects_label: QLabel displaying unique projects count.
+        rigs_label: QLabel displaying unique test rigs count.
+        ok_label: QLabel displaying OK results ratio.
+        project_filter: QComboBox for filtering by project.
+        rig_filter: QComboBox for filtering by test rig.
+        results_filter: QComboBox for filtering by results.
+        table: QTableWidget displaying the filtered data.
+    """
+    
+    def __init__(self, db) -> None:
+        """Initializes the dashboard widget.
+        
+        Args:
+            db: DatabaseManager instance for database operations.
+        """
         super().__init__()
         self.db = db
+        self.df = pd.DataFrame()
         self.init_ui()
         self.refresh_data()
     
-    def init_ui(self):
-        """Initialize the UI"""
+    def init_ui(self) -> None:
+        """Initializes the user interface.
+        
+        Creates and configures all UI elements including title, statistics labels,
+        filter dropdowns, and data table.
+        """
         layout = QVBoxLayout(self)
         
         # Title
@@ -34,8 +65,13 @@ class DashboardWidget(QWidget):
         self.rigs_label = QLabel("Test Rigs: 0")
         self.ok_label = QLabel("OK Results: 0")
         
-        for label in [self.total_label, self.projects_label, self.rigs_label, self.ok_label]:
-            label.setStyleSheet("font-size: 14px; padding: 5px; background-color: #f0f0f0; border-radius: 5px;")
+        stat_labels = [self.total_label, self.projects_label, 
+                      self.rigs_label, self.ok_label]
+        for label in stat_labels:
+            label.setStyleSheet(
+                "font-size: 14px; padding: 5px; "
+                "background-color: #f0f0f0; border-radius: 5px;"
+            )
             stats_layout.addWidget(label)
         
         layout.addLayout(stats_layout)
@@ -75,22 +111,36 @@ class DashboardWidget(QWidget):
         self.table.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeToContents)
         layout.addWidget(self.table)
     
-    def refresh_data(self):
-        """Refresh data from database"""
+    def refresh_data(self) -> None:
+        """Refreshes data from database.
+        
+        Loads all data from the database, updates statistics labels,
+        refreshes filter options, and applies current filters to the table.
+        
+        Displays a message box if no data is found or if an error occurs.
+        """
         try:
             self.df = self.db.get_all_data()
             
             if self.df.empty:
-                QMessageBox.information(self, "No Data", "No data found in the database.")
+                QMessageBox.information(
+                    self, 
+                    "No Data", 
+                    "No data found in the database."
+                )
                 return
             
             # Update statistics
             stats = self.db.get_statistics()
-            self.total_label.setText(f"Total Records: {stats.get('total_records', 0)}")
-            self.projects_label.setText(f"Projects: {len(stats.get('projects', {}))}")
-            self.rigs_label.setText(f"Test Rigs: {len(stats.get('test_rigs', {}))}")
+            total_records = stats.get('total_records', 0)
+            projects_count = len(stats.get('projects', {}))
+            rigs_count = len(stats.get('test_rigs', {}))
             ok_count = stats.get('results', {}).get('OK', 0)
             not_ok_count = stats.get('results', {}).get('NOT OK', 0)
+            
+            self.total_label.setText(f"Total Records: {total_records}")
+            self.projects_label.setText(f"Projects: {projects_count}")
+            self.rigs_label.setText(f"Test Rigs: {rigs_count}")
             self.ok_label.setText(f"OK Results: {ok_count}/{ok_count + not_ok_count}")
             
             # Update filter dropdowns
@@ -99,11 +149,19 @@ class DashboardWidget(QWidget):
             # Apply filters and update table
             self.apply_filters()
             
-        except Exception as e:
-            QMessageBox.critical(self, "Error", f"Error loading data: {str(e)}")
+        except Exception as error:
+            QMessageBox.critical(
+                self, 
+                "Error", 
+                f"Error loading data: {str(error)}"
+            )
     
-    def update_filters(self):
-        """Update filter dropdown options"""
+    def update_filters(self) -> None:
+        """Updates filter dropdown options.
+        
+        Populates the filter dropdowns with unique values from the current
+        dataset for projects, test rigs, and results.
+        """
         # Projects
         self.project_filter.clear()
         self.project_filter.addItem("All")
@@ -125,8 +183,12 @@ class DashboardWidget(QWidget):
             results = sorted(self.df['results_remarks'].dropna().unique().tolist())
             self.results_filter.addItems(results)
     
-    def apply_filters(self):
-        """Apply filters to the data table"""
+    def apply_filters(self) -> None:
+        """Applies filters to the data table.
+        
+        Filters the data based on selected values in the filter dropdowns
+        and updates the table display.
+        """
         if self.df.empty:
             return
         
@@ -134,23 +196,36 @@ class DashboardWidget(QWidget):
         
         # Apply project filter
         if self.project_filter.currentText() != "All":
-            filtered_df = filtered_df[filtered_df['project'] == self.project_filter.currentText()]
+            filtered_df = filtered_df[
+                filtered_df['project'] == self.project_filter.currentText()
+            ]
         
         # Apply test rig filter
         if self.rig_filter.currentText() != "All":
-            filtered_df = filtered_df[filtered_df['test_rig'] == self.rig_filter.currentText()]
+            filtered_df = filtered_df[
+                filtered_df['test_rig'] == self.rig_filter.currentText()
+            ]
         
         # Apply results filter
         if self.results_filter.currentText() != "All":
-            filtered_df = filtered_df[filtered_df['results_remarks'] == self.results_filter.currentText()]
+            filtered_df = filtered_df[
+                filtered_df['results_remarks'] == self.results_filter.currentText()
+            ]
         
         # Update table
         self.populate_table(filtered_df)
     
-    def populate_table(self, df):
-        """Populate table with dataframe"""
+    def populate_table(self, df: pd.DataFrame) -> None:
+        """Populates table with dataframe.
+        
+        Args:
+            df: DataFrame containing the data to display.
+        """
         # Remove internal columns
-        display_df = df.drop(columns=['id', 'created_at', 'updated_at'], errors='ignore')
+        display_df = df.drop(
+            columns=['id', 'created_at', 'updated_at'], 
+            errors='ignore'
+        )
         
         # Set table dimensions
         self.table.setRowCount(len(display_df))

@@ -1,27 +1,52 @@
-"""
-Main Window for LCA Test Data Management System
+"""Main window module for LCA Test Data Management System.
+
+This module contains the MainWindow class which provides the primary user interface
+with a tabbed layout for different functionalities.
 """
 
-from PyQt5.QtWidgets import (QMainWindow, QTabWidget, QWidget, QVBoxLayout, 
-                             QStatusBar, QMessageBox)
-from PyQt5.QtCore import Qt
-from PyQt5.QtGui import QIcon
-from widgets.dashboard_widget import DashboardWidget
+from PyQt5.QtWidgets import (QMainWindow, QMessageBox, QStatusBar, QTabWidget,
+                             QVBoxLayout, QWidget)
+
 from widgets.add_entry_widget import AddEntryWidget
-from widgets.visualizations_widget import VisualizationsWidget
 from widgets.chatbot_widget import ChatbotWidget
+from widgets.dashboard_widget import DashboardWidget
+from widgets.visualizations_widget import VisualizationsWidget
 
 
 class MainWindow(QMainWindow):
-    """Main application window with tabbed interface"""
+    """Main application window with tabbed interface.
     
-    def __init__(self, db):
+    This class creates the main window containing four tabs:
+        - Dashboard: View and filter test data
+        - Add Entry: Form to add new test records
+        - Visualizations: Charts and graphs
+        - Chatbot: AI assistant for querying data
+    
+    Attributes:
+        db: DatabaseManager instance for database operations.
+        tabs: QTabWidget containing all application tabs.
+        dashboard_tab: Dashboard widget instance.
+        add_entry_tab: Add entry form widget instance.
+        visualizations_tab: Visualizations widget instance.
+        chatbot_tab: Chatbot widget instance.
+    """
+    
+    def __init__(self, db) -> None:
+        """Initializes the main window.
+        
+        Args:
+            db: DatabaseManager instance for database operations.
+        """
         super().__init__()
         self.db = db
         self.init_ui()
     
-    def init_ui(self):
-        """Initialize the user interface"""
+    def init_ui(self) -> None:
+        """Initializes the user interface.
+        
+        Creates and configures all UI elements including tabs, widgets,
+        and status bar. Also connects signals between widgets.
+        """
         self.setWindowTitle("LCA Test Data Management System")
         self.setGeometry(100, 100, 1400, 900)
         
@@ -57,16 +82,26 @@ class MainWindow(QMainWindow):
         # Connect signals
         self.add_entry_tab.entry_added.connect(self.on_entry_added)
     
-    def on_entry_added(self):
-        """Handle entry added signal"""
+    def on_entry_added(self) -> None:
+        """Handles the entry added signal.
+        
+        Called when a new entry is successfully added to the database.
+        Updates the status bar and refreshes the dashboard and visualizations.
+        """
         self.statusBar.showMessage("Entry added successfully!", 3000)
         # Refresh dashboard
         self.dashboard_tab.refresh_data()
         # Refresh visualizations
         self.visualizations_tab.refresh_data()
     
-    def closeEvent(self, event):
-        """Handle window close event"""
+    def closeEvent(self, event) -> None:
+        """Handles the window close event.
+        
+        Prompts the user for confirmation before closing the application.
+        
+        Args:
+            event: QCloseEvent instance.
+        """
         reply = QMessageBox.question(
             self,
             'Confirm Exit',

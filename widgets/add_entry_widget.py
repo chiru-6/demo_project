@@ -1,25 +1,59 @@
-"""
-Add Entry Widget - Form to add new test data entries
+"""Add entry widget module for creating new test data records.
+
+This module provides the AddEntryWidget class which displays a form
+for entering new test data records into the database.
 """
 
-from PyQt5.QtWidgets import (QWidget, QVBoxLayout, QHBoxLayout, QLabel, 
-                             QLineEdit, QPushButton, QComboBox, QFormLayout,
-                             QMessageBox, QGroupBox)
-from PyQt5.QtCore import Qt, pyqtSignal
+from PyQt5.QtCore import pyqtSignal
+from PyQt5.QtWidgets import (QComboBox, QFormLayout, QGroupBox, QHBoxLayout,
+                             QLabel, QLineEdit, QMessageBox, QPushButton,
+                             QVBoxLayout, QWidget)
 
 
 class AddEntryWidget(QWidget):
-    """Widget for adding new test data entries"""
+    """Widget for adding new test data entries.
+    
+    This widget provides a form with all required and optional fields
+    for creating new test data records. It includes validation and
+    emits a signal when an entry is successfully added.
+    
+    Attributes:
+        db: DatabaseManager instance for database operations.
+        entry_added: Signal emitted when an entry is successfully added.
+        lru_name: QLineEdit for LRU name input.
+        project: QLineEdit for project input.
+        division_group: QLineEdit for division/group input.
+        system: QLineEdit for system input.
+        part_number: QLineEdit for part number input.
+        serial_no: QLineEdit for serial number input.
+        received_data: QLineEdit for received data input.
+        type_of_test: QLineEdit for type of test input.
+        test_rig: QLineEdit for test rig input.
+        date_of_pi: QLineEdit for date of PI input.
+        results_remarks: QComboBox for results selection.
+        date_of_clearance: QLineEdit for date of clearance input.
+        submit_btn: QPushButton for form submission.
+        clear_btn: QPushButton for clearing the form.
+    """
     
     entry_added = pyqtSignal()
     
-    def __init__(self, db):
+    def __init__(self, db) -> None:
+        """Initializes the add entry widget.
+        
+        Args:
+            db: DatabaseManager instance for database operations.
+        """
         super().__init__()
         self.db = db
         self.init_ui()
     
-    def init_ui(self):
-        """Initialize the UI"""
+    def init_ui(self) -> None:
+        """Initializes the user interface.
+        
+        Creates and configures all UI elements including the form fields,
+        labels, and buttons.
+        """
         layout = QVBoxLayout(self)
         
         # Title
@@ -89,11 +123,17 @@ class AddEntryWidget(QWidget):
         button_layout = QHBoxLayout()
         
         self.submit_btn = QPushButton("✅ Add Entry")
-        self.submit_btn.setStyleSheet("background-color: #4CAF50; color: white; padding: 10px; font-size: 14px;")
+        self.submit_btn.setStyleSheet(
+            "background-color: #4CAF50; color: white; "
+            "padding: 10px; font-size: 14px;"
+        )
         self.submit_btn.clicked.connect(self.add_entry)
         
         self.clear_btn = QPushButton("🗑️ Clear Form")
-        self.clear_btn.setStyleSheet("background-color: #f44336; color: white; padding: 10px; font-size: 14px;")
+        self.clear_btn.setStyleSheet(
+            "background-color: #f44336; color: white; "
+            "padding: 10px; font-size: 14px;"
+        )
         self.clear_btn.clicked.connect(self.clear_form)
         
         button_layout.addWidget(self.submit_btn)
@@ -103,8 +143,13 @@ class AddEntryWidget(QWidget):
         layout.addLayout(button_layout)
         layout.addStretch()
     
-    def add_entry(self):
-        """Add entry to database"""
+    def add_entry(self) -> None:
+        """Adds entry to database.
+        
+        Validates all required fields, creates an entry dictionary,
+        and attempts to add it to the database. Shows success or error
+        message boxes accordingly.
+        """
         # Validate required fields
         required_fields = {
             'LRU Name': self.lru_name.text().strip(),
@@ -124,7 +169,8 @@ class AddEntryWidget(QWidget):
             QMessageBox.warning(
                 self,
                 "Validation Error",
-                f"Please fill in all required fields.\nMissing: {', '.join(missing_fields)}"
+                f"Please fill in all required fields.\n"
+                f"Missing: {', '.join(missing_fields)}"
             )
             return
         
@@ -154,8 +200,11 @@ class AddEntryWidget(QWidget):
         else:
             QMessageBox.critical(self, "Error", message)
     
-    def clear_form(self):
-        """Clear all form fields"""
+    def clear_form(self) -> None:
+        """Clears all form fields.
+        
+        Resets all input fields to their default empty state.
+        """
         self.lru_name.clear()
         self.project.clear()
         self.division_group.clear()

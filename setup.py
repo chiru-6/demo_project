@@ -1,13 +1,28 @@
-"""
-Setup script for LCA Test Data Management System
-This script helps initialize the database and verify the setup
+"""Setup script for LCA Test Data Management System.
+
+This script helps initialize the database and verify the setup.
+It checks for the CSV file, initializes the database, imports data,
+and displays statistics.
+
+Usage:
+    python setup.py
 """
 
 import os
 import sys
+
 from database import DatabaseManager
 
-def main():
+
+def main() -> None:
+    """Initializes the database and imports CSV data.
+    
+    Performs the following steps:
+        1. Checks for CSV file existence
+        2. Initializes the database
+        3. Imports CSV data if available
+        4. Displays database statistics
+    """
     print("=" * 60)
     print("LCA Test Data Management System - Setup")
     print("=" * 60)
@@ -43,8 +58,8 @@ def main():
             print(f"   Projects: {len(stats.get('projects', {}))}")
             print(f"   Test Rigs: {len(stats.get('test_rigs', {}))}")
         
-    except Exception as e:
-        print(f"❌ Error: {str(e)}")
+    except Exception as error:
+        print(f"❌ Error: {str(error)}")
         sys.exit(1)
     
     print("\n" + "=" * 60)

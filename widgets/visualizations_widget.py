@@ -1,28 +1,53 @@
-"""
-Visualizations Widget - Charts and graphs for data analysis
+"""Visualizations widget module for displaying charts and graphs.
+
+This module provides the VisualizationsWidget class which displays
+various charts and graphs for data analysis using matplotlib.
 """
 
-from PyQt5.QtWidgets import (QWidget, QVBoxLayout, QHBoxLayout, QLabel, 
-                             QComboBox, QPushButton)
-from PyQt5.QtCore import Qt
+import pandas as pd
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.figure import Figure
-import matplotlib.pyplot as plt
-import pandas as pd
+from PyQt5.QtWidgets import (QComboBox, QHBoxLayout, QLabel, QPushButton,
+                             QVBoxLayout, QWidget)
 
 
 class VisualizationsWidget(QWidget):
-    """Widget for displaying data visualizations"""
+    """Widget for displaying data visualizations.
     
-    def __init__(self, db):
+    This widget provides multiple chart types for analyzing test data:
+        - Results distribution (pie chart)
+        - Test rigs analysis (bar chart)
+        - Projects overview (bar chart)
+        - Division/Group distribution (pie chart)
+        - Type of test analysis (bar chart)
+        - Clearance status (bar chart)
+    
+    Attributes:
+        db: DatabaseManager instance for database operations.
+        df: DataFrame containing all test data.
+        viz_combo: QComboBox for selecting visualization type.
+        figure: Matplotlib Figure for rendering charts.
+        canvas: FigureCanvas for displaying the matplotlib figure.
+    """
+    
+    def __init__(self, db) -> None:
+        """Initializes the visualizations widget.
+        
+        Args:
+            db: DatabaseManager instance for database operations.
+        """
         super().__init__()
         self.db = db
         self.df = pd.DataFrame()
         self.init_ui()
         self.refresh_data()
     
-    def init_ui(self):
-        """Initialize the UI"""
+    def init_ui(self) -> None:
+        """Initializes the user interface.
+        
+        Creates and configures all UI elements including the visualization
+        selector, refresh button, and matplotlib canvas.
+        """
         layout = QVBoxLayout(self)
         
         # Title
@@ -58,16 +83,24 @@ class VisualizationsWidget(QWidget):
         self.canvas = FigureCanvas(self.figure)
         layout.addWidget(self.canvas)
     
-    def refresh_data(self):
-        """Refresh data from database"""
+    def refresh_data(self) -> None:
+        """Refreshes data from database.
+        
+        Loads all data from the database and updates the current visualization.
+        Shows an error plot if data loading fails.
+        """
         try:
             self.df = self.db.get_all_data()
             self.update_visualization()
-        except Exception as e:
-            self.show_error_plot(str(e))
+        except Exception as error:
+            self.show_error_plot(str(error))
     
-    def update_visualization(self):
-        """Update the current visualization"""
+    def update_visualization(self) -> None:
+        """Updates the current visualization.
+        
+        Clears the current figure and renders the selected visualization type.
+        Shows an error plot if the dataframe is empty or if rendering fails.
+        """
         if self.df.empty:
             self.show_error_plot("No data available")
             return
@@ -93,19 +126,28 @@ class VisualizationsWidget(QWidget):
             
             self.figure.tight_layout()
             self.canvas.draw()
-        except Exception as e:
-            self.show_error_plot(f"Error creating visualization: {str(e)}")
+        except Exception as error:
+            self.show_error_plot(f"Error creating visualization: {str(error)}")
     
-    def plot_results_distribution(self, ax):
-        """Plot pie chart of results distribution"""
+    def plot_results_distribution(self, ax) -> None:
+        """Plots pie chart of results distribution.
+        
+        Args:
+            ax: Matplotlib axes object to plot on.
+        """
         results_counts = self.df['results_remarks'].value_counts()
-        colors = ['#2ecc71' if 'OK' in str(idx) else '#e74c3c' for idx in results_counts.index]
-        ax.pie(results_counts.values, labels=results_counts.index, autopct='%1.1f%%', 
-               colors=colors, startangle=90)
+        colors = ['#2ecc71' if 'OK' in str(idx) else '#e74c3c' 
+                 for idx in results_counts.index]
+        ax.pie(results_counts.values, labels=results_counts.index, 
+               autopct='%1.1f%%', colors=colors, startangle=90)
         ax.set_title("Test Results Distribution", fontsize=16, fontweight='bold')
     
-    def plot_test_rigs(self, ax):
-        """Plot bar chart of test rigs"""
+    def plot_test_rigs(self, ax) -> None:
+        """Plots bar chart of test rigs.
+        
+        Args:
+            ax: Matplotlib axes object to plot on.
+        """
         rig_counts = self.df['test_rig'].value_counts()
         ax.bar(range(len(rig_counts)), rig_counts.values, color='#3498db')
         ax.set_xticks(range(len(rig_counts)))
@@ -114,8 +156,12 @@ class VisualizationsWidget(QWidget):
         ax.set_title("Test Rigs Usage", fontsize=16, fontweight='bold')
         ax.grid(axis='y', alpha=0.3)
     
-    def plot_projects(self, ax):
-        """Plot bar chart of projects"""
+    def plot_projects(self, ax) -> None:
+        """Plots bar chart of projects.
+        
+        Args:
+            ax: Matplotlib axes object to plot on.
+        """
         project_counts = self.df['project'].value_counts()
         ax.bar(range(len(project_counts)), project_counts.values, color='#9b59b6')
         ax.set_xticks(range(len(project_counts)))
@@ -124,14 +170,22 @@ class VisualizationsWidget(QWidget):
         ax.set_title("Projects Distribution", fontsize=16, fontweight='bold')
         ax.grid(axis='y', alpha=0.3)
     
-    def plot_divisions(self, ax):
-        """Plot pie chart of divisions"""
+    def plot_divisions(self, ax) -> None:
+        """Plots pie chart of divisions.
+        
+        Args:
+            ax: Matplotlib axes object to plot on.
+        """
         div_counts = self.df['division_group'].value_counts()
         ax.pie(div_counts.values, labels=div_counts.index, autopct='%1.1f%%', startangle=90)
         ax.set_title("Division/Group Distribution", fontsize=16, fontweight='bold')
     
-    def plot_test_types(self, ax):
-        """Plot bar chart of test types"""
+    def plot_test_types(self, ax) -> None:
+        """Plots bar chart of test types.
+        
+        Args:
+            ax: Matplotlib axes object to plot on.
+        """
         test_counts = self.df['type_of_test'].value_counts()
         ax.bar(range(len(test_counts)), test_counts.values, color='#e67e22')
         ax.set_xticks(range(len(test_counts)))
@@ -140,8 +194,12 @@ class VisualizationsWidget(QWidget):
         ax.set_title("Type of Test Distribution", fontsize=16, fontweight='bold')
         ax.grid(axis='y', alpha=0.3)
     
-    def plot_clearance_status(self, ax):
-        """Plot bar chart of clearance status"""
+    def plot_clearance_status(self, ax) -> None:
+        """Plots bar chart of clearance status.
+        
+        Args:
+            ax: Matplotlib axes object to plot on.
+        """
         cleared = self.df['date_of_clearance'].notna().sum()
         not_cleared = self.df['date_of_clearance'].isna().sum()
         
@@ -151,8 +209,12 @@ class VisualizationsWidget(QWidget):
         ax.set_title("Clearance Status", fontsize=16, fontweight='bold')
         ax.grid(axis='y', alpha=0.3)
     
-    def show_error_plot(self, message):
-        """Show error message on plot"""
+    def show_error_plot(self, message: str) -> None:
+        """Shows error message on plot.
+        
+        Args:
+            message: Error message to display.
+        """
         self.figure.clear()
         ax = self.figure.add_subplot(111)
         ax.text(0.5, 0.5, message, ha='center', va='center', fontsize=14)
