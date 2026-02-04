@@ -1,6 +1,6 @@
 #Test Data Management System - PyQt5 Desktop Application
 
-A comprehensive desktop application for managing and analyzing LCA (Light Combat Aircraft) test data with SQLite database, interactive visualizations, and AI-powered chatbot assistance.
+A comprehensive desktop application for managing and analyzing aircraft test data with SQLite database, interactive visualizations, and AI-powered chatbot assistance.
 
 ## Features
 
@@ -238,7 +238,7 @@ HAL_Project/
 │   ├── add_entry_widget.py      # Add entry form
 │   ├── visualizations_widget.py # Visualizations
 │   └── chatbot_widget.py        # Chatbot interface
-├── LCA_Test_Data.csv      # Source CSV file
+├── database.csv      # Source CSV file
 ├── database.db            # SQLite database (created automatically)
 ├── requirements.txt       # Python dependencies
 └── README.md              # This file
@@ -382,7 +382,7 @@ To create a standalone executable:
 
 2. Build executable:
    ```bash
-   pyinstaller --onefile --windowed --name "LCA_Test_Data_Manager" main.py
+   pyinstaller --onefile --windowed --name "database" main.py
    ```
 
 3. Executable will be in `dist/` folder
