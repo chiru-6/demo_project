@@ -36,10 +36,11 @@ def main() -> None:
     app.setApplicationName("LCA Test Data Management System")
     app.setOrganizationName("HAL")
     
-    # Initialize database and import CSV if needed
+    # Initialize database and import CSV if needed (prefer dataset.csv for rich data)
     db = DatabaseManager()
-    if os.path.exists("LCA_Test_Data.csv"):
-        db.import_csv("LCA_Test_Data.csv")
+    csv_path = "dataset.csv" if os.path.exists("dataset.csv") else "LCA_Test_Data.csv"
+    if os.path.exists(csv_path):
+        db.import_csv(csv_path)
     
     # Create and show main window
     window = MainWindow(db)

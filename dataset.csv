@@ -1,0 +1,361 @@
+LRU Name,Project,Division / Group,System,Part Number,Serial No,Received Data,Type of Test,Test Rig,Date of PI,Results & Remarks,Date of Clearance
+DCMB GPRU,IJT,TD/Sagar,HYD,GCCAIA859,97 / 1610000001412024,Unit received for inspection,Calibration,LCA EPGS,24-04-2024,Under Review,
+EPGS Controller,TEJAS,A/C Division,ELE,STM189,98 / 1610000002412024,Unit received for inspection,PI,IJT EPGS,28-01-2026,Under Review,
+Hydraulic Pump Unit,ALH,Hydraulics,GEN,22460092,99 / 1610000003412024,Unit received for inspection,PI Starter,TEJAS Rig A,01-06-2025,OK,10-06-2025
+"5RW GEN, DCMB GPRU",ALH,Engine Division,PNEU,GCCAIA877,100 / 1610000004412024,Unit received for inspection,Functional Test,IJT EPGS,11-10-2024,Pending,
+DCMB GPRU,LCH,Avionics Group,AVIONICS,EPGS199,101 / 1610000005412024,Unit received for inspection,Functional Test,Engine Test Cell,20-02-2026,OK,22-02-2026
+EPGS Controller,AMCA,Quality Assurance,AVIONICS,EPGS180,102 / 1610000006412024,Unit received for inspection,Functional Test,Hydraulic Test Bench,17-01-2026,OK,19-01-2026
+DCMB GPRU,LCA,Quality Assurance,HYD,22460099,103 / 1610000007412024,Unit received for inspection,PI,TEJAS Rig A,22-12-2025,OK,02-01-2026
+DCMB GPRU,IJT,ELE Group,PNEU,22460048,104 / 1610000008412024,Unit received for inspection,Calibration,Avionics Rig,09-04-2025,OK,15-04-2025
+"5RW GEN, DCMB GPRU",MIG-21 Upgrade,ELE Group,HYD,STM750,105 / 1610000009412024,Unit received for inspection,PI Starter,TEJAS Rig A,14-03-2024,Under Review,
+EPGS Controller,IJT,ELE Group,PNEU,AVN804,106 / 1610000010412024,Unit received for inspection,PI,IJT EPGS,03-10-2024,NOT OK,
+Hydraulic Pump Unit,AMCA,TD/Sagar,GEN,22460073,107 / 1610000011412024,Unit received for inspection,Endurance Test,Avionics Rig,19-11-2024,OK,21-11-2024
+EPGS Controller,AMCA,ELE Group,AVIONICS,AVN674,108 / 1610000012412024,Unit received for inspection,Endurance Test,Hydraulic Test Bench,26-05-2024,NOT OK,07-06-2024
+5RW GEN,LCH,A/C Division,ELE,STM605,109 / 1610000013412024,Unit received for inspection,PI Starter,Avionics Rig,05-01-2025,NOT OK,14-01-2025
+EPGS Controller,TEJAS,Hydraulics,PNEU,EPGS490,110 / 1610000014412024,Unit received for inspection,Acceptance Test,Engine Test Cell,27-11-2025,OK,29-11-2025
+DCMB GPRU,LCH,ELE Group,PNEU,STM868,111 / 1610000015412024,Unit received for inspection,PI,AMCA Rig 1,27-11-2025,OK,08-12-2025
+Hydraulic Pump Unit,AMCA,Hydraulics,HYD,AVN996,112 / 1610000016412024,Unit received for inspection,Acceptance Test,LCA EPGS,10-06-2024,NOT OK,
+EPGS Controller,IJT,TD/Sagar,PNEU,AVN619,113 / 1610000017412024,Unit received for inspection,PI Starter,Hydraulic Test Bench,01-11-2024,Under Review,
+Starter Motor Assembly,LCA,A/C Division,PNEU,STM431,114 / 1610000018412024,Unit received for inspection,Functional Test,IJT EPGS,01-01-2024,Pending,
+Hydraulic Pump Unit,TEJAS,Quality Assurance,ELE,GCCAIA187,115 / 1610000019412024,Unit received for inspection,Acceptance Test,Engine Test Cell,03-09-2024,OK,
+EPGS Controller,LCH,Hydraulics,GEN,22460034,116 / 1610000020412024,Unit received for inspection,PI Starter,Hydraulic Test Bench,11-05-2024,OK,20-05-2024
+DCMB GPRU,TEJAS,ELE Group,PNEU,22460092,117 / 1610000021412024,Unit received for inspection,Endurance Test,Hydraulic Test Bench,07-12-2025,Under Review,
+EPGS Controller,MIG-21 Upgrade,TD/Sagar,AVIONICS,HDP0003,118 / 1610000022412024,Unit received for inspection,PI Starter,LCA EPGS,03-05-2024,NOT OK,10-05-2024
+DCMB GPRU,LCA,Hydraulics,HYD,GCCAIA132,119 / 1610000023412024,Unit received for inspection,Functional Test,Avionics Rig,25-12-2025,OK,29-12-2025
+EPGS Controller,TEJAS,TD/Sagar,GEN,AVN684,120 / 1610000024412024,Unit received for inspection,Endurance Test,IJT EPGS,07-08-2024,NOT OK,
+Starter Motor Assembly,LCH,ELE Group,ELE,EPGS520,121 / 1610000025412024,Unit received for inspection,Calibration,Avionics Rig,09-04-2024,OK,15-04-2024
+Hydraulic Pump Unit,AMCA,Quality Assurance,ELE,GCCAIA512,122 / 1610000026412024,Unit received for inspection,PI Starter,IJT EPGS,10-04-2024,Under Review,
+Starter Motor Assembly,IJT,Quality Assurance,ELE,22460036,123 / 1610000027412024,Unit received for inspection,Endurance Test,Engine Test Cell,03-07-2025,OK,10-07-2025
+EPGS Controller,LCH,A/C Division,ELE,GCCAIA767,124 / 1610000028412024,Unit received for inspection,PI Starter,IJT EPGS,10-04-2024,Pending,
+"5RW GEN, DCMB GPRU",TEJAS,A/C Division,GEN,EPGS160,125 / 1610000029412024,Unit received for inspection,Functional Test,Engine Test Cell,12-05-2025,NOT OK,
+EPGS Controller,ALH,ELE Group,GEN,AVN902,126 / 1610000030412024,Unit received for inspection,PI Starter,IJT EPGS,19-10-2024,NOT OK,
+EPGS Controller,LCA,ELE Group,PNEU,STM853,127 / 1610000031412024,Unit received for inspection,PI,LCA EPGS,10-08-2024,OK,
+EPGS Controller,IJT,A/C Division,AVIONICS,STM973,128 / 1610000032412024,Unit received for inspection,PI,Engine Test Cell,03-05-2025,Pending,
+5RW GEN,MIG-21 Upgrade,TD/Sagar,AVIONICS,22460052,129 / 1610000033412024,Unit received for inspection,Acceptance Test,LCA EPGS,11-03-2024,OK,22-03-2024
+EPGS Controller,MIG-21 Upgrade,Hydraulics,PNEU,EPGS773,130 / 1610000034412024,Unit received for inspection,Functional Test,IJT EPGS,24-03-2024,Pending,
+DCMB GPRU,TEJAS,TD/Sagar,PNEU,HDP0031,131 / 1610000035412024,Unit received for inspection,Endurance Test,AMCA Rig 1,03-01-2026,Under Review,
+EPGS Controller,IJT,Hydraulics,PNEU,GCCAIA175,132 / 1610000036412024,Unit received for inspection,PI Starter,AMCA Rig 1,10-01-2024,OK,20-01-2024
+EPGS Controller,ALH,Avionics Group,AVIONICS,EPGS953,133 / 1610000037412024,Unit received for inspection,Calibration,Hydraulic Test Bench,07-09-2024,OK,10-09-2024
+"5RW GEN, DCMB GPRU",AMCA,A/C Division,ELE,AVN206,134 / 1610000038412024,Unit received for inspection,Calibration,Hydraulic Test Bench,14-11-2025,OK,19-11-2025
+"5RW GEN, DCMB GPRU",ALH,ELE Group,PNEU,AVN451,135 / 1610000039412024,Unit received for inspection,Acceptance Test,TEJAS Rig A,05-10-2024,OK,09-10-2024
+5RW GEN,AMCA,Quality Assurance,HYD,HDP0006,136 / 1610000040412024,Unit received for inspection,Calibration,AMCA Rig 1,22-02-2024,OK,29-02-2024
+5RW GEN,LCA,A/C Division,HYD,EPGS674,137 / 1610000041412024,Unit received for inspection,Acceptance Test,LCA EPGS,29-01-2026,OK,10-02-2026
+DCMB GPRU,AMCA,Quality Assurance,ELE,22460006,138 / 1610000042412024,Unit received for inspection,Functional Test,IJT EPGS,19-08-2025,OK,26-08-2025
+DCMB GPRU,LCH,Hydraulics,GEN,AVN205,139 / 1610000043412024,Unit received for inspection,Acceptance Test,Avionics Rig,12-09-2024,Under Review,
+5RW GEN,IJT,ELE Group,PNEU,22460053,140 / 1610000044412024,Unit received for inspection,Endurance Test,Engine Test Cell,30-08-2024,OK,
+"5RW GEN, DCMB GPRU",LCH,ELE Group,ELE,22460035,141 / 1610000045412024,Unit received for inspection,Endurance Test,Engine Test Cell,22-01-2026,Under Review,
+DCMB GPRU,LCH,Quality Assurance,HYD,EPGS458,142 / 1610000046412024,Unit received for inspection,PI Starter,LCA EPGS,26-04-2025,OK,10-05-2025
+DCMB GPRU,LCH,A/C Division,PNEU,EPGS436,143 / 1610000047412024,Unit received for inspection,Functional Test,Avionics Rig,16-07-2024,Under Review,
+EPGS Controller,AMCA,A/C Division,ELE,AVN963,144 / 1610000048412024,Unit received for inspection,Functional Test,IJT EPGS,13-02-2025,Pending,
+EPGS Controller,TEJAS,Avionics Group,PNEU,GCCAIA211,145 / 1610000049412024,Unit received for inspection,Endurance Test,Hydraulic Test Bench,28-09-2024,Pending,
+"5RW GEN, DCMB GPRU",AMCA,A/C Division,GEN,EPGS690,146 / 1610000050412024,Unit received for inspection,PI,Hydraulic Test Bench,28-04-2024,Pending,
+Hydraulic Pump Unit,ALH,TD/Sagar,PNEU,AVN859,147 / 1610000051412024,Unit received for inspection,Endurance Test,LCA EPGS,04-12-2025,Pending,
+Hydraulic Pump Unit,LCH,A/C Division,PNEU,STM421,148 / 1610000052412024,Unit received for inspection,Acceptance Test,AMCA Rig 1,04-12-2024,Under Review,
+Hydraulic Pump Unit,AMCA,Hydraulics,HYD,HDP0052,149 / 1610000053412024,Unit received for inspection,PI Starter,TEJAS Rig A,22-02-2025,Under Review,
+"5RW GEN, DCMB GPRU",MIG-21 Upgrade,Hydraulics,PNEU,AVN866,150 / 1610000054412024,Unit received for inspection,Endurance Test,Hydraulic Test Bench,23-01-2025,Under Review,
+Hydraulic Pump Unit,AMCA,Engine Division,GEN,STM721,151 / 1610000055412024,Unit received for inspection,Endurance Test,Avionics Rig,07-11-2024,OK,14-11-2024
+Hydraulic Pump Unit,LCA,Avionics Group,AVIONICS,AVN273,152 / 1610000056412024,Unit received for inspection,Calibration,Avionics Rig,07-06-2025,OK,20-06-2025
+"5RW GEN, DCMB GPRU",ALH,Avionics Group,HYD,GCCAIA938,153 / 1610000057412024,Unit received for inspection,PI Starter,IJT EPGS,09-12-2024,Pending,
+5RW GEN,TEJAS,Engine Division,AVIONICS,STM970,154 / 1610000058412024,Unit received for inspection,PI Starter,Avionics Rig,17-02-2024,OK,25-02-2024
+"5RW GEN, DCMB GPRU",IJT,ELE Group,ELE,EPGS509,155 / 1610000059412024,Unit received for inspection,PI,Engine Test Cell,28-01-2025,Under Review,
+5RW GEN,MIG-21 Upgrade,TD/Sagar,ELE,STM575,156 / 1610000060412024,Unit received for inspection,Endurance Test,IJT EPGS,12-08-2024,NOT OK,08-09-2024
+DCMB GPRU,LCH,Engine Division,AVIONICS,STM709,157 / 1610000061412024,Unit received for inspection,Calibration,Hydraulic Test Bench,14-11-2025,NOT OK,
+Starter Motor Assembly,TEJAS,Avionics Group,HYD,22460096,158 / 1610000062412024,Unit received for inspection,Calibration,AMCA Rig 1,15-07-2025,NOT OK,
+DCMB GPRU,TEJAS,A/C Division,PNEU,AVN344,159 / 1610000063412024,Unit received for inspection,PI Starter,AMCA Rig 1,11-05-2025,Pending,
+"5RW GEN, DCMB GPRU",IJT,Engine Division,HYD,GCCAIA241,160 / 1610000064412024,Unit received for inspection,Calibration,IJT EPGS,23-11-2024,OK,
+5RW GEN,IJT,Quality Assurance,GEN,EPGS525,161 / 1610000065412024,Unit received for inspection,Endurance Test,Engine Test Cell,28-02-2025,OK,09-03-2025
+EPGS Controller,TEJAS,Engine Division,ELE,GCCAIA977,162 / 1610000066412024,Unit received for inspection,Functional Test,AMCA Rig 1,13-12-2025,Pending,
+EPGS Controller,IJT,Engine Division,HYD,AVN659,163 / 1610000067412024,Unit received for inspection,Functional Test,TEJAS Rig A,05-03-2025,NOT OK,
+Starter Motor Assembly,ALH,TD/Sagar,GEN,AVN795,164 / 1610000068412024,Unit received for inspection,PI Starter,Hydraulic Test Bench,30-01-2024,NOT OK,
+EPGS Controller,ALH,A/C Division,ELE,EPGS706,165 / 1610000069412024,Unit received for inspection,Calibration,TEJAS Rig A,28-01-2024,Pending,
+"5RW GEN, DCMB GPRU",TEJAS,Avionics Group,PNEU,EPGS435,166 / 1610000070412024,Unit received for inspection,Endurance Test,AMCA Rig 1,17-04-2025,OK,22-04-2025
+Hydraulic Pump Unit,MIG-21 Upgrade,A/C Division,PNEU,EPGS119,167 / 1610000071412024,Unit received for inspection,PI Starter,Avionics Rig,15-09-2024,NOT OK,
+5RW GEN,IJT,TD/Sagar,ELE,GCCAIA872,168 / 1610000072412024,Unit received for inspection,Acceptance Test,IJT EPGS,10-03-2026,OK,
+Starter Motor Assembly,ALH,Avionics Group,PNEU,STM323,169 / 1610000073412024,Unit received for inspection,PI Starter,Hydraulic Test Bench,09-05-2024,OK,11-05-2024
+"5RW GEN, DCMB GPRU",AMCA,A/C Division,AVIONICS,AVN217,170 / 1610000074412024,Unit received for inspection,PI,AMCA Rig 1,04-02-2026,Pending,
+Hydraulic Pump Unit,IJT,A/C Division,AVIONICS,EPGS506,171 / 1610000075412024,Unit received for inspection,Calibration,Engine Test Cell,24-11-2025,Pending,
+DCMB GPRU,LCH,ELE Group,AVIONICS,GCCAIA813,172 / 1610000076412024,Unit received for inspection,PI,Engine Test Cell,05-09-2024,Under Review,
+Starter Motor Assembly,ALH,Avionics Group,ELE,HDP0069,173 / 1610000077412024,Unit received for inspection,Acceptance Test,Avionics Rig,12-02-2024,Pending,
+Starter Motor Assembly,AMCA,ELE Group,GEN,EPGS208,174 / 1610000078412024,Unit received for inspection,Calibration,IJT EPGS,13-01-2024,OK,27-01-2024
+EPGS Controller,LCH,Hydraulics,GEN,AVN376,175 / 1610000079412024,Unit received for inspection,Endurance Test,TEJAS Rig A,29-06-2024,NOT OK,
+"5RW GEN, DCMB GPRU",LCH,A/C Division,PNEU,HDP0042,176 / 1610000080412024,Unit received for inspection,Endurance Test,IJT EPGS,29-08-2025,Under Review,
+5RW GEN,TEJAS,Quality Assurance,PNEU,EPGS444,177 / 1610000081412024,Unit received for inspection,PI Starter,TEJAS Rig A,06-08-2025,NOT OK,
+Hydraulic Pump Unit,AMCA,Hydraulics,ELE,HDP0077,178 / 1610000082412024,Unit received for inspection,Acceptance Test,IJT EPGS,29-12-2024,OK,04-01-2025
+"5RW GEN, DCMB GPRU",ALH,Engine Division,GEN,STM876,179 / 1610000083412024,Unit received for inspection,Endurance Test,Engine Test Cell,04-09-2024,OK,12-09-2024
+DCMB GPRU,ALH,Hydraulics,PNEU,AVN349,180 / 1610000084412024,Unit received for inspection,Endurance Test,Hydraulic Test Bench,05-04-2024,OK,12-04-2024
+EPGS Controller,AMCA,Avionics Group,GEN,EPGS863,181 / 1610000085412024,Unit received for inspection,Functional Test,AMCA Rig 1,18-12-2024,Pending,
+Hydraulic Pump Unit,MIG-21 Upgrade,Quality Assurance,HYD,HDP0016,182 / 1610000086412024,Unit received for inspection,PI Starter,IJT EPGS,24-08-2024,OK,28-08-2024
+EPGS Controller,LCH,Hydraulics,AVIONICS,HDP0093,183 / 1610000087412024,Unit received for inspection,Functional Test,LCA EPGS,10-05-2025,Under Review,
+Hydraulic Pump Unit,MIG-21 Upgrade,TD/Sagar,PNEU,HDP0002,184 / 1610000088412024,Unit received for inspection,PI,LCA EPGS,30-10-2024,OK,02-11-2024
+Hydraulic Pump Unit,LCH,Quality Assurance,GEN,AVN229,185 / 1610000089412024,Unit received for inspection,PI,Engine Test Cell,26-10-2024,Pending,
+"5RW GEN, DCMB GPRU",LCA,Avionics Group,GEN,EPGS448,186 / 1610000090412024,Unit received for inspection,PI,Engine Test Cell,10-08-2025,OK,18-08-2025
+5RW GEN,IJT,TD/Sagar,AVIONICS,AVN802,187 / 1610000091412024,Unit received for inspection,Functional Test,LCA EPGS,14-02-2025,OK,24-02-2025
+EPGS Controller,IJT,Quality Assurance,AVIONICS,STM710,188 / 1610000092412024,Unit received for inspection,Endurance Test,TEJAS Rig A,01-05-2024,OK,08-05-2024
+EPGS Controller,MIG-21 Upgrade,A/C Division,AVIONICS,EPGS412,189 / 1610000093412024,Unit received for inspection,Calibration,LCA EPGS,31-10-2024,NOT OK,
+"5RW GEN, DCMB GPRU",IJT,Hydraulics,ELE,GCCAIA260,190 / 1610000094412024,Unit received for inspection,PI Starter,LCA EPGS,02-10-2025,OK,13-10-2025
+5RW GEN,IJT,Avionics Group,PNEU,EPGS398,191 / 1610000095412024,Unit received for inspection,Calibration,Engine Test Cell,06-04-2025,NOT OK,
+EPGS Controller,ALH,Quality Assurance,HYD,HDP0081,192 / 1610000096412024,Unit received for inspection,Endurance Test,LCA EPGS,13-03-2024,NOT OK,
+DCMB GPRU,LCH,TD/Sagar,ELE,AVN252,193 / 1610000097412024,Unit received for inspection,PI,IJT EPGS,18-08-2024,Pending,
+5RW GEN,TEJAS,ELE Group,PNEU,HDP0057,194 / 1610000098412024,Unit received for inspection,Calibration,TEJAS Rig A,01-09-2025,OK,11-09-2025
+5RW GEN,TEJAS,ELE Group,PNEU,GCCAIA712,195 / 1610000099412024,Unit received for inspection,Acceptance Test,AMCA Rig 1,27-05-2025,OK,04-06-2025
+5RW GEN,LCH,ELE Group,PNEU,STM701,196 / 1610000100412024,Unit received for inspection,Acceptance Test,LCA EPGS,03-04-2024,OK,14-04-2024
+EPGS Controller,TEJAS,ELE Group,GEN,HDP0024,197 / 1610000101412024,Unit received for inspection,PI,TEJAS Rig A,26-04-2025,OK,04-05-2025
+"5RW GEN, DCMB GPRU",AMCA,Engine Division,GEN,GCCAIA978,198 / 1610000102412024,Unit received for inspection,Functional Test,Avionics Rig,22-02-2025,OK,05-03-2025
+DCMB GPRU,AMCA,Avionics Group,ELE,EPGS190,199 / 1610000103412024,Unit received for inspection,Endurance Test,Engine Test Cell,17-02-2026,NOT OK,
+EPGS Controller,TEJAS,Engine Division,ELE,AVN990,200 / 1610000104412024,Unit received for inspection,PI Starter,Hydraulic Test Bench,02-01-2024,Pending,
+5RW GEN,IJT,Avionics Group,AVIONICS,EPGS878,201 / 1610000105412024,Unit received for inspection,PI Starter,AMCA Rig 1,29-09-2025,OK,10-10-2025
+EPGS Controller,LCH,TD/Sagar,HYD,GCCAIA745,202 / 1610000106412024,Unit received for inspection,Functional Test,Hydraulic Test Bench,16-12-2025,NOT OK,
+5RW GEN,ALH,Quality Assurance,HYD,GCCAIA572,203 / 1610000107412024,Unit received for inspection,Endurance Test,Avionics Rig,19-07-2025,OK,23-07-2025
+"5RW GEN, DCMB GPRU",TEJAS,Hydraulics,HYD,EPGS583,204 / 1610000108412024,Unit received for inspection,Endurance Test,IJT EPGS,05-06-2025,OK,12-06-2025
+5RW GEN,AMCA,Quality Assurance,GEN,AVN239,205 / 1610000109412024,Unit received for inspection,Functional Test,Engine Test Cell,04-06-2025,Pending,
+Hydraulic Pump Unit,AMCA,Quality Assurance,AVIONICS,GCCAIA389,206 / 1610000110412024,Unit received for inspection,Acceptance Test,Avionics Rig,30-09-2024,Pending,
+DCMB GPRU,MIG-21 Upgrade,Quality Assurance,AVIONICS,EPGS453,207 / 1610000111412024,Unit received for inspection,Endurance Test,TEJAS Rig A,01-06-2024,NOT OK,
+Starter Motor Assembly,IJT,Quality Assurance,GEN,22460074,208 / 1610000112412024,Unit received for inspection,PI,AMCA Rig 1,12-07-2024,OK,
+Starter Motor Assembly,TEJAS,ELE Group,HYD,AVN930,209 / 1610000113412024,Unit received for inspection,Endurance Test,LCA EPGS,29-04-2025,Under Review,
+Starter Motor Assembly,LCA,Hydraulics,GEN,HDP0013,210 / 1610000114412024,Unit received for inspection,PI,Avionics Rig,29-05-2025,OK,
+Starter Motor Assembly,LCH,Avionics Group,PNEU,22460010,211 / 1610000115412024,Unit received for inspection,Acceptance Test,Avionics Rig,23-02-2025,OK,
+EPGS Controller,TEJAS,Avionics Group,GEN,AVN979,212 / 1610000116412024,Unit received for inspection,Acceptance Test,LCA EPGS,27-10-2025,NOT OK,11-11-2025
+Hydraulic Pump Unit,AMCA,TD/Sagar,ELE,22460081,213 / 1610000117412024,Unit received for inspection,Endurance Test,LCA EPGS,11-03-2024,Pending,
+"5RW GEN, DCMB GPRU",ALH,Avionics Group,ELE,GCCAIA554,214 / 1610000118412024,Unit received for inspection,PI,AMCA Rig 1,21-12-2025,Under Review,
+EPGS Controller,TEJAS,Hydraulics,HYD,22460032,215 / 1610000119412024,Unit received for inspection,PI Starter,IJT EPGS,27-10-2024,OK,03-11-2024
+"5RW GEN, DCMB GPRU",TEJAS,Hydraulics,HYD,STM799,216 / 1610000120412024,Unit received for inspection,PI Starter,TEJAS Rig A,16-09-2025,OK,
+Hydraulic Pump Unit,LCA,Quality Assurance,GEN,EPGS361,217 / 1610000121412024,Unit received for inspection,Functional Test,Avionics Rig,17-09-2024,Under Review,
+DCMB GPRU,MIG-21 Upgrade,Avionics Group,GEN,GCCAIA552,218 / 1610000122412024,Unit received for inspection,Calibration,AMCA Rig 1,10-06-2024,Pending,
+"5RW GEN, DCMB GPRU",TEJAS,Hydraulics,PNEU,EPGS209,219 / 1610000123412024,Unit received for inspection,Acceptance Test,AMCA Rig 1,05-11-2024,NOT OK,22-11-2024
+Hydraulic Pump Unit,TEJAS,Avionics Group,ELE,GCCAIA949,220 / 1610000124412024,Unit received for inspection,Acceptance Test,Engine Test Cell,29-10-2024,Under Review,
+EPGS Controller,ALH,Engine Division,PNEU,AVN150,221 / 1610000125412024,Unit received for inspection,PI Starter,Hydraulic Test Bench,07-03-2026,Under Review,
+Hydraulic Pump Unit,LCH,ELE Group,HYD,HDP0087,222 / 1610000126412024,Unit received for inspection,Calibration,LCA EPGS,12-08-2024,OK,22-08-2024
+Starter Motor Assembly,LCA,Hydraulics,PNEU,GCCAIA416,223 / 1610000127412024,Unit received for inspection,Calibration,IJT EPGS,23-10-2025,Under Review,
+"5RW GEN, DCMB GPRU",LCH,Hydraulics,PNEU,22460026,224 / 1610000128412024,Unit received for inspection,Acceptance Test,Hydraulic Test Bench,29-10-2024,OK,05-11-2024
+DCMB GPRU,ALH,Quality Assurance,PNEU,EPGS925,225 / 1610000129412024,Unit received for inspection,PI,TEJAS Rig A,17-06-2024,OK,01-07-2024
+Hydraulic Pump Unit,TEJAS,Quality Assurance,AVIONICS,AVN841,226 / 1610000130412024,Unit received for inspection,Functional Test,LCA EPGS,24-05-2024,OK,28-05-2024
+Hydraulic Pump Unit,ALH,ELE Group,PNEU,EPGS477,227 / 1610000131412024,Unit received for inspection,Acceptance Test,TEJAS Rig A,15-01-2024,NOT OK,23-01-2024
+"5RW GEN, DCMB GPRU",TEJAS,A/C Division,AVIONICS,GCCAIA791,228 / 1610000132412024,Unit received for inspection,Acceptance Test,AMCA Rig 1,15-01-2025,Under Review,
+Hydraulic Pump Unit,LCH,Engine Division,PNEU,AVN164,229 / 1610000133412024,Unit received for inspection,Calibration,TEJAS Rig A,14-08-2024,Pending,
+5RW GEN,LCA,TD/Sagar,AVIONICS,HDP0064,230 / 1610000134412024,Unit received for inspection,PI Starter,TEJAS Rig A,23-05-2024,OK,24-05-2024
+EPGS Controller,TEJAS,Hydraulics,HYD,AVN813,231 / 1610000135412024,Unit received for inspection,Endurance Test,Avionics Rig,14-01-2025,NOT OK,
+DCMB GPRU,IJT,Engine Division,GEN,GCCAIA806,232 / 1610000136412024,Unit received for inspection,PI Starter,Engine Test Cell,16-05-2025,OK,21-05-2025
+Hydraulic Pump Unit,AMCA,A/C Division,GEN,HDP0070,233 / 1610000137412024,Unit received for inspection,Functional Test,IJT EPGS,11-04-2024,OK,
+EPGS Controller,LCA,A/C Division,PNEU,AVN754,234 / 1610000138412024,Unit received for inspection,PI Starter,IJT EPGS,10-04-2025,OK,14-04-2025
+EPGS Controller,IJT,Hydraulics,HYD,GCCAIA949,235 / 1610000139412024,Unit received for inspection,PI Starter,AMCA Rig 1,29-07-2024,Pending,
+EPGS Controller,AMCA,Quality Assurance,HYD,22460017,236 / 1610000140412024,Unit received for inspection,PI,Avionics Rig,02-09-2025,OK,16-09-2025
+DCMB GPRU,LCA,TD/Sagar,PNEU,22460076,237 / 1610000141412024,Unit received for inspection,PI,IJT EPGS,14-05-2024,OK,27-05-2024
+Hydraulic Pump Unit,LCA,Engine Division,GEN,STM216,238 / 1610000142412024,Unit received for inspection,Functional Test,Hydraulic Test Bench,07-03-2025,Under Review,
+"5RW GEN, DCMB GPRU",MIG-21 Upgrade,A/C Division,AVIONICS,EPGS615,239 / 1610000143412024,Unit received for inspection,Functional Test,TEJAS Rig A,21-04-2024,Pending,
+Starter Motor Assembly,TEJAS,ELE Group,ELE,GCCAIA590,240 / 1610000144412024,Unit received for inspection,Endurance Test,Avionics Rig,01-02-2024,Under Review,
+"5RW GEN, DCMB GPRU",LCA,TD/Sagar,PNEU,HDP0078,241 / 1610000145412024,Unit received for inspection,Acceptance Test,Avionics Rig,16-03-2024,NOT OK,
+Starter Motor Assembly,MIG-21 Upgrade,Hydraulics,PNEU,AVN432,242 / 1610000146412024,Unit received for inspection,Endurance Test,Hydraulic Test Bench,15-07-2025,Pending,
+Hydraulic Pump Unit,LCA,Quality Assurance,AVIONICS,GCCAIA912,243 / 1610000147412024,Unit received for inspection,Calibration,Engine Test Cell,16-03-2025,Pending,
+Starter Motor Assembly,TEJAS,Engine Division,ELE,EPGS447,244 / 1610000148412024,Unit received for inspection,Functional Test,TEJAS Rig A,16-03-2025,OK,20-03-2025
+5RW GEN,LCA,Quality Assurance,ELE,AVN585,245 / 1610000149412024,Unit received for inspection,PI,TEJAS Rig A,12-11-2025,OK,15-11-2025
+5RW GEN,MIG-21 Upgrade,Hydraulics,AVIONICS,22460072,246 / 1610000150412024,Unit received for inspection,Functional Test,Avionics Rig,01-02-2026,OK,14-02-2026
+Hydraulic Pump Unit,LCA,Avionics Group,AVIONICS,EPGS988,247 / 1610000151412024,Unit received for inspection,Functional Test,AMCA Rig 1,24-02-2025,OK,07-03-2025
+"5RW GEN, DCMB GPRU",LCH,A/C Division,PNEU,AVN593,248 / 1610000152412024,Unit received for inspection,Acceptance Test,AMCA Rig 1,14-08-2025,OK,17-08-2025
+EPGS Controller,LCH,Quality Assurance,AVIONICS,EPGS965,249 / 1610000153412024,Unit received for inspection,Acceptance Test,Avionics Rig,19-02-2026,OK,23-02-2026
+Hydraulic Pump Unit,LCH,ELE Group,PNEU,GCCAIA723,250 / 1610000154412024,Unit received for inspection,PI,IJT EPGS,24-07-2025,Under Review,
+"5RW GEN, DCMB GPRU",LCH,TD/Sagar,AVIONICS,HDP0001,251 / 1610000155412024,Unit received for inspection,Calibration,TEJAS Rig A,20-12-2025,OK,26-12-2025
+EPGS Controller,IJT,Engine Division,GEN,GCCAIA864,252 / 1610000156412024,Unit received for inspection,Endurance Test,AMCA Rig 1,25-05-2024,OK,26-05-2024
+5RW GEN,LCA,TD/Sagar,HYD,STM710,253 / 1610000157412024,Unit received for inspection,Acceptance Test,LCA EPGS,13-01-2025,OK,19-01-2025
+Hydraulic Pump Unit,TEJAS,Engine Division,AVIONICS,HDP0057,254 / 1610000158412024,Unit received for inspection,Endurance Test,TEJAS Rig A,24-03-2024,Under Review,
+5RW GEN,AMCA,ELE Group,AVIONICS,HDP0056,255 / 1610000159412024,Unit received for inspection,Endurance Test,Hydraulic Test Bench,08-08-2024,OK,10-08-2024
+Starter Motor Assembly,MIG-21 Upgrade,A/C Division,ELE,GCCAIA325,256 / 1610000160412024,Unit received for inspection,PI Starter,AMCA Rig 1,11-11-2024,Under Review,
+5RW GEN,LCA,Engine Division,GEN,HDP0042,257 / 1610000161412024,Unit received for inspection,PI Starter,IJT EPGS,24-02-2026,OK,01-03-2026
+Hydraulic Pump Unit,LCH,Avionics Group,ELE,STM672,258 / 1610000162412024,Unit received for inspection,Endurance Test,Engine Test Cell,29-06-2025,NOT OK,
+Starter Motor Assembly,LCA,Quality Assurance,PNEU,EPGS119,259 / 1610000163412024,Unit received for inspection,Acceptance Test,TEJAS Rig A,13-02-2024,Under Review,
+Starter Motor Assembly,AMCA,A/C Division,GEN,AVN755,260 / 1610000164412024,Unit received for inspection,PI,AMCA Rig 1,18-02-2025,Pending,
+Starter Motor Assembly,LCH,A/C Division,HYD,HDP0012,261 / 1610000165412024,Unit received for inspection,Endurance Test,Hydraulic Test Bench,24-09-2025,OK,06-10-2025
+"5RW GEN, DCMB GPRU",AMCA,Quality Assurance,HYD,AVN447,262 / 1610000166412024,Unit received for inspection,PI,Hydraulic Test Bench,20-06-2025,NOT OK,04-07-2025
+"5RW GEN, DCMB GPRU",LCH,Avionics Group,PNEU,STM622,263 / 1610000167412024,Unit received for inspection,Calibration,Engine Test Cell,26-04-2024,Under Review,
+"5RW GEN, DCMB GPRU",AMCA,TD/Sagar,HYD,22460014,264 / 1610000168412024,Unit received for inspection,Acceptance Test,IJT EPGS,31-05-2024,Under Review,
+Hydraulic Pump Unit,TEJAS,Engine Division,AVIONICS,22460099,265 / 1610000169412024,Unit received for inspection,Acceptance Test,TEJAS Rig A,18-03-2024,Under Review,
+EPGS Controller,AMCA,Quality Assurance,PNEU,AVN750,266 / 1610000170412024,Unit received for inspection,PI Starter,TEJAS Rig A,01-08-2025,Under Review,
+5RW GEN,AMCA,Hydraulics,ELE,HDP0076,267 / 1610000171412024,Unit received for inspection,Functional Test,TEJAS Rig A,25-04-2025,OK,30-04-2025
+5RW GEN,MIG-21 Upgrade,Hydraulics,AVIONICS,GCCAIA760,268 / 1610000172412024,Unit received for inspection,Endurance Test,TEJAS Rig A,08-02-2024,NOT OK,22-02-2024
+Starter Motor Assembly,LCH,Hydraulics,HYD,AVN142,269 / 1610000173412024,Unit received for inspection,Functional Test,Hydraulic Test Bench,21-07-2025,Pending,
+DCMB GPRU,ALH,A/C Division,AVIONICS,EPGS205,270 / 1610000174412024,Unit received for inspection,Calibration,IJT EPGS,28-05-2025,NOT OK,03-06-2025
+EPGS Controller,IJT,Avionics Group,PNEU,STM635,271 / 1610000175412024,Unit received for inspection,Functional Test,TEJAS Rig A,10-09-2024,OK,18-09-2024
+Hydraulic Pump Unit,ALH,Avionics Group,ELE,STM153,272 / 1610000176412024,Unit received for inspection,Functional Test,LCA EPGS,04-03-2026,NOT OK,
+DCMB GPRU,ALH,Quality Assurance,AVIONICS,EPGS390,273 / 1610000177412024,Unit received for inspection,PI Starter,AMCA Rig 1,25-11-2025,Pending,
+Hydraulic Pump Unit,ALH,Engine Division,HYD,HDP0084,274 / 1610000178412024,Unit received for inspection,Acceptance Test,Avionics Rig,19-08-2025,OK,25-08-2025
+Hydraulic Pump Unit,ALH,Quality Assurance,AVIONICS,HDP0017,275 / 1610000179412024,Unit received for inspection,PI,Avionics Rig,13-11-2024,OK,24-11-2024
+5RW GEN,AMCA,Avionics Group,HYD,STM470,276 / 1610000180412024,Unit received for inspection,PI Starter,AMCA Rig 1,09-03-2025,Under Review,
+DCMB GPRU,LCH,Quality Assurance,ELE,22460010,277 / 1610000181412024,Unit received for inspection,Acceptance Test,Engine Test Cell,15-07-2024,NOT OK,24-07-2024
+Hydraulic Pump Unit,AMCA,Quality Assurance,AVIONICS,STM138,278 / 1610000182412024,Unit received for inspection,PI Starter,Hydraulic Test Bench,26-01-2026,Pending,
+"5RW GEN, DCMB GPRU",ALH,Engine Division,ELE,STM928,279 / 1610000183412024,Unit received for inspection,Endurance Test,AMCA Rig 1,06-06-2024,NOT OK,03-07-2024
+EPGS Controller,AMCA,Quality Assurance,GEN,22460057,280 / 1610000184412024,Unit received for inspection,PI Starter,Hydraulic Test Bench,06-01-2026,Under Review,
+"5RW GEN, DCMB GPRU",AMCA,ELE Group,AVIONICS,EPGS955,281 / 1610000185412024,Unit received for inspection,Endurance Test,TEJAS Rig A,12-11-2024,OK,
+"5RW GEN, DCMB GPRU",LCH,Hydraulics,HYD,EPGS265,282 / 1610000186412024,Unit received for inspection,Functional Test,LCA EPGS,07-03-2026,OK,16-03-2026
+5RW GEN,ALH,Quality Assurance,AVIONICS,HDP0071,283 / 1610000187412024,Unit received for inspection,PI,AMCA Rig 1,07-05-2025,Under Review,
+Starter Motor Assembly,LCA,TD/Sagar,GEN,STM250,284 / 1610000188412024,Unit received for inspection,Functional Test,LCA EPGS,20-02-2026,OK,28-02-2026
+Starter Motor Assembly,LCA,Avionics Group,HYD,HDP0031,285 / 1610000189412024,Unit received for inspection,PI,AMCA Rig 1,24-02-2024,NOT OK,
+5RW GEN,AMCA,Quality Assurance,GEN,22460018,286 / 1610000190412024,Unit received for inspection,Calibration,Engine Test Cell,01-01-2026,OK,14-01-2026
+5RW GEN,LCA,Avionics Group,HYD,STM105,287 / 1610000191412024,Unit received for inspection,PI Starter,Hydraulic Test Bench,16-02-2026,OK,24-02-2026
+5RW GEN,LCH,Avionics Group,HYD,STM533,288 / 1610000192412024,Unit received for inspection,Functional Test,LCA EPGS,15-09-2025,Under Review,
+5RW GEN,LCA,Quality Assurance,GEN,STM568,289 / 1610000193412024,Unit received for inspection,Acceptance Test,Hydraulic Test Bench,01-09-2024,OK,14-09-2024
+DCMB GPRU,TEJAS,A/C Division,AVIONICS,AVN247,290 / 1610000194412024,Unit received for inspection,Functional Test,IJT EPGS,09-10-2025,OK,13-10-2025
+Hydraulic Pump Unit,LCA,Hydraulics,PNEU,22460086,291 / 1610000195412024,Unit received for inspection,PI,Hydraulic Test Bench,02-03-2025,Pending,
+5RW GEN,TEJAS,Quality Assurance,GEN,STM667,292 / 1610000196412024,Unit received for inspection,PI,Avionics Rig,03-06-2025,Pending,
+DCMB GPRU,IJT,ELE Group,ELE,HDP0009,293 / 1610000197412024,Unit received for inspection,Acceptance Test,Avionics Rig,17-01-2025,NOT OK,22-01-2025
+"5RW GEN, DCMB GPRU",LCH,Quality Assurance,GEN,HDP0083,294 / 1610000198412024,Unit received for inspection,Calibration,TEJAS Rig A,16-05-2024,OK,25-05-2024
+Hydraulic Pump Unit,LCH,Engine Division,ELE,22460009,295 / 1610000199412024,Unit received for inspection,Functional Test,IJT EPGS,05-07-2024,Under Review,
+EPGS Controller,TEJAS,Quality Assurance,AVIONICS,HDP0040,296 / 1610000200412024,Unit received for inspection,Endurance Test,AMCA Rig 1,23-07-2024,OK,
+Hydraulic Pump Unit,AMCA,Avionics Group,ELE,HDP0007,297 / 1610000201412024,Unit received for inspection,Functional Test,TEJAS Rig A,10-02-2026,OK,15-02-2026
+"5RW GEN, DCMB GPRU",TEJAS,ELE Group,GEN,EPGS447,298 / 1610000202412024,Unit received for inspection,Functional Test,Engine Test Cell,31-01-2026,NOT OK,
+Starter Motor Assembly,LCA,Engine Division,AVIONICS,GCCAIA844,299 / 1610000203412024,Unit received for inspection,PI Starter,Hydraulic Test Bench,30-09-2024,Pending,
+DCMB GPRU,TEJAS,Hydraulics,GEN,AVN402,300 / 1610000204412024,Unit received for inspection,PI Starter,Avionics Rig,24-11-2024,OK,30-11-2024
+DCMB GPRU,MIG-21 Upgrade,Engine Division,PNEU,AVN990,301 / 1610000205412024,Unit received for inspection,Calibration,Engine Test Cell,25-12-2024,NOT OK,
+Hydraulic Pump Unit,ALH,TD/Sagar,ELE,HDP0066,302 / 1610000206412024,Unit received for inspection,PI Starter,Engine Test Cell,17-03-2024,OK,24-03-2024
+"5RW GEN, DCMB GPRU",LCA,TD/Sagar,PNEU,EPGS135,303 / 1610000207412024,Unit received for inspection,Functional Test,TEJAS Rig A,25-11-2025,Pending,
+Hydraulic Pump Unit,TEJAS,Avionics Group,PNEU,STM257,304 / 1610000208412024,Unit received for inspection,Endurance Test,Engine Test Cell,03-02-2024,Pending,
+Hydraulic Pump Unit,AMCA,TD/Sagar,ELE,EPGS421,305 / 1610000209412024,Unit received for inspection,PI,Avionics Rig,10-08-2025,OK,16-08-2025
+DCMB GPRU,ALH,Engine Division,HYD,GCCAIA368,306 / 1610000210412024,Unit received for inspection,Acceptance Test,AMCA Rig 1,26-05-2025,OK,04-06-2025
+"5RW GEN, DCMB GPRU",LCH,A/C Division,GEN,22460016,307 / 1610000211412024,Unit received for inspection,PI Starter,Avionics Rig,17-05-2025,Under Review,
+DCMB GPRU,ALH,A/C Division,AVIONICS,HDP0086,308 / 1610000212412024,Unit received for inspection,Acceptance Test,AMCA Rig 1,30-03-2024,NOT OK,
+DCMB GPRU,MIG-21 Upgrade,TD/Sagar,ELE,AVN278,309 / 1610000213412024,Unit received for inspection,PI Starter,Engine Test Cell,10-06-2024,OK,22-06-2024
+EPGS Controller,AMCA,Engine Division,AVIONICS,HDP0071,310 / 1610000214412024,Unit received for inspection,PI Starter,Hydraulic Test Bench,30-08-2024,OK,31-08-2024
+EPGS Controller,TEJAS,Quality Assurance,GEN,AVN590,311 / 1610000215412024,Unit received for inspection,Acceptance Test,LCA EPGS,08-03-2024,OK,20-03-2024
+EPGS Controller,AMCA,TD/Sagar,AVIONICS,EPGS796,312 / 1610000216412024,Unit received for inspection,Calibration,Hydraulic Test Bench,20-11-2024,OK,28-11-2024
+5RW GEN,LCH,A/C Division,AVIONICS,EPGS614,313 / 1610000217412024,Unit received for inspection,PI Starter,AMCA Rig 1,25-02-2026,OK,
+EPGS Controller,AMCA,Quality Assurance,ELE,22460045,314 / 1610000218412024,Unit received for inspection,Functional Test,IJT EPGS,14-06-2024,OK,26-06-2024
+Hydraulic Pump Unit,AMCA,Hydraulics,AVIONICS,HDP0017,315 / 1610000219412024,Unit received for inspection,PI,Hydraulic Test Bench,18-07-2025,Under Review,
+"5RW GEN, DCMB GPRU",IJT,ELE Group,AVIONICS,STM694,316 / 1610000220412024,Unit received for inspection,Calibration,Hydraulic Test Bench,21-06-2024,Under Review,
+5RW GEN,ALH,Quality Assurance,AVIONICS,GCCAIA183,317 / 1610000221412024,Unit received for inspection,Functional Test,Avionics Rig,31-07-2025,OK,14-08-2025
+Starter Motor Assembly,ALH,Hydraulics,PNEU,AVN131,318 / 1610000222412024,Unit received for inspection,Calibration,AMCA Rig 1,24-02-2026,OK,06-03-2026
+DCMB GPRU,TEJAS,A/C Division,ELE,AVN515,319 / 1610000223412024,Unit received for inspection,PI Starter,TEJAS Rig A,07-09-2024,NOT OK,
+"5RW GEN, DCMB GPRU",AMCA,Quality Assurance,PNEU,HDP0078,320 / 1610000224412024,Unit received for inspection,Calibration,Engine Test Cell,10-05-2025,NOT OK,
+5RW GEN,AMCA,TD/Sagar,GEN,STM675,321 / 1610000225412024,Unit received for inspection,PI,AMCA Rig 1,12-02-2025,OK,18-02-2025
+EPGS Controller,TEJAS,TD/Sagar,HYD,HDP0050,322 / 1610000226412024,Unit received for inspection,Functional Test,Hydraulic Test Bench,10-09-2024,NOT OK,16-09-2024
+"5RW GEN, DCMB GPRU",TEJAS,Hydraulics,GEN,22460098,323 / 1610000227412024,Unit received for inspection,Endurance Test,AMCA Rig 1,16-11-2024,Under Review,
+"5RW GEN, DCMB GPRU",IJT,Hydraulics,PNEU,STM568,324 / 1610000228412024,Unit received for inspection,PI,LCA EPGS,24-01-2024,NOT OK,10-02-2024
+Starter Motor Assembly,AMCA,Hydraulics,ELE,AVN788,325 / 1610000229412024,Unit received for inspection,PI,TEJAS Rig A,21-05-2025,OK,04-06-2025
+5RW GEN,TEJAS,A/C Division,AVIONICS,EPGS474,326 / 1610000230412024,Unit received for inspection,Acceptance Test,IJT EPGS,27-09-2024,OK,10-10-2024
+EPGS Controller,AMCA,Quality Assurance,AVIONICS,STM561,327 / 1610000231412024,Unit received for inspection,Calibration,Hydraulic Test Bench,20-07-2025,OK,27-07-2025
+DCMB GPRU,MIG-21 Upgrade,Avionics Group,HYD,EPGS482,328 / 1610000232412024,Unit received for inspection,PI Starter,Hydraulic Test Bench,11-05-2024,OK,
+5RW GEN,LCA,TD/Sagar,PNEU,STM141,329 / 1610000233412024,Unit received for inspection,Endurance Test,Hydraulic Test Bench,15-02-2025,Pending,
+DCMB GPRU,MIG-21 Upgrade,Avionics Group,HYD,STM243,330 / 1610000234412024,Unit received for inspection,Endurance Test,Hydraulic Test Bench,01-06-2024,NOT OK,
+EPGS Controller,LCH,Hydraulics,AVIONICS,STM444,331 / 1610000235412024,Unit received for inspection,Endurance Test,Avionics Rig,02-11-2024,Under Review,
+5RW GEN,AMCA,Avionics Group,ELE,EPGS935,332 / 1610000236412024,Unit received for inspection,Endurance Test,Hydraulic Test Bench,02-11-2024,Pending,
+EPGS Controller,TEJAS,Avionics Group,AVIONICS,AVN127,333 / 1610000237412024,Unit received for inspection,Acceptance Test,IJT EPGS,12-01-2026,OK,
+"5RW GEN, DCMB GPRU",MIG-21 Upgrade,ELE Group,AVIONICS,STM591,334 / 1610000238412024,Unit received for inspection,Endurance Test,IJT EPGS,22-02-2024,Under Review,
+Hydraulic Pump Unit,LCA,TD/Sagar,ELE,GCCAIA686,335 / 1610000239412024,Unit received for inspection,Endurance Test,AMCA Rig 1,05-09-2024,Under Review,
+EPGS Controller,LCH,Hydraulics,GEN,22460053,336 / 1610000240412024,Unit received for inspection,Calibration,Avionics Rig,04-06-2024,NOT OK,
+Hydraulic Pump Unit,TEJAS,Hydraulics,GEN,STM432,337 / 1610000241412024,Unit received for inspection,Functional Test,IJT EPGS,23-12-2025,OK,27-12-2025
+Hydraulic Pump Unit,ALH,ELE Group,PNEU,HDP0087,338 / 1610000242412024,Unit received for inspection,Acceptance Test,TEJAS Rig A,29-06-2025,NOT OK,
+DCMB GPRU,ALH,TD/Sagar,GEN,22460039,339 / 1610000243412024,Unit received for inspection,Functional Test,TEJAS Rig A,09-09-2024,OK,14-09-2024
+DCMB GPRU,LCA,Hydraulics,AVIONICS,AVN380,340 / 1610000244412024,Unit received for inspection,Endurance Test,TEJAS Rig A,27-07-2025,OK,
+Hydraulic Pump Unit,LCA,Avionics Group,GEN,GCCAIA394,341 / 1610000245412024,Unit received for inspection,Calibration,AMCA Rig 1,02-03-2026,OK,07-03-2026
+EPGS Controller,AMCA,Hydraulics,PNEU,22460026,342 / 1610000246412024,Unit received for inspection,PI Starter,LCA EPGS,05-05-2025,Under Review,
+"5RW GEN, DCMB GPRU",LCA,ELE Group,AVIONICS,STM345,343 / 1610000247412024,Unit received for inspection,PI Starter,Avionics Rig,28-01-2026,Pending,
+5RW GEN,ALH,Quality Assurance,HYD,AVN583,344 / 1610000248412024,Unit received for inspection,PI,Hydraulic Test Bench,23-02-2024,OK,29-02-2024
+"5RW GEN, DCMB GPRU",LCH,Avionics Group,PNEU,EPGS766,345 / 1610000249412024,Unit received for inspection,Functional Test,Avionics Rig,20-02-2025,OK,28-02-2025
+Hydraulic Pump Unit,ALH,Quality Assurance,ELE,22460069,346 / 1610000250412024,Unit received for inspection,PI Starter,TEJAS Rig A,26-02-2026,OK,08-03-2026
+Starter Motor Assembly,IJT,ELE Group,PNEU,EPGS906,347 / 1610000251412024,Unit received for inspection,PI,LCA EPGS,07-02-2024,OK,
+Hydraulic Pump Unit,MIG-21 Upgrade,Hydraulics,GEN,HDP0059,348 / 1610000252412024,Unit received for inspection,PI Starter,Engine Test Cell,04-08-2025,OK,10-08-2025
+5RW GEN,AMCA,TD/Sagar,GEN,HDP0025,349 / 1610000253412024,Unit received for inspection,Calibration,AMCA Rig 1,24-04-2025,Pending,
+DCMB GPRU,LCH,Avionics Group,AVIONICS,GCCAIA854,350 / 1610000254412024,Unit received for inspection,Calibration,Engine Test Cell,09-07-2024,Under Review,
+Starter Motor Assembly,MIG-21 Upgrade,Avionics Group,ELE,EPGS946,351 / 1610000255412024,Unit received for inspection,Endurance Test,Avionics Rig,28-06-2024,OK,09-07-2024
+"5RW GEN, DCMB GPRU",LCA,Avionics Group,GEN,EPGS431,352 / 1610000256412024,Unit received for inspection,PI Starter,TEJAS Rig A,08-07-2024,OK,
+DCMB GPRU,ALH,Avionics Group,HYD,STM111,353 / 1610000257412024,Unit received for inspection,PI,Avionics Rig,03-12-2024,OK,15-12-2024
+Hydraulic Pump Unit,LCH,Avionics Group,ELE,AVN614,354 / 1610000258412024,Unit received for inspection,Calibration,AMCA Rig 1,21-04-2025,OK,28-04-2025
+Starter Motor Assembly,ALH,Hydraulics,PNEU,EPGS256,355 / 1610000259412024,Unit received for inspection,Endurance Test,Avionics Rig,21-09-2025,OK,24-09-2025
+Hydraulic Pump Unit,LCH,TD/Sagar,HYD,STM921,356 / 1610000260412024,Unit received for inspection,Calibration,Engine Test Cell,27-04-2025,Pending,
+EPGS Controller,ALH,Avionics Group,ELE,STM557,357 / 1610000261412024,Unit received for inspection,Acceptance Test,LCA EPGS,24-03-2024,Pending,
+EPGS Controller,IJT,TD/Sagar,PNEU,22460074,358 / 1610000262412024,Unit received for inspection,Acceptance Test,TEJAS Rig A,14-07-2025,OK,
+EPGS Controller,TEJAS,Quality Assurance,ELE,EPGS193,359 / 1610000263412024,Unit received for inspection,Endurance Test,IJT EPGS,27-11-2025,OK,07-12-2025
+5RW GEN,MIG-21 Upgrade,Engine Division,PNEU,EPGS677,360 / 1610000264412024,Unit received for inspection,Calibration,LCA EPGS,01-03-2025,Pending,
+EPGS Controller,LCA,A/C Division,GEN,AVN323,361 / 1610000265412024,Unit received for inspection,Functional Test,Avionics Rig,17-09-2024,NOT OK,
+5RW GEN,AMCA,Engine Division,HYD,GCCAIA583,362 / 1610000266412024,Unit received for inspection,PI Starter,Engine Test Cell,08-07-2025,OK,
+DCMB GPRU,TEJAS,Engine Division,GEN,AVN530,363 / 1610000267412024,Unit received for inspection,Endurance Test,LCA EPGS,16-01-2026,Under Review,
+Hydraulic Pump Unit,LCH,Avionics Group,ELE,STM236,364 / 1610000268412024,Unit received for inspection,PI Starter,Hydraulic Test Bench,08-11-2025,Under Review,
+5RW GEN,AMCA,Engine Division,AVIONICS,GCCAIA874,365 / 1610000269412024,Unit received for inspection,Endurance Test,Hydraulic Test Bench,25-06-2025,NOT OK,07-07-2025
+"5RW GEN, DCMB GPRU",ALH,Quality Assurance,ELE,22460036,366 / 1610000270412024,Unit received for inspection,PI,Engine Test Cell,23-08-2024,NOT OK,08-09-2024
+5RW GEN,IJT,TD/Sagar,ELE,STM884,367 / 1610000271412024,Unit received for inspection,PI,Hydraulic Test Bench,05-03-2025,Under Review,
+Hydraulic Pump Unit,LCA,Engine Division,GEN,GCCAIA350,368 / 1610000272412024,Unit received for inspection,PI Starter,Hydraulic Test Bench,02-04-2025,OK,14-04-2025
+EPGS Controller,AMCA,TD/Sagar,AVIONICS,GCCAIA243,369 / 1610000273412024,Unit received for inspection,Functional Test,Hydraulic Test Bench,11-02-2026,OK,
+DCMB GPRU,IJT,Avionics Group,HYD,AVN938,370 / 1610000274412024,Unit received for inspection,Calibration,Hydraulic Test Bench,02-03-2026,Pending,
+Hydraulic Pump Unit,IJT,ELE Group,GEN,STM705,371 / 1610000275412024,Unit received for inspection,Acceptance Test,TEJAS Rig A,27-02-2025,OK,28-02-2025
+EPGS Controller,AMCA,ELE Group,GEN,AVN490,372 / 1610000276412024,Unit received for inspection,Endurance Test,IJT EPGS,18-12-2024,OK,
+"5RW GEN, DCMB GPRU",AMCA,Quality Assurance,HYD,EPGS346,373 / 1610000277412024,Unit received for inspection,Endurance Test,LCA EPGS,20-01-2025,OK,29-01-2025
+EPGS Controller,IJT,Engine Division,HYD,EPGS670,374 / 1610000278412024,Unit received for inspection,Functional Test,IJT EPGS,26-02-2025,Pending,
+EPGS Controller,ALH,Quality Assurance,HYD,HDP0012,375 / 1610000279412024,Unit received for inspection,PI,AMCA Rig 1,24-10-2025,OK,01-11-2025
+5RW GEN,IJT,Quality Assurance,AVIONICS,GCCAIA994,376 / 1610000280412024,Unit received for inspection,Calibration,Avionics Rig,20-11-2025,NOT OK,
+DCMB GPRU,AMCA,A/C Division,HYD,EPGS313,377 / 1610000281412024,Unit received for inspection,PI Starter,Avionics Rig,10-08-2024,Pending,
+Hydraulic Pump Unit,MIG-21 Upgrade,ELE Group,HYD,EPGS348,378 / 1610000282412024,Unit received for inspection,Endurance Test,IJT EPGS,03-02-2026,OK,
+Starter Motor Assembly,MIG-21 Upgrade,ELE Group,PNEU,HDP0049,379 / 1610000283412024,Unit received for inspection,Functional Test,AMCA Rig 1,25-11-2024,Pending,
+Hydraulic Pump Unit,TEJAS,Quality Assurance,PNEU,EPGS200,380 / 1610000284412024,Unit received for inspection,PI Starter,AMCA Rig 1,09-06-2025,OK,
+"5RW GEN, DCMB GPRU",LCA,Avionics Group,AVIONICS,22460095,381 / 1610000285412024,Unit received for inspection,Acceptance Test,Hydraulic Test Bench,27-02-2025,OK,13-03-2025
+"5RW GEN, DCMB GPRU",AMCA,TD/Sagar,GEN,HDP0020,382 / 1610000286412024,Unit received for inspection,Acceptance Test,Engine Test Cell,03-03-2025,Under Review,
+Starter Motor Assembly,ALH,ELE Group,GEN,HDP0033,383 / 1610000287412024,Unit received for inspection,Endurance Test,IJT EPGS,26-05-2025,OK,06-06-2025
+Hydraulic Pump Unit,MIG-21 Upgrade,Engine Division,HYD,22460018,384 / 1610000288412024,Unit received for inspection,Acceptance Test,Avionics Rig,26-12-2024,Under Review,
+Hydraulic Pump Unit,LCA,Quality Assurance,ELE,GCCAIA937,385 / 1610000289412024,Unit received for inspection,Endurance Test,IJT EPGS,20-06-2025,OK,04-07-2025
+"5RW GEN, DCMB GPRU",LCA,TD/Sagar,AVIONICS,GCCAIA824,386 / 1610000290412024,Unit received for inspection,Endurance Test,AMCA Rig 1,24-08-2024,Under Review,
+Starter Motor Assembly,LCA,A/C Division,AVIONICS,EPGS775,387 / 1610000291412024,Unit received for inspection,Acceptance Test,TEJAS Rig A,24-09-2025,OK,04-10-2025
+5RW GEN,MIG-21 Upgrade,Quality Assurance,GEN,STM393,388 / 1610000292412024,Unit received for inspection,PI Starter,LCA EPGS,18-01-2024,OK,23-01-2024
+DCMB GPRU,LCH,Avionics Group,PNEU,STM639,389 / 1610000293412024,Unit received for inspection,Endurance Test,LCA EPGS,20-06-2025,OK,24-06-2025
+DCMB GPRU,ALH,Quality Assurance,ELE,AVN331,390 / 1610000294412024,Unit received for inspection,Calibration,Engine Test Cell,19-02-2025,OK,23-02-2025
+Starter Motor Assembly,TEJAS,Engine Division,AVIONICS,GCCAIA195,391 / 1610000295412024,Unit received for inspection,Endurance Test,LCA EPGS,16-02-2026,Under Review,
+5RW GEN,TEJAS,Quality Assurance,GEN,AVN275,392 / 1610000296412024,Unit received for inspection,Calibration,Engine Test Cell,10-01-2024,Under Review,
+5RW GEN,IJT,TD/Sagar,AVIONICS,GCCAIA640,393 / 1610000297412024,Unit received for inspection,Endurance Test,AMCA Rig 1,02-08-2025,OK,
+Hydraulic Pump Unit,LCA,TD/Sagar,PNEU,STM677,394 / 1610000298412024,Unit received for inspection,PI,IJT EPGS,17-03-2024,OK,22-03-2024
+Starter Motor Assembly,LCA,Avionics Group,HYD,AVN940,395 / 1610000299412024,Unit received for inspection,Acceptance Test,IJT EPGS,27-05-2024,Pending,
+DCMB GPRU,TEJAS,Quality Assurance,HYD,AVN653,396 / 1610000300412024,Unit received for inspection,Calibration,Avionics Rig,02-02-2025,Pending,
+Starter Motor Assembly,IJT,Quality Assurance,ELE,GCCAIA200,397 / 1610000301412024,Unit received for inspection,Functional Test,Hydraulic Test Bench,27-05-2025,OK,02-06-2025
+DCMB GPRU,LCA,ELE Group,PNEU,EPGS892,398 / 1610000302412024,Unit received for inspection,Endurance Test,TEJAS Rig A,01-09-2025,Pending,
+Hydraulic Pump Unit,MIG-21 Upgrade,ELE Group,GEN,EPGS290,399 / 1610000303412024,Unit received for inspection,PI,Engine Test Cell,30-12-2024,OK,06-01-2025
+5RW GEN,LCA,Avionics Group,HYD,22460092,400 / 1610000304412024,Unit received for inspection,Endurance Test,Avionics Rig,29-10-2024,Pending,
+DCMB GPRU,AMCA,A/C Division,ELE,AVN498,401 / 1610000305412024,Unit received for inspection,PI,AMCA Rig 1,06-06-2024,Under Review,
+5RW GEN,IJT,Engine Division,GEN,GCCAIA235,402 / 1610000306412024,Unit received for inspection,Acceptance Test,Hydraulic Test Bench,03-01-2025,NOT OK,
+5RW GEN,AMCA,Hydraulics,ELE,GCCAIA126,403 / 1610000307412024,Unit received for inspection,Acceptance Test,Hydraulic Test Bench,21-02-2025,Pending,
+5RW GEN,ALH,Hydraulics,HYD,EPGS897,404 / 1610000308412024,Unit received for inspection,Acceptance Test,Hydraulic Test Bench,29-01-2025,OK,05-02-2025
+DCMB GPRU,TEJAS,TD/Sagar,ELE,HDP0039,405 / 1610000309412024,Unit received for inspection,PI Starter,TEJAS Rig A,02-12-2025,OK,05-12-2025
+DCMB GPRU,IJT,ELE Group,GEN,GCCAIA469,406 / 1610000310412024,Unit received for inspection,Acceptance Test,Hydraulic Test Bench,07-03-2025,OK,20-03-2025
+DCMB GPRU,LCH,Hydraulics,GEN,GCCAIA505,407 / 1610000311412024,Unit received for inspection,Functional Test,TEJAS Rig A,13-04-2025,OK,18-04-2025
+"5RW GEN, DCMB GPRU",AMCA,Avionics Group,AVIONICS,AVN708,408 / 1610000312412024,Unit received for inspection,Calibration,IJT EPGS,16-03-2025,OK,30-03-2025
+Hydraulic Pump Unit,ALH,ELE Group,GEN,HDP0038,409 / 1610000313412024,Unit received for inspection,Acceptance Test,Engine Test Cell,17-11-2024,NOT OK,04-12-2024
+5RW GEN,MIG-21 Upgrade,TD/Sagar,AVIONICS,EPGS473,410 / 1610000314412024,Unit received for inspection,Acceptance Test,IJT EPGS,29-11-2024,OK,13-12-2024
+Hydraulic Pump Unit,TEJAS,ELE Group,HYD,STM127,411 / 1610000315412024,Unit received for inspection,Endurance Test,Engine Test Cell,25-02-2026,Under Review,
+Starter Motor Assembly,IJT,ELE Group,PNEU,EPGS789,412 / 1610000316412024,Unit received for inspection,PI Starter,AMCA Rig 1,10-12-2025,OK,24-12-2025
+Starter Motor Assembly,LCA,Engine Division,AVIONICS,AVN533,413 / 1610000317412024,Unit received for inspection,Endurance Test,Hydraulic Test Bench,06-06-2024,Under Review,
+EPGS Controller,LCA,Quality Assurance,PNEU,AVN528,414 / 1610000318412024,Unit received for inspection,Calibration,Engine Test Cell,01-07-2025,NOT OK,
+5RW GEN,LCH,TD/Sagar,PNEU,AVN187,415 / 1610000319412024,Unit received for inspection,PI Starter,Avionics Rig,31-08-2025,Pending,
+Hydraulic Pump Unit,ALH,Engine Division,PNEU,STM760,416 / 1610000320412024,Unit received for inspection,Endurance Test,LCA EPGS,15-02-2024,Pending,
+EPGS Controller,MIG-21 Upgrade,ELE Group,AVIONICS,AVN631,417 / 1610000321412024,Unit received for inspection,PI Starter,TEJAS Rig A,10-04-2024,OK,19-04-2024
+EPGS Controller,IJT,Avionics Group,ELE,STM807,418 / 1610000322412024,Unit received for inspection,Endurance Test,LCA EPGS,04-02-2025,OK,15-02-2025
+Hydraulic Pump Unit,IJT,Avionics Group,PNEU,GCCAIA218,419 / 1610000323412024,Unit received for inspection,Functional Test,TEJAS Rig A,01-03-2025,OK,
+Hydraulic Pump Unit,ALH,Engine Division,PNEU,GCCAIA548,420 / 1610000324412024,Unit received for inspection,PI,AMCA Rig 1,17-06-2025,OK,25-06-2025
+5RW GEN,ALH,Quality Assurance,HYD,HDP0083,421 / 1610000325412024,Unit received for inspection,Calibration,IJT EPGS,28-12-2025,OK,11-01-2026
+DCMB GPRU,MIG-21 Upgrade,Engine Division,GEN,STM263,422 / 1610000326412024,Unit received for inspection,PI Starter,Engine Test Cell,27-06-2024,Pending,
+Starter Motor Assembly,LCA,ELE Group,AVIONICS,AVN542,423 / 1610000327412024,Unit received for inspection,PI Starter,TEJAS Rig A,06-10-2025,NOT OK,31-10-2025
+Hydraulic Pump Unit,IJT,TD/Sagar,PNEU,EPGS104,424 / 1610000328412024,Unit received for inspection,Calibration,Engine Test Cell,15-03-2025,Pending,
+DCMB GPRU,AMCA,TD/Sagar,GEN,STM291,425 / 1610000329412024,Unit received for inspection,PI,AMCA Rig 1,14-08-2025,OK,28-08-2025
+DCMB GPRU,MIG-21 Upgrade,Engine Division,AVIONICS,STM754,426 / 1610000330412024,Unit received for inspection,Endurance Test,Hydraulic Test Bench,16-05-2025,Under Review,
+Hydraulic Pump Unit,ALH,Quality Assurance,PNEU,STM276,427 / 1610000331412024,Unit received for inspection,Acceptance Test,Hydraulic Test Bench,22-12-2024,OK,30-12-2024
+5RW GEN,IJT,Avionics Group,HYD,22460040,428 / 1610000332412024,Unit received for inspection,Acceptance Test,TEJAS Rig A,19-11-2025,OK,21-11-2025
+Starter Motor Assembly,ALH,Hydraulics,HYD,EPGS290,429 / 1610000333412024,Unit received for inspection,Acceptance Test,IJT EPGS,02-09-2025,NOT OK,19-09-2025
+5RW GEN,LCH,Avionics Group,ELE,EPGS734,430 / 1610000334412024,Unit received for inspection,Endurance Test,IJT EPGS,22-10-2024,NOT OK,06-11-2024
+Starter Motor Assembly,TEJAS,ELE Group,GEN,STM768,431 / 1610000335412024,Unit received for inspection,Endurance Test,Avionics Rig,28-01-2025,OK,
+"5RW GEN, DCMB GPRU",AMCA,A/C Division,PNEU,GCCAIA914,432 / 1610000336412024,Unit received for inspection,PI Starter,Hydraulic Test Bench,15-05-2025,NOT OK,07-06-2025
+Starter Motor Assembly,MIG-21 Upgrade,Hydraulics,ELE,AVN891,433 / 1610000337412024,Unit received for inspection,Acceptance Test,LCA EPGS,21-06-2024,OK,01-07-2024
+5RW GEN,LCH,ELE Group,GEN,STM942,434 / 1610000338412024,Unit received for inspection,Acceptance Test,IJT EPGS,04-03-2026,OK,10-03-2026
+"5RW GEN, DCMB GPRU",AMCA,Quality Assurance,ELE,AVN869,435 / 1610000339412024,Unit received for inspection,Endurance Test,AMCA Rig 1,14-04-2024,NOT OK,
+Hydraulic Pump Unit,MIG-21 Upgrade,ELE Group,PNEU,22460027,436 / 1610000340412024,Unit received for inspection,Calibration,Hydraulic Test Bench,30-03-2024,OK,01-04-2024
+"5RW GEN, DCMB GPRU",LCH,TD/Sagar,HYD,22460079,437 / 1610000341412024,Unit received for inspection,PI,Hydraulic Test Bench,14-03-2025,Under Review,
+Hydraulic Pump Unit,AMCA,Avionics Group,AVIONICS,22460042,438 / 1610000342412024,Unit received for inspection,Functional Test,Engine Test Cell,29-06-2025,OK,08-07-2025
+Starter Motor Assembly,LCA,Avionics Group,HYD,GCCAIA238,439 / 1610000343412024,Unit received for inspection,Calibration,Engine Test Cell,26-11-2025,Pending,
+Hydraulic Pump Unit,TEJAS,Engine Division,HYD,22460098,440 / 1610000344412024,Unit received for inspection,Acceptance Test,Avionics Rig,12-09-2024,OK,18-09-2024
+5RW GEN,TEJAS,Hydraulics,PNEU,GCCAIA748,441 / 1610000345412024,Unit received for inspection,Calibration,AMCA Rig 1,04-10-2025,OK,12-10-2025
+Hydraulic Pump Unit,LCA,ELE Group,GEN,GCCAIA989,442 / 1610000346412024,Unit received for inspection,Calibration,Avionics Rig,14-05-2025,NOT OK,
+EPGS Controller,TEJAS,TD/Sagar,GEN,GCCAIA914,443 / 1610000347412024,Unit received for inspection,PI Starter,TEJAS Rig A,01-01-2025,Under Review,
+"5RW GEN, DCMB GPRU",MIG-21 Upgrade,Quality Assurance,GEN,STM691,444 / 1610000348412024,Unit received for inspection,Functional Test,Avionics Rig,26-11-2024,OK,02-12-2024
+5RW GEN,LCH,TD/Sagar,GEN,EPGS116,445 / 1610000349412024,Unit received for inspection,Endurance Test,LCA EPGS,17-02-2024,OK,01-03-2024
+DCMB GPRU,IJT,Quality Assurance,PNEU,22460084,446 / 1610000350412024,Unit received for inspection,PI,Avionics Rig,26-07-2024,NOT OK,
+5RW GEN,TEJAS,ELE Group,PNEU,AVN269,447 / 1610000351412024,Unit received for inspection,Calibration,Avionics Rig,13-09-2024,OK,24-09-2024
+"5RW GEN, DCMB GPRU",TEJAS,A/C Division,HYD,GCCAIA101,448 / 1610000352412024,Unit received for inspection,Acceptance Test,IJT EPGS,15-03-2025,OK,27-03-2025
+5RW GEN,ALH,Avionics Group,ELE,EPGS109,449 / 1610000353412024,Unit received for inspection,Endurance Test,Avionics Rig,27-11-2025,Pending,
+5RW GEN,LCA,Avionics Group,PNEU,GCCAIA848,450 / 1610000354412024,Unit received for inspection,Functional Test,IJT EPGS,04-05-2025,OK,11-05-2025
+Hydraulic Pump Unit,IJT,A/C Division,AVIONICS,22460083,451 / 1610000355412024,Unit received for inspection,Acceptance Test,LCA EPGS,03-03-2026,NOT OK,
+DCMB GPRU,ALH,TD/Sagar,HYD,22460057,452 / 1610000356412024,Unit received for inspection,Endurance Test,Hydraulic Test Bench,27-10-2025,Pending,
+5RW GEN,IJT,Quality Assurance,ELE,22460012,453 / 1610000357412024,Unit received for inspection,Acceptance Test,Avionics Rig,29-03-2025,Under Review,
+"5RW GEN, DCMB GPRU",AMCA,ELE Group,ELE,HDP0018,454 / 1610000358412024,Unit received for inspection,PI Starter,Hydraulic Test Bench,25-12-2024,NOT OK,
+DCMB GPRU,LCH,ELE Group,ELE,AVN722,455 / 1610000359412024,Unit received for inspection,Calibration,AMCA Rig 1,06-09-2025,Pending,
+DCMB GPRU,ALH,A/C Division,HYD,AVN501,456 / 1610000360412024,Unit received for inspection,Endurance Test,TEJAS Rig A,14-06-2025,OK,18-06-2025

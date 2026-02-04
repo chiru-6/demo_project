@@ -95,9 +95,38 @@ class VisualizationsWidget(QWidget):
         except Exception as error:
             self.show_error_plot(str(error))
     
+    def _is_dark_mode(self) -> bool:
+        """Return True if the main window is in dark mode."""
+        mw = self.window()
+        return bool(getattr(mw, "is_dark_mode", lambda: False)())
+    
+    def _apply_figure_theme(self, dark: bool) -> None:
+        """Set figure background to match app theme."""
+        if dark:
+            self.figure.patch.set_facecolor("#22262e")
+            if hasattr(self.canvas, "setStyleSheet"):
+                self.canvas.setStyleSheet("background-color: #22262e;")
+        else:
+            self.figure.patch.set_facecolor("white")
+            if hasattr(self.canvas, "setStyleSheet"):
+                self.canvas.setStyleSheet("")
+    
+    def _apply_axes_theme(self, ax, dark: bool) -> None:
+        """Set axes colors to match app theme (labels, ticks, spines)."""
+        if dark:
+            ax.set_facecolor("#22262e")
+            ax.tick_params(colors="#e5e7eb")
+            ax.xaxis.label.set_color("#e5e7eb")
+            ax.yaxis.label.set_color("#e5e7eb")
+            if ax.get_title():
+                ax.title.set_color("#e5e7eb")
+            for spine in ax.spines.values():
+                spine.set_color("#404552")
+            ax.grid(axis="y", alpha=0.25, color="#404552")
+    
     def update_visualization(self) -> None:
         """Updates the current visualization.
-        
+
         Clears the current figure and renders the selected visualization type.
         Shows an error plot if the dataframe is empty or if rendering fails.
         """
@@ -106,48 +135,45 @@ class VisualizationsWidget(QWidget):
             return
         
         viz_type = self.viz_combo.currentText()
+        dark = self._is_dark_mode()
         
         self.figure.clear()
+        self._apply_figure_theme(dark)
         ax = self.figure.add_subplot(111)
         
         try:
             if viz_type == "Results Distribution":
-                self.plot_results_distribution(ax)
+                self.plot_results_distribution(ax, dark)
             elif viz_type == "Test Rigs Analysis":
-                self.plot_test_rigs(ax)
+                self.plot_test_rigs(ax, dark)
             elif viz_type == "Projects Overview":
-                self.plot_projects(ax)
+                self.plot_projects(ax, dark)
             elif viz_type == "Division/Group Distribution":
-                self.plot_divisions(ax)
+                self.plot_divisions(ax, dark)
             elif viz_type == "Type of Test Analysis":
-                self.plot_test_types(ax)
+                self.plot_test_types(ax, dark)
             elif viz_type == "Clearance Status":
-                self.plot_clearance_status(ax)
+                self.plot_clearance_status(ax, dark)
             
+            self._apply_axes_theme(ax, dark)
             self.figure.tight_layout()
             self.canvas.draw()
         except Exception as error:
             self.show_error_plot(f"Error creating visualization: {str(error)}")
     
-    def plot_results_distribution(self, ax) -> None:
-        """Plots pie chart of results distribution.
-        
-        Args:
-            ax: Matplotlib axes object to plot on.
-        """
+    def plot_results_distribution(self, ax, dark: bool = False) -> None:
+        """Plots pie chart of results distribution."""
         results_counts = self.df['results_remarks'].value_counts()
-        colors = ['#2ecc71' if 'OK' in str(idx) else '#e74c3c' 
+        colors = ['#2ecc71' if 'OK' in str(idx) else '#e74c3c'
                  for idx in results_counts.index]
-        ax.pie(results_counts.values, labels=results_counts.index, 
-               autopct='%1.1f%%', colors=colors, startangle=90)
+        text_props = {'color': '#e5e7eb'} if dark else None
+        ax.pie(results_counts.values, labels=results_counts.index,
+               autopct='%1.1f%%', colors=colors, startangle=90,
+               textprops=text_props)
         ax.set_title("Test Results Distribution", fontsize=16, fontweight='bold')
     
-    def plot_test_rigs(self, ax) -> None:
-        """Plots bar chart of test rigs.
-        
-        Args:
-            ax: Matplotlib axes object to plot on.
-        """
+    def plot_test_rigs(self, ax, dark: bool = False) -> None:
+        """Plots bar chart of test rigs."""
         rig_counts = self.df['test_rig'].value_counts()
         ax.bar(range(len(rig_counts)), rig_counts.values, color='#3498db')
         ax.set_xticks(range(len(rig_counts)))
@@ -156,12 +182,8 @@ class VisualizationsWidget(QWidget):
         ax.set_title("Test Rigs Usage", fontsize=16, fontweight='bold')
         ax.grid(axis='y', alpha=0.3)
     
-    def plot_projects(self, ax) -> None:
-        """Plots bar chart of projects.
-        
-        Args:
-            ax: Matplotlib axes object to plot on.
-        """
+    def plot_projects(self, ax, dark: bool = False) -> None:
+        """Plots bar chart of projects."""
         project_counts = self.df['project'].value_counts()
         ax.bar(range(len(project_counts)), project_counts.values, color='#9b59b6')
         ax.set_xticks(range(len(project_counts)))
@@ -170,22 +192,16 @@ class VisualizationsWidget(QWidget):
         ax.set_title("Projects Distribution", fontsize=16, fontweight='bold')
         ax.grid(axis='y', alpha=0.3)
     
-    def plot_divisions(self, ax) -> None:
-        """Plots pie chart of divisions.
-        
-        Args:
-            ax: Matplotlib axes object to plot on.
-        """
+    def plot_divisions(self, ax, dark: bool = False) -> None:
+        """Plots pie chart of divisions."""
         div_counts = self.df['division_group'].value_counts()
-        ax.pie(div_counts.values, labels=div_counts.index, autopct='%1.1f%%', startangle=90)
+        text_props = {'color': '#e5e7eb'} if dark else None
+        ax.pie(div_counts.values, labels=div_counts.index, autopct='%1.1f%%',
+               startangle=90, textprops=text_props)
         ax.set_title("Division/Group Distribution", fontsize=16, fontweight='bold')
     
-    def plot_test_types(self, ax) -> None:
-        """Plots bar chart of test types.
-        
-        Args:
-            ax: Matplotlib axes object to plot on.
-        """
+    def plot_test_types(self, ax, dark: bool = False) -> None:
+        """Plots bar chart of test types."""
         test_counts = self.df['type_of_test'].value_counts()
         ax.bar(range(len(test_counts)), test_counts.values, color='#e67e22')
         ax.set_xticks(range(len(test_counts)))
@@ -194,29 +210,24 @@ class VisualizationsWidget(QWidget):
         ax.set_title("Type of Test Distribution", fontsize=16, fontweight='bold')
         ax.grid(axis='y', alpha=0.3)
     
-    def plot_clearance_status(self, ax) -> None:
-        """Plots bar chart of clearance status.
-        
-        Args:
-            ax: Matplotlib axes object to plot on.
-        """
+    def plot_clearance_status(self, ax, dark: bool = False) -> None:
+        """Plots bar chart of clearance status."""
         cleared = self.df['date_of_clearance'].notna().sum()
         not_cleared = self.df['date_of_clearance'].isna().sum()
-        
-        ax.bar(['Cleared', 'Not Cleared'], [cleared, not_cleared], 
+        ax.bar(['Cleared', 'Not Cleared'], [cleared, not_cleared],
                color=['#2ecc71', '#f39c12'])
         ax.set_ylabel("Count", fontsize=12)
         ax.set_title("Clearance Status", fontsize=16, fontweight='bold')
         ax.grid(axis='y', alpha=0.3)
     
     def show_error_plot(self, message: str) -> None:
-        """Shows error message on plot.
-        
-        Args:
-            message: Error message to display.
-        """
+        """Shows error message on plot."""
+        dark = self._is_dark_mode()
         self.figure.clear()
+        self._apply_figure_theme(dark)
         ax = self.figure.add_subplot(111)
-        ax.text(0.5, 0.5, message, ha='center', va='center', fontsize=14)
+        ax.set_facecolor("#22262e" if dark else "white")
+        color = "#e5e7eb" if dark else "#333"
+        ax.text(0.5, 0.5, message, ha='center', va='center', fontsize=14, color=color)
         ax.axis('off')
         self.canvas.draw()

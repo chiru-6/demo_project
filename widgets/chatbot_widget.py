@@ -51,15 +51,14 @@ class ChatbotWidget(QWidget):
         title.setStyleSheet("font-size: 24px; font-weight: bold; padding: 10px;")
         layout.addWidget(title)
         
-        # Info label
+        # Info label (colors from app theme)
         info_label = QLabel(
             "💡 Ask questions about your test data in natural language. "
             "Make sure Ollama is running locally."
         )
+        info_label.setObjectName("infoLabel")
         info_label.setWordWrap(True)
-        info_label.setStyleSheet(
-            "background-color: #e3f2fd; padding: 10px; border-radius: 5px;"
-        )
+        info_label.setStyleSheet("#infoLabel { padding: 10px; border-radius: 5px; }")
         layout.addWidget(info_label)
         
         # Example queries
@@ -67,15 +66,17 @@ class ChatbotWidget(QWidget):
             "Example queries: 'How many records?', 'Show all projects', "
             "'What test rigs are used?'"
         )
+        examples_label.setObjectName("examplesLabel")
         examples_label.setWordWrap(True)
-        examples_label.setStyleSheet("color: #666; padding: 5px;")
+        examples_label.setStyleSheet("#examplesLabel { padding: 5px; }")
         layout.addWidget(examples_label)
         
-        # Chat display area
+        # Chat display area (colors from app theme)
         self.chat_display = QTextEdit()
+        self.chat_display.setObjectName("chatDisplay")
         self.chat_display.setReadOnly(True)
         self.chat_display.setFont(QFont("Arial", 10))
-        self.chat_display.setStyleSheet("background-color: #f5f5f5; padding: 10px;")
+        self.chat_display.setStyleSheet("#chatDisplay { padding: 10px; }")
         layout.addWidget(self.chat_display)
         
         # Add welcome message

@@ -354,7 +354,7 @@ class DatabaseManager:
         db_path: Path to the SQLite database file.
     """
     
-    def __init__(self, db_path: str = "lca_test_data.db") -> None:
+    def __init__(self, db_path: str = "database.db") -> None:
         """Initializes the DatabaseManager.
         
         Args:

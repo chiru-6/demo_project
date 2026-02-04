@@ -1,4 +1,4 @@
-# LCA Test Data Management System - PyQt5 Desktop Application
+#Test Data Management System - PyQt5 Desktop Application
 
 A comprehensive desktop application for managing and analyzing LCA (Light Combat Aircraft) test data with SQLite database, interactive visualizations, and AI-powered chatbot assistance.
 
@@ -66,7 +66,7 @@ brew install pyqt5
 
 ### Method 1: Direct Python Execution
 
-1. Make sure your `LCA_Test_Data.csv` file is in the project directory
+1. Make sure your `dataset.csv` file is in the project directory
 
 2. Run the main application:
    ```bash
@@ -74,8 +74,8 @@ brew install pyqt5
    ```
 
 3. The application will automatically:
-   - Create the SQLite database (`lca_test_data.db`)
-   - Import data from `LCA_Test_Data.csv` if the database is empty
+   - Create the SQLite database (`dataset.db`)
+   - Import data from `dataset.csv` if the database is empty
    - Open the desktop application window
 
 ### Method 2: Using Setup Script (Optional)
@@ -239,7 +239,7 @@ HAL_Project/
 │   ├── visualizations_widget.py # Visualizations
 │   └── chatbot_widget.py        # Chatbot interface
 ├── LCA_Test_Data.csv      # Source CSV file
-├── lca_test_data.db       # SQLite database (created automatically)
+├── database.db            # SQLite database (created automatically)
 ├── requirements.txt       # Python dependencies
 └── README.md              # This file
 ```
@@ -313,7 +313,7 @@ pip install PyQt5
 ### Database issues?
 
 - The database is created automatically on first run
-- If you need to re-import the CSV, delete `lca_test_data.db` and restart the app
+- If you need to re-import the CSV, delete `database.db` and restart the app
 - The app prevents duplicate imports to avoid data duplication
 
 ### Qt Designer Not Found?
