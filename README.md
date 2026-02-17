@@ -60,7 +60,7 @@ brew install pyqt5
    ollama pull llama3.2
    ```
    
-   You can use other models like `llama3`, `mistral`, or `codellama` as well. Just update the model name in `widgets/chatbot_widget.py` (line ~120) if you use a different one.
+   You can use other models like `llama3`, `mistral`, or `codellama` as well. Just update the model name in `views/chatbot_view.py` (line ~120) if you use a different one.
 
 ## Running the Application
 
@@ -89,6 +89,19 @@ brew install pyqt5
    ```bash
    python main.py
    ```
+
+   You can also run the app entry point directly: `python app.py`
+
+## Project architecture
+
+The codebase is organized as follows:
+
+- **`app.py`** — Application entry point. Sets up logging, Qt app, database, optional CSV import, creates the main window, and runs the event loop. Run with `python app.py` or `python main.py` (main.py delegates to app).
+- **`views/`** — UI layer. `main_window.py` (sidebar, tabs, Dark/Light theme) and one view per screen: `dashboard_view.py`, `dataset_view.py`, `add_entry_view.py`, `visualizations_view.py`, `chatbot_view.py`, `home_view.py`. Theme (Light/Dark) is toggled from the sidebar.
+- **`controllers/`** — Startup and window creation. `controller.py` provides `get_db()`, `import_csv_if_needed()`, and `create_main_window(db)`; used by `app.py` so DB and CSV logic stay out of the entry point.
+- **`models/`** — Data and logic. `db.py` holds `DatabaseManager` (SQLite, CSV import, CRUD, statistics). `logic.py` for reusable business logic; `appdata.py` for app-level constants (e.g. default CSV paths).
+- **Logging** — Configured in `app.py` (logs to `logs/app.log` and console).
+- **Legacy** — `main.py` calls `app.main()`. `database.py` re-exports `DatabaseManager` from `models.db` for backward compatibility.
 
 ## Application Features
 
@@ -305,7 +318,7 @@ pip install PyQt5
    ollama list
    ```
 
-3. If using a different model, update the model name in `widgets/chatbot_widget.py` (line ~120):
+3. If using a different model, update the model name in `views/chatbot_view.py` (line ~120):
    ```python
    model='llama3.2'  # Change to your model name
    ```
@@ -442,7 +455,7 @@ pylint database.py
 
 ## License
 
-This project is for internal use at HAL (Hindustan Aeronautics Limited).
+This project is for internal use 
 
 ## Support
 

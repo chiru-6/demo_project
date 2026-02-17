@@ -19,62 +19,63 @@ from PyQt5.QtWidgets import (
     QWidget,
 )
 
-from widgets.add_entry_widget import AddEntryWidget
-from widgets.chatbot_widget import ChatbotWidget
-from widgets.dashboard_widget import DashboardWidget
-from widgets.dataset_widget import DatasetWidget
-from widgets.home_widget import HomeWidget
-from widgets.visualizations_widget import VisualizationsWidget
+from .add_entry_view import AddEntryWidget
+from .chatbot_view import ChatbotWidget
+from .dashboard_view import DashboardWidget
+from .dataset_view import DatasetWidget
+from .home_view import HomeWidget
+from .visualizations_view import VisualizationsWidget
 
 # Light and dark theme stylesheets (applied app-wide when toggling Dark/Light mode)
+# Light: softer background #f8fafc, accent #4f46e5, light #e0e7ff
 LIGHT_STYLESHEET = """
-    QMainWindow, QWidget { background-color: #f5f6f8; }
+    QMainWindow, QWidget { background-color: #f8fafc; }
     #topBar { background-color: #e8eaed; border-bottom: 1px solid #e0e2e5; }
-    QTabWidget::pane { border: 1px solid #e0e2e5; border-radius: 8px; background: #ffffff; top: -1px; }
+    QTabWidget::pane { border: 1px solid #e5e7eb; border-radius: 8px; background: #ffffff; top: -1px; }
     QTabBar::tab { background: #e8eaed; color: #2d3748; padding: 10px 20px; margin-right: 4px; border-radius: 6px 6px 0 0; }
-    QTabBar::tab:selected { background: #ffffff; color: #2563eb; font-weight: bold; border: 1px solid #e0e2e5; border-bottom: none; }
-    QTabBar::tab:hover:!selected { background: #d1d5db; }
+    QTabBar::tab:selected { background: #ffffff; color: #4f46e5; font-weight: bold; border: 1px solid #e5e7eb; border-bottom: none; }
+    QTabBar::tab:hover:!selected { background: #e0e7ff; }
     QStatusBar { background: #e8eaed; color: #4b5563; }
     QLabel { color: #1f2937; }
     QPushButton { background: #e5e7eb; color: #1f2937; border: 1px solid #d1d5db; padding: 8px 16px; border-radius: 6px; }
-    QPushButton:hover { background: #d1d5db; }
-    QPushButton:pressed { background: #9ca3af; }
-    QPushButton#darkModeBtn { background: #1f2937; color: #f9fafb; font-weight: bold; border: none; }
-    QPushButton#darkModeBtn:hover { background: #374151; }
-    #dashboardRoot { background-color: #f9fafb; border-radius: 12px; }
+    QPushButton:hover { background: #e0e7ff; }
+    QPushButton:pressed { background: #c7d2fe; }
+    QPushButton#darkModeBtn { background: #4f46e5; color: #fff; font-weight: bold; border: none; }
+    QPushButton#darkModeBtn:hover { background: #4338ca; }
+    #dashboardRoot { background-color: #f8fafc; border-radius: 12px; }
     QFrame#statsFrame { background: #ffffff; border: 1px solid #e5e7eb; border-radius: 12px; }
-    QLabel#statCard { background: #f9fafb; color: #374151; border: 1px solid #e5e7eb; border-radius: 10px; font-size: 14px; font-weight: 500; padding: 12px 18px; min-width: 180px; }
-    QFrame#filtersPanel { background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 10px; }
-    QPushButton#filterToggle { background: #4b5563; color: white; }
+    QLabel#statCard { background: #e0e7ff; color: #4f46e5; border: 1px solid #c7d2fe; border-radius: 10px; font-size: 14px; font-weight: 500; padding: 12px 18px; min-width: 180px; }
+    QFrame#filtersPanel { background: #f8fafc; border: 1px solid #e5e7eb; border-radius: 10px; }
+    QPushButton#filterToggle { background: #4f46e5; color: white; }
     QGroupBox { color: #1f2937; border: 1px solid #e5e7eb; border-radius: 6px; margin-top: 8px; font-weight: bold; }
     QGroupBox::title { subcontrol-origin: margin; left: 12px; padding: 0 6px; }
-    QLineEdit, QTextEdit, QPlainTextEdit { background: #ffffff; color: #1f2937; border: 1px solid #d1d5db; border-radius: 6px; padding: 6px; selection-background-color: #93c5fd; }
-    QComboBox { background: #ffffff; color: #1f2937; border: 1px solid #d1d5db; padding: 6px 12px; border-radius: 6px; min-height: 20px; }
-    QComboBox::drop-down { border: none; background: #f3f4f6; border-radius: 0 6px 6px 0; }
-    QComboBox QAbstractItemView { background: #ffffff; color: #1f2937; selection-background-color: #93c5fd; }
+    QLineEdit, QTextEdit, QPlainTextEdit { background: #ffffff; color: #1f2937; border: 1px solid #e5e7eb; border-radius: 6px; padding: 6px; selection-background-color: #a5b4fc; }
+    QComboBox { background: #ffffff; color: #1f2937; border: 1px solid #e5e7eb; padding: 6px 12px; border-radius: 6px; min-height: 20px; }
+    QComboBox::drop-down { border: none; background: #e0e7ff; border-radius: 0 6px 6px 0; }
+    QComboBox QAbstractItemView { background: #ffffff; color: #1f2937; selection-background-color: #a5b4fc; }
     QTableWidget { background: #ffffff; color: #1f2937; gridline-color: #e5e7eb; border: 1px solid #e5e7eb; }
     QTableWidget::item { padding: 6px; }
-    QHeaderView::section { background: #4b5563; color: white; padding: 10px; border: none; }
-    QPushButton#refreshBtn { background: #2563eb; color: white; border: none; }
-    QPushButton#refreshBtn:hover { background: #1d4ed8; }
-    QLabel#infoLabel { background: #dbeafe; color: #1e40af; }
+    QHeaderView::section { background: #4f46e5; color: white; padding: 10px; border: none; }
+    QPushButton#refreshBtn { background: #4f46e5; color: white; border: none; }
+    QPushButton#refreshBtn:hover { background: #4338ca; }
+    QLabel#infoLabel { background: #e0e7ff; color: #3730a3; }
     QLabel#examplesLabel { color: #6b7280; }
-    QTextEdit#chatDisplay { background: #f9fafb; color: #1f2937; }
-    #sidebar { background-color: #f3f4f6; border-right: 1px solid #e0e2e5; }
+    QTextEdit#chatDisplay { background: #f8fafc; color: #1f2937; }
+    #sidebar { background-color: #f1f5f9; border-right: 1px solid #e2e8f0; }
     QPushButton#sidebarButton { background-color: transparent; border: none; color: #111827; font-size: 18px; padding: 6px 8px; }
-    QPushButton#sidebarButton:checked { background-color: #e5e7eb; border-radius: 8px; }
-    QPushButton#sidebarButton:hover { background-color: #e5e7eb; border-radius: 8px; }
-    #homeHeader { font-size: 24px; font-weight: 700; }
-    #homeSubHeader { color: #4b5563; }
+    QPushButton#sidebarButton:checked { background-color: #e0e7ff; border-radius: 8px; color: #4f46e5; }
+    QPushButton#sidebarButton:hover { background-color: #e0e7ff; border-radius: 8px; }
+    #homeHeader { font-size: 24px; font-weight: 700; color: #1f2937; }
+    #homeSubHeader { color: #6b7280; }
     QFrame#homeCard { background-color: #ffffff; border-radius: 12px; border: 1px solid #e5e7eb; }
-    #homeCardTitle { font-size: 18px; font-weight: 600; }
-    #homeCardDesc { color: #4b5563; }
-    QPushButton#homeCardButton { background-color: #2563eb; color: white; border: none; padding: 6px 14px; border-radius: 6px; }
-    QPushButton#homeCardButton:hover { background-color: #1d4ed8; }
-    QFrame#insightsFrame { background-color: #eef2ff; border-radius: 12px; padding: 8px 16px; }
+    #homeCardTitle { font-size: 18px; font-weight: 600; color: #1f2937; }
+    #homeCardDesc { color: #6b7280; }
+    QPushButton#homeCardButton { background-color: #4f46e5; color: white; border: none; padding: 6px 14px; border-radius: 6px; }
+    QPushButton#homeCardButton:hover { background-color: #4338ca; }
+    QFrame#insightsFrame { background-color: #e0e7ff; border-radius: 12px; padding: 8px 16px; }
     QFrame#insightCard { background-color: #ffffff; border-radius: 10px; border: 1px solid #e5e7eb; padding: 10px 12px; }
-    #insightTitle { font-size: 13px; font-weight: 600; color: #4b5563; }
-    #insightBody { font-size: 13px; color: #111827; }
+    #insightTitle { font-size: 13px; font-weight: 600; color: #374151; }
+    #insightBody { font-size: 13px; color: #1f2937; }
 """
 DARK_STYLESHEET = """
     QMainWindow, QWidget { background-color: #1a1d23; }
@@ -232,7 +233,7 @@ class MainWindow(QMainWindow):
         self.tabs.tabBar().hide()
         
         # Create and add tabs (0: Home, 1: Dashboard, 2: Dataset, 3: Visualizations, 4: Add Entry, 5: Chatbot)
-        self.home_tab = HomeWidget()
+        self.home_tab = HomeWidget(self.db)
         self.dashboard_tab = DashboardWidget(self.db)
         self.dataset_tab = DatasetWidget(self.db)
         self.visualizations_tab = VisualizationsWidget(self.db)
@@ -256,11 +257,14 @@ class MainWindow(QMainWindow):
         
         # Connect signals
         self.add_entry_tab.entry_added.connect(self.on_entry_added)
-        # Home widget navigation
+        # Home: navigation and global search
         self.home_tab.go_dashboard.connect(lambda: self._on_sidebar_clicked(1))
         self.home_tab.go_dataset.connect(lambda: self._on_sidebar_clicked(2))
         self.home_tab.go_visualizations.connect(lambda: self._on_sidebar_clicked(3))
         self.home_tab.go_chatbot.connect(lambda: self._on_sidebar_clicked(5))
+        self.home_tab.search_requested.connect(self._on_global_search)
+        # Dashboard: open dataset with filter when insight card clicked
+        self.dashboard_tab.open_dataset_filtered.connect(self._on_open_dataset_filtered)
 
         # Select Home by default
         if self.sidebar_buttons:
@@ -275,6 +279,16 @@ class MainWindow(QMainWindow):
         self.tabs.setCurrentIndex(index)
         for i, btn in enumerate(self.sidebar_buttons):
             btn.setChecked(i == index)
+
+    def _on_global_search(self, text: str) -> None:
+        """Switch to Dataset tab and apply global search filter."""
+        self._on_sidebar_clicked(2)
+        self.dataset_tab.set_filter_and_search(search_text=text)
+
+    def _on_open_dataset_filtered(self, project: str, test_rig: str) -> None:
+        """Switch to Dataset tab and set project/test_rig filters."""
+        self._on_sidebar_clicked(2)
+        self.dataset_tab.set_filter_and_search(project=project, test_rig=test_rig)
 
     def eventFilter(self, obj, event):  # type: ignore[override]
         """Expand/collapse sidebar on hover."""
@@ -319,12 +333,11 @@ class MainWindow(QMainWindow):
         """Handles the entry added signal.
         
         Called when a new entry is successfully added to the database.
-        Updates the status bar and refreshes the dashboard and visualizations.
+        Updates the status bar, recent activity, and refreshes dashboard/visualizations.
         """
         self.statusBar.showMessage("Entry added successfully!", 3000)
-        # Refresh dashboard
+        self.home_tab.add_recent_activity("✔ New test added")
         self.dashboard_tab.refresh_data()
-        # Refresh visualizations
         self.visualizations_tab.refresh_data()
     
     def closeEvent(self, event) -> None:

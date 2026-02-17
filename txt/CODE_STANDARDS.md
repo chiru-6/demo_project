@@ -174,7 +174,7 @@ def add_entry(self, entry_data):
     try:
         conn = sqlite3.connect(self.db_path)
         cursor = conn.cursor()
-        cursor.execute("INSERT INTO lca_test_data (lru_name, project, division_group, system, part_number, serial_no, received_data, type_of_test, test_rig, date_of_pi, results_remarks, date_of_clearance) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", (entry_data.get('lru_name', ''), entry_data.get('project', ''), entry_data.get('division_group', ''), entry_data.get('system', ''), entry_data.get('part_number', ''), entry_data.get('serial_no', ''), entry_data.get('received_data', ''), entry_data.get('type_of_test', ''), entry_data.get('test_rig', ''), entry_data.get('date_of_pi', ''), entry_data.get('results_remarks', ''), entry_data.get('date_of_clearance', '')))
+        cursor.execute("INSERT INTO project (lru_name, project, division_group, system, part_number, serial_no, received_data, type_of_test, test_rig, date_of_pi, results_remarks, date_of_clearance) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", (entry_data.get('lru_name', ''), entry_data.get('project', ''), entry_data.get('division_group', ''), entry_data.get('system', ''), entry_data.get('part_number', ''), entry_data.get('serial_no', ''), entry_data.get('received_data', ''), entry_data.get('type_of_test', ''), entry_data.get('test_rig', ''), entry_data.get('date_of_pi', ''), entry_data.get('results_remarks', ''), entry_data.get('date_of_clearance', '')))
         conn.commit()
         conn.close()
         return True, "Entry added successfully"

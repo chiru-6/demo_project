@@ -1,57 +1,34 @@
-"""Chatbot widget module for AI-powered data querying.
+"""Chatbot view: AI assistant for querying test data via Ollama."""
 
-This module provides the ChatbotWidget class which implements an AI chatbot
-interface using Ollama for natural language queries about test data.
-"""
-
-from typing import List, Dict
+from typing import Dict, List
 
 import pandas as pd
 from PyQt5.QtGui import QFont
-from PyQt5.QtWidgets import (QHBoxLayout, QLabel, QLineEdit, QPushButton,
-                             QTextEdit, QVBoxLayout, QWidget)
+from PyQt5.QtWidgets import (
+    QHBoxLayout,
+    QLabel,
+    QLineEdit,
+    QPushButton,
+    QTextEdit,
+    QVBoxLayout,
+    QWidget,
+)
 
 
 class ChatbotWidget(QWidget):
-    """Widget for AI chatbot interface.
-    
-    This widget provides a chat interface for querying test data using
-    natural language. It uses Ollama for AI responses and can execute
-    SQL queries based on user questions.
-    
-    Attributes:
-        db: DatabaseManager instance for database operations.
-        chat_history: List of chat messages (role and content).
-        chat_display: QTextEdit for displaying chat messages.
-        input_field: QLineEdit for user input.
-        send_btn: QPushButton for sending messages.
-    """
-    
+    """Widget for AI chatbot interface using Ollama."""
+
     def __init__(self, db) -> None:
-        """Initializes the chatbot widget.
-        
-        Args:
-            db: DatabaseManager instance for database operations.
-        """
         super().__init__()
         self.db = db
         self.chat_history: List[Dict[str, str]] = []
         self.init_ui()
-    
+
     def init_ui(self) -> None:
-        """Initializes the user interface.
-        
-        Creates and configures all UI elements including title, info labels,
-        chat display area, and input controls.
-        """
         layout = QVBoxLayout(self)
-        
-        # Title
         title = QLabel("🤖 AI Chatbot Assistant")
         title.setStyleSheet("font-size: 24px; font-weight: bold; padding: 10px;")
         layout.addWidget(title)
-        
-        # Info label (colors from app theme)
         info_label = QLabel(
             "💡 Ask questions about your test data in natural language. "
             "Make sure Ollama is running locally."
@@ -60,8 +37,6 @@ class ChatbotWidget(QWidget):
         info_label.setWordWrap(True)
         info_label.setStyleSheet("#infoLabel { padding: 10px; border-radius: 5px; }")
         layout.addWidget(info_label)
-        
-        # Example queries
         examples_label = QLabel(
             "Example queries: 'How many records?', 'Show all projects', "
             "'What test rigs are used?'"
@@ -70,75 +45,48 @@ class ChatbotWidget(QWidget):
         examples_label.setWordWrap(True)
         examples_label.setStyleSheet("#examplesLabel { padding: 5px; }")
         layout.addWidget(examples_label)
-        
-        # Chat display area (colors from app theme)
         self.chat_display = QTextEdit()
         self.chat_display.setObjectName("chatDisplay")
         self.chat_display.setReadOnly(True)
         self.chat_display.setFont(QFont("Arial", 10))
         self.chat_display.setStyleSheet("#chatDisplay { padding: 10px; }")
         layout.addWidget(self.chat_display)
-        
-        # Add welcome message
         self.add_message(
-            "assistant", 
+            "assistant",
             "Hello! I'm your AI assistant. I can help you query and "
-            "analyze your test data. Ask me anything!"
+            "analyze your test data. Ask me anything!",
         )
-        
-        # Input area
         input_layout = QHBoxLayout()
-        
         self.input_field = QLineEdit()
         self.input_field.setPlaceholderText("Ask me about your test data...")
         self.input_field.returnPressed.connect(self.send_message)
         input_layout.addWidget(self.input_field)
-        
         self.send_btn = QPushButton("Send")
         self.send_btn.setStyleSheet(
             "background-color: #2196F3; color: white; padding: 8px 20px;"
         )
         self.send_btn.clicked.connect(self.send_message)
         input_layout.addWidget(self.send_btn)
-        
         layout.addLayout(input_layout)
-    
+
     def add_message(self, role: str, content: str) -> None:
-        """Adds a message to the chat display.
-        
-        Args:
-            role: Message role ('user' or 'assistant').
-            content: Message content text.
-        """
         if role == "user":
             self.chat_display.append(f"<b>You:</b> {content}<br>")
         else:
             self.chat_display.append(f"<b>Assistant:</b> {content}<br><br>")
-        
         self.chat_history.append({"role": role, "content": content})
-        # Scroll to bottom
         self.chat_display.verticalScrollBar().setValue(
             self.chat_display.verticalScrollBar().maximum()
         )
-    
+
     def send_message(self) -> None:
-        """Sends message to chatbot.
-        
-        Gets the user's message, sends it to the chatbot, and displays
-        the response. Disables the send button while processing.
-        """
         prompt = self.input_field.text().strip()
         if not prompt:
             return
-        
-        # Add user message
         self.add_message("user", prompt)
         self.input_field.clear()
-        
-        # Get response
         self.send_btn.setEnabled(False)
         self.send_btn.setText("Thinking...")
-        
         try:
             response = self.get_chatbot_response(prompt)
             self.add_message("assistant", response)
@@ -147,51 +95,31 @@ class ChatbotWidget(QWidget):
         finally:
             self.send_btn.setEnabled(True)
             self.send_btn.setText("Send")
-    
+
     def get_chatbot_response(self, prompt: str) -> str:
-        """Gets response from Ollama chatbot.
-        
-        Processes the user's prompt, generates SQL queries if applicable,
-        executes them, and sends the results to Ollama for a natural
-        language response.
-        
-        Args:
-            prompt: User's question or prompt.
-            
-        Returns:
-            Chatbot's response as a string.
-        """
         try:
             import ollama  # pylint: disable=import-outside-toplevel
-            
-            # Get database statistics and sample data for context
+
             df = self.db.get_all_data()
             stats = self.db.get_statistics()
-            
-            # Create context about the database
             context = f"""
             You are an assistant for an LCA Test Data Management System.
-            
+
             Database Statistics:
             - Total Records: {stats.get('total_records', 0)}
             - Projects: {', '.join(list(stats.get('projects', {}).keys())[:5])}
             - Test Rigs: {', '.join(list(stats.get('test_rigs', {}).keys())[:5])}
             - Test Types: {', '.join(list(stats.get('test_types', {}).keys())[:5])}
-            
+
             Available columns in the database:
             - LRU Name, Project, Division/Group, System, Part Number, Serial No
             - Received Data, Type of Test, Test Rig, Date of PI, Results & Remarks, Date of Clearance
-            
+
             When asked about data, you can query the database using SQL. Be helpful and provide accurate information.
             """
-            
-            # Try to generate SQL query from natural language
             sql_query = None
             prompt_lower = prompt.lower()
-            
-            # Simple query patterns
             if "how many" in prompt_lower or "count" in prompt_lower:
-                # Specific system counts (e.g., "how many HYD systems")
                 system_codes = {
                     "hyd": "HYD",
                     "ele": "ELE",
@@ -203,16 +131,16 @@ class ChatbotWidget(QWidget):
                     for key, code in system_codes.items():
                         if key in prompt_lower:
                             sql_query = (
-                                "SELECT COUNT(*) as count "
-                                "FROM lca_test_data "
+                                "SELECT COUNT(*) as count FROM lca_test_data "
                                 f"WHERE UPPER(system) = '{code}'"
                             )
                             break
                 if sql_query is None:
-                    # Specific results_remarks counts (e.g., "under review", "pending", "OK")
-                    if ("result" in prompt_lower 
-                            or "results" in prompt_lower 
-                            or "remarks" in prompt_lower):
+                    if (
+                        "result" in prompt_lower
+                        or "results" in prompt_lower
+                        or "remarks" in prompt_lower
+                    ):
                         status_phrases = [
                             ("under review", "Under Review"),
                             ("not ok", "NOT OK"),
@@ -222,12 +150,10 @@ class ChatbotWidget(QWidget):
                         for phrase, value in status_phrases:
                             if phrase in prompt_lower:
                                 sql_query = (
-                                    "SELECT COUNT(*) as count "
-                                    "FROM lca_test_data "
+                                    "SELECT COUNT(*) as count FROM lca_test_data "
                                     f"WHERE LOWER(results_remarks) = '{value.lower()}'"
                                 )
                                 break
-                        # If no specific status phrase matched, fall back to counts by status
                         if sql_query is None:
                             sql_query = (
                                 "SELECT results_remarks, COUNT(*) as count "
@@ -245,7 +171,6 @@ class ChatbotWidget(QWidget):
                         )
                     else:
                         sql_query = "SELECT COUNT(*) as total FROM lca_test_data"
-            
             elif "list" in prompt_lower or "show" in prompt_lower or "get" in prompt_lower:
                 if "all" in prompt_lower:
                     sql_query = "SELECT * FROM lca_test_data LIMIT 20"
@@ -253,51 +178,42 @@ class ChatbotWidget(QWidget):
                     sql_query = "SELECT DISTINCT project FROM lca_test_data"
                 elif "test rig" in prompt_lower:
                     sql_query = "SELECT DISTINCT test_rig FROM lca_test_data"
-            
-            # Execute query if available
             query_result_str = None
             if sql_query:
                 try:
                     query_result = self.db.query_data(sql_query)
-                    query_result_str = (query_result.to_string() 
-                                       if not query_result.empty 
-                                       else "No results found")
+                    query_result_str = (
+                        query_result.to_string()
+                        if not query_result.empty
+                        else "No results found"
+                    )
                 except Exception as error:
                     query_result_str = f"Query error: {str(error)}"
-            
-            # Prepare message for Ollama
             user_message = f"{context}\n\nUser Question: {prompt}"
             if query_result_str:
                 user_message += f"\n\nQuery Result:\n{query_result_str}"
-            
-            # Get response from Ollama
             response = ollama.chat(
-                model='llama3.2',
+                model="llama3.2",
                 messages=[
                     {
-                        'role': 'system',
-                        'content': (
-                            'You are a helpful assistant for an LCA Test Data '
-                            'Management System.\n\n'
-                            '- Answer in a simple, easy-to-read way.\n'
-                            '- Prefer short sentences and bullet lists.\n'
+                        "role": "system",
+                        "content": (
+                            "You are a helpful assistant for an LCA Test Data "
+                            "Management System.\n\n"
+                            "- Answer in a simple, easy-to-read way.\n"
+                            "- Prefer short sentences and bullet lists.\n"
                             "- Do NOT show SQL code, tables, or markdown fences "
                             "unless the user explicitly asks for SQL.\n"
                             "- For questions like \"list all ...\", just return a clean "
                             "bullet list of the items, nothing else.\n"
-                            '- Avoid long explanations of what you are doing; go '
-                            'straight to the answer.\n'
-                        )
+                            "- Avoid long explanations of what you are doing; go "
+                            "straight to the answer.\n"
+                        ),
                     },
-                    {
-                        'role': 'user',
-                        'content': user_message
-                    }
-                ]
+                    {"role": "user", "content": user_message},
+                ],
             )
-            
-            return response['message']['content']
-        
+            return response["message"]["content"]
         except ImportError:
             return (
                 "Ollama is not installed.\n\n"
@@ -308,20 +224,18 @@ class ChatbotWidget(QWidget):
                 "4. Pull a model: ollama pull llama3.2\n\n"
                 "Then restart this application."
             )
-        
         except Exception as error:
-            # Fallback: provide basic information without Ollama
             stats = self.db.get_statistics()
-            
             if "how many" in prompt.lower():
-                total = stats.get('total_records', 0)
+                total = stats.get("total_records", 0)
                 return f"The database contains **{total}** total records."
             if "project" in prompt.lower():
-                projects = ', '.join(list(stats.get('projects', {}).keys()))
+                projects = ", ".join(list(stats.get("projects", {}).keys()))
                 return f"Projects in the database: {projects}"
             if "test rig" in prompt.lower():
-                rigs = ', '.join(list(stats.get('test_rigs', {}).keys()))
+                rigs = ", ".join(list(stats.get("test_rigs", {}).keys()))
                 return f"Test rigs in the database: {rigs}"
-            
-            return (f"I encountered an error: {str(error)}. "
-                   f"Please make sure Ollama is running and a model is available.")
+            return (
+                f"I encountered an error: {str(error)}. "
+                "Please make sure Ollama is running and a model is available."
+            )

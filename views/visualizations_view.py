@@ -1,8 +1,4 @@
-"""Visualizations widget module for displaying charts and graphs.
-
-This module provides the VisualizationsWidget class which displays
-various charts and graphs for data analysis using Qt Charts.
-"""
+"""Visualizations view: Qt Charts for test data analysis."""
 
 import pandas as pd
 from PyQt5.QtChart import (
@@ -27,52 +23,21 @@ from PyQt5.QtWidgets import (
 
 
 class VisualizationsWidget(QWidget):
-    """Widget for displaying data visualizations.
-    
-    This widget provides multiple chart types for analyzing test data:
-        - Results distribution (pie chart)
-        - Test rigs analysis (bar chart)
-        - Projects overview (bar chart)
-        - Division/Group distribution (pie chart)
-        - Type of test analysis (bar chart)
-        - Clearance status (bar chart)
-    
-    Attributes:
-        db: DatabaseManager instance for database operations.
-        df: DataFrame containing all test data.
-        viz_combo: QComboBox for selecting visualization type.
-        chart: QChart object for rendering charts.
-        chart_view: QChartView for displaying the chart.
-    """
-    
+    """Widget for displaying data visualizations using Qt Charts."""
+
     def __init__(self, db) -> None:
-        """Initializes the visualizations widget.
-        
-        Args:
-            db: DatabaseManager instance for database operations.
-        """
         super().__init__()
         self.db = db
         self.df = pd.DataFrame()
         self.init_ui()
         self.refresh_data()
-    
+
     def init_ui(self) -> None:
-        """Initializes the user interface.
-        
-        Creates and configures all UI elements including the visualization
-        selector, refresh button, and chart view.
-        """
         layout = QVBoxLayout(self)
-        
-        # Title
         title = QLabel("📈 Data Visualizations")
         title.setStyleSheet("font-size: 24px; font-weight: bold; padding: 10px;")
         layout.addWidget(title)
-        
-        # Controls
         controls_layout = QHBoxLayout()
-        
         controls_layout.addWidget(QLabel("Select Visualization:"))
         self.viz_combo = QComboBox()
         self.viz_combo.addItems([
@@ -81,71 +46,50 @@ class VisualizationsWidget(QWidget):
             "Projects Overview",
             "Division/Group Distribution",
             "Type of Test Analysis",
-            "Clearance Status"
+            "Clearance Status",
         ])
         self.viz_combo.currentTextChanged.connect(self.update_visualization)
         controls_layout.addWidget(self.viz_combo)
-        
         refresh_btn = QPushButton("🔄 Refresh")
         refresh_btn.clicked.connect(self.refresh_data)
         controls_layout.addWidget(refresh_btn)
-        
         controls_layout.addStretch()
         layout.addLayout(controls_layout)
-        
-        # Qt Charts: chart + view
         self.chart = QChart()
         self.chart.setAnimationOptions(QChart.SeriesAnimations)
-
         self.chart_view = QChartView(self.chart)
         self.chart_view.setRenderHint(QPainter.Antialiasing)
         layout.addWidget(self.chart_view)
-    
+
     def refresh_data(self) -> None:
-        """Refreshes data from database.
-        
-        Loads all data from the database and updates the current visualization.
-        Shows an error plot if data loading fails.
-        """
         try:
             self.df = self.db.get_all_data()
             self.update_visualization()
         except Exception as error:
             self.show_error_chart(str(error))
-    
+
     def _is_dark_mode(self) -> bool:
-        """Return True if the main window is in dark mode."""
         mw = self.window()
         return bool(getattr(mw, "is_dark_mode", lambda: False)())
 
     def _apply_chart_theme(self, dark: bool) -> None:
-        """Set chart theme and background to match app theme."""
         if dark:
             self.chart.setTheme(QChart.ChartThemeDark)
         else:
             self.chart.setTheme(QChart.ChartThemeLight)
-    
-    def update_visualization(self) -> None:
-        """Updates the current visualization.
 
-        Clears the current figure and renders the selected visualization type.
-        Shows an error plot if the dataframe is empty or if rendering fails.
-        """
+    def update_visualization(self) -> None:
         if self.df.empty:
             self.show_error_chart("No data available")
             return
-
         viz_type = self.viz_combo.currentText()
         dark = self._is_dark_mode()
-
-        # Reset chart
         self.chart.removeAllSeries()
         if self.chart.axisX():
             self.chart.removeAxis(self.chart.axisX())
         if self.chart.axisY():
             self.chart.removeAxis(self.chart.axisY())
         self._apply_chart_theme(dark)
-
         try:
             if viz_type == "Results Distribution":
                 self._build_results_pie()
@@ -156,73 +100,60 @@ class VisualizationsWidget(QWidget):
             elif viz_type == "Division/Group Distribution":
                 self._build_divisions_pie()
             elif viz_type == "Type of Test Analysis":
-                self._build_bar_from_counts("type_of_test", "Type of Test Distribution")
+                self._build_bar_from_counts(
+                    "type_of_test", "Type of Test Distribution"
+                )
             elif viz_type == "Clearance Status":
                 self._build_clearance_bar()
         except Exception as error:
             self.show_error_chart(f"Error creating visualization: {str(error)}")
 
     def _build_results_pie(self) -> None:
-        """Results distribution as a pie chart."""
         results_counts = self.df["results_remarks"].value_counts()
         if results_counts.empty:
             self.show_error_chart("No results_remarks data")
             return
-
         series = QPieSeries()
         for label, value in results_counts.items():
             slice_ = series.append(str(label), int(value))
             slice_.setLabelVisible(True)
-            # Slightly explode more critical statuses
             if str(label) in ("NOT OK", "Under Review"):
                 slice_.setExploded(True)
-
         self.chart.addSeries(series)
         self.chart.setTitle("Test Results Distribution")
 
     def _build_divisions_pie(self) -> None:
-        """Division/Group distribution as a pie chart."""
         div_counts = self.df["division_group"].value_counts()
         if div_counts.empty:
             self.show_error_chart("No division/group data")
             return
-
         series = QPieSeries()
         for label, value in div_counts.items():
             slice_ = series.append(str(label), int(value))
             slice_.setLabelVisible(True)
-
         self.chart.addSeries(series)
         self.chart.setTitle("Division/Group Distribution")
 
     def _build_bar_from_counts(self, column: str, title: str) -> None:
-        """Generic bar chart for a column's value counts."""
         if column not in self.df.columns:
             self.show_error_chart(f"No '{column}' column")
             return
-
         counts = self.df[column].value_counts()
         if counts.empty:
             self.show_error_chart(f"No data in '{column}'")
             return
-
         categories = [str(k) for k in counts.index]
         values = [int(v) for v in counts.values]
-
         bar_set = QBarSet(column)
         bar_set.append(values)
-
         series = QBarSeries()
         series.append(bar_set)
-
         self.chart.addSeries(series)
         self.chart.setTitle(title)
-
         axis_x = QBarCategoryAxis()
         axis_x.append(categories)
         self.chart.addAxis(axis_x, Qt.AlignBottom)
         series.attachAxis(axis_x)
-
         axis_y = QValueAxis()
         axis_y.setLabelFormat("%d")
         axis_y.setTitleText("Count")
@@ -230,24 +161,18 @@ class VisualizationsWidget(QWidget):
         series.attachAxis(axis_y)
 
     def _build_clearance_bar(self) -> None:
-        """Clearance status bar chart."""
         cleared = self.df["date_of_clearance"].notna().sum()
         not_cleared = self.df["date_of_clearance"].isna().sum()
-
         bar_set = QBarSet("Clearance")
         bar_set.append([int(cleared), int(not_cleared)])
-
         series = QBarSeries()
         series.append(bar_set)
-
         self.chart.addSeries(series)
         self.chart.setTitle("Clearance Status")
-
         axis_x = QBarCategoryAxis()
         axis_x.append(["Cleared", "Not Cleared"])
         self.chart.addAxis(axis_x, Qt.AlignBottom)
         series.attachAxis(axis_x)
-
         axis_y = QValueAxis()
         axis_y.setLabelFormat("%d")
         axis_y.setTitleText("Count")
@@ -255,6 +180,5 @@ class VisualizationsWidget(QWidget):
         series.attachAxis(axis_y)
 
     def show_error_chart(self, message: str) -> None:
-        """Show a simple chart-style error message."""
         self.chart.removeAllSeries()
         self.chart.setTitle(message)

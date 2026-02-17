@@ -1,6 +1,6 @@
 # Changelog
 
-All notable changes to the LCA Test Data Management System.
+All notable changes to the project.
 
 ## [2.0.0] - 2026-02-02
 
