@@ -1,10 +1,13 @@
 """Chatbot view: AI assistant for querying test data via Ollama."""
 
+from __future__ import annotations
+
+from datetime import datetime
 from typing import Dict, List
 
 import pandas as pd
-from PyQt5.QtGui import QFont
-from PyQt5.QtWidgets import (
+from PySide6.QtGui import QFont
+from PySide6.QtWidgets import (
     QHBoxLayout,
     QLabel,
     QLineEdit,
@@ -119,6 +122,53 @@ class ChatbotWidget(QWidget):
             """
             sql_query = None
             prompt_lower = prompt.lower()
+
+            # Deterministic answers for time-based count questions.
+            # This avoids the model hallucinating when the query result is just a count.
+            def _get_record_dates(frame: pd.DataFrame) -> pd.Series:
+                if "date_of_pi" in frame.columns:
+                    # Common in your dataset (often dd-mm-yyyy)
+                    return pd.to_datetime(
+                        frame["date_of_pi"], errors="coerce", dayfirst=True
+                    )
+                if "created_at" in frame.columns:
+                    return pd.to_datetime(frame["created_at"], errors="coerce")
+                return pd.to_datetime(pd.Series([pd.NaT] * len(frame)))
+
+            def _filter_this_month(frame: pd.DataFrame) -> pd.DataFrame:
+                if frame.empty:
+                    return frame
+                now = pd.Timestamp.now()
+                start = now.replace(day=1, hour=0, minute=0, second=0, microsecond=0)
+                next_month = (start + pd.offsets.MonthBegin(1)).normalize()
+                dates = _get_record_dates(frame)
+                return frame[(dates >= start) & (dates < next_month)]
+
+            def _count_by_status(frame: pd.DataFrame, status_phrase: str) -> int:
+                if frame.empty or "results_remarks" not in frame.columns:
+                    return 0
+                s = frame["results_remarks"].astype(str).str.lower()
+                return int(s.str.contains(status_phrase.lower(), na=False).sum())
+
+            if ("how many" in prompt_lower or "count" in prompt_lower) and "this month" in prompt_lower:
+                month_df = _filter_this_month(df)
+                # Status first (avoid matching 'ok' inside 'not ok')
+                if "not ok" in prompt_lower:
+                    n = _count_by_status(month_df, "not ok")
+                    return f"There are {n} NOT OK tests this month."
+                if "under review" in prompt_lower:
+                    n = _count_by_status(month_df, "under review")
+                    return f"There are {n} Under Review tests this month."
+                if "pending" in prompt_lower:
+                    n = _count_by_status(month_df, "pending")
+                    return f"There are {n} Pending tests this month."
+                if " ok" in prompt_lower or prompt_lower.startswith("ok "):
+                    # Match OK but not NOT OK (already handled above)
+                    n = _count_by_status(month_df, "ok")
+                    return f"There are {n} OK tests this month."
+                # Generic count for this month
+                return f"There are {len(month_df)} tests recorded this month."
+
             if "how many" in prompt_lower or "count" in prompt_lower:
                 system_codes = {
                     "hyd": "HYD",

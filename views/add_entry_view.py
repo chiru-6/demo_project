@@ -1,7 +1,7 @@
 """Add entry view: form for creating new test data records."""
 
-from PyQt5.QtCore import pyqtSignal
-from PyQt5.QtWidgets import (
+from PySide6.QtCore import Signal
+from PySide6.QtWidgets import (
     QComboBox,
     QFormLayout,
     QGroupBox,
@@ -18,7 +18,7 @@ from PyQt5.QtWidgets import (
 class AddEntryWidget(QWidget):
     """Widget for adding new test data entries."""
 
-    entry_added = pyqtSignal()
+    entry_added = Signal()
 
     def __init__(self, db) -> None:
         super().__init__()

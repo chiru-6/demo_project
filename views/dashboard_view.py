@@ -1,7 +1,7 @@
 """Dashboard view: KPIs, filters, charts, and clickable insights."""
 
 import pandas as pd
-from PyQt5.QtChart import (
+from PySide6.QtCharts import (
     QBarCategoryAxis,
     QBarSet,
     QBarSeries,
@@ -11,9 +11,9 @@ from PyQt5.QtChart import (
     QPieSeries,
     QValueAxis,
 )
-from PyQt5.QtCore import QEvent, Qt, pyqtSignal
-from PyQt5.QtGui import QColor, QPainter
-from PyQt5.QtWidgets import (
+from PySide6.QtCore import QEvent, Qt, Signal
+from PySide6.QtGui import QColor, QPainter
+from PySide6.QtWidgets import (
     QComboBox,
     QFrame,
     QGraphicsDropShadowEffect,
@@ -30,7 +30,7 @@ from PyQt5.QtWidgets import (
 class DashboardWidget(QWidget):
     """Dashboard with KPIs, filters, charts, and clickable insight cards."""
 
-    open_dataset_filtered = pyqtSignal(str, str)  # project, test_rig
+    open_dataset_filtered = Signal(str, str)  # project, test_rig
 
     def __init__(self, db) -> None:
         super().__init__()

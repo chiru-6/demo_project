@@ -1,8 +1,8 @@
 """Dataset view: raw test data table with filters."""
 
 import pandas as pd
-from PyQt5.QtCore import Qt
-from PyQt5.QtWidgets import (
+from PySide6.QtCore import Qt
+from PySide6.QtWidgets import (
     QComboBox,
     QFrame,
     QHeaderView,

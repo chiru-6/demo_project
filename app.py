@@ -12,8 +12,8 @@ import logging
 import os
 import sys
 
-from PyQt5.QtCore import Qt
-from PyQt5.QtWidgets import QApplication
+from PySide6.QtCore import Qt
+from PySide6.QtWidgets import QApplication
 
 from controllers.controller import create_main_window, get_db, import_csv_if_needed
 
@@ -61,7 +61,7 @@ def main() -> None:
     window.show()
     logger.info("Main window shown")
 
-    sys.exit(app.exec_())
+    sys.exit(app.exec())
 
 
 if __name__ == "__main__":

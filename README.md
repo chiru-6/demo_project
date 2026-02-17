@@ -1,4 +1,4 @@
-#Test Data Management System - PyQt5 Desktop Application
+#Test Data Management System - PySide6 Desktop Application
 
 A comprehensive desktop application for managing and analyzing aircraft test data with SQLite database, interactive visualizations, and AI-powered chatbot assistance.
 
@@ -15,7 +15,7 @@ A comprehensive desktop application for managing and analyzing aircraft test dat
   - Clearance status
 - 🤖 **AI Chatbot**: Query your data using natural language with Ollama integration
 - 💾 **SQLite Database**: Lightweight, local database for data storage
-- 🖥️ **Desktop Application**: Native PyQt5 desktop application with modern UI
+- 🖥️ **Desktop Application**: Native PySide6 desktop application with modern UI
 
 ## Installation
 
@@ -30,20 +30,20 @@ A comprehensive desktop application for managing and analyzing aircraft test dat
 pip install -r requirements.txt
 ```
 
-**Note for Windows users**: If you encounter issues installing PyQt5, try:
+**Note for Windows users**: If you encounter issues installing PySide6, try:
 ```bash
 pip install --upgrade pip
-pip install PyQt5
+pip install PySide6
 ```
 
 **Note for Linux users**: You may need to install system dependencies:
 ```bash
-sudo apt-get install python3-pyqt5
+sudo apt-get install python3-pyside6
 ```
 
 **Note for macOS users**: 
 ```bash
-brew install pyqt5
+brew install pyside6
 ```
 
 ### Step 2: Install and Setup Ollama (for Chatbot)
@@ -141,13 +141,13 @@ The codebase is organized as follows:
 
 ## Using Qt Designer
 
-Qt Designer is a visual tool for designing PyQt5 user interfaces. Here's how to use it:
+Qt Designer is a visual tool for designing PySide6 user interfaces. Here's how to use it:
 
 ### Installing Qt Designer
 
 **Windows:**
-- Qt Designer comes with PyQt5. If not installed, download Qt from https://www.qt.io/download
-- Or use: `pip install pyqt5-tools` (includes designer.exe)
+- Qt Designer comes with PySide6. If not installed, download Qt from https://www.qt.io/download
+- Or use: `pip install pyside6-tools` (includes designer.exe)
 
 **Linux:**
 ```bash
@@ -166,8 +166,8 @@ brew install qt
 **Windows:**
 ```bash
 designer
-# Or if installed via pyqt5-tools:
-python -m PyQt5.uic.pyuic designer
+# Or if installed via pyside6-tools:
+pyside6-designer
 ```
 
 **Linux:**
@@ -197,24 +197,25 @@ designer
 
 3. **Convert .ui to Python:**
    ```bash
-   pyuic5 main_window.ui -o main_window_ui.py
+   pyside6-uic main_window.ui -o main_window_ui.py
    ```
    
    Or use Python to convert:
    ```python
-   from PyQt5.uic import loadUi
+   from PySide6.QtUiTools import loadUi
    # Load UI file at runtime
    loadUi('main_window.ui', self)
    ```
 
 4. **Using the generated UI in your code:**
    ```python
-   from PyQt5 import uic
+   from PySide6.QtUiTools import QUiLoader
    
    class MainWindow(QMainWindow):
        def __init__(self):
            super().__init__()
-           uic.loadUi('main_window.ui', self)
+           loader = QUiLoader()
+           self.ui = loader.load('main_window.ui', self)
    ```
 
 ### Example: Creating a Custom Widget UI
@@ -225,7 +226,7 @@ designer
 4. Save as `widgets/custom_widget.ui`
 5. Convert to Python:
    ```bash
-   pyuic5 widgets/custom_widget.ui -o widgets/custom_widget_ui.py
+   pyside6-uic widgets/custom_widget.ui -o widgets/custom_widget_ui.py
    ```
 6. Import and use in your code
 
@@ -279,30 +280,30 @@ The SQLite database contains the following columns:
 
 ## Troubleshooting
 
-### PyQt5 Installation Issues
+### PySide6 Installation Issues
 
 **Windows:**
 ```bash
 pip install --upgrade pip setuptools wheel
-pip install PyQt5
+pip install PySide6
 ```
 
 **Linux:**
 ```bash
 sudo apt-get update
-sudo apt-get install python3-pyqt5 python3-pyqt5.qtsvg
+sudo apt-get install python3-pyside6
 ```
 
 **macOS:**
 ```bash
-brew install pyqt5
-pip install PyQt5
+brew install pyside6
+pip install PySide6
 ```
 
 ### Application Won't Start
 
 1. Check Python version: `python --version` (should be 3.8+)
-2. Verify all dependencies: `pip list | grep -i pyqt5`
+2. Verify all dependencies: `pip list | grep -i pyside6`
 3. Check for error messages in terminal
 4. Ensure CSV file exists in project directory
 
@@ -332,8 +333,8 @@ pip install PyQt5
 ### Qt Designer Not Found?
 
 **Windows:**
-- Install: `pip install pyqt5-tools`
-- Run: `python -m PyQt5.uic.pyuic designer`
+- Install: `pip install pyside6-tools`
+- Run: `pyside6-designer`
 
 **Linux:**
 ```bash

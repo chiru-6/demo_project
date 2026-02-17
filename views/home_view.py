@@ -3,8 +3,8 @@
 from datetime import datetime
 from typing import List
 
-from PyQt5.QtCore import Qt, pyqtSignal
-from PyQt5.QtWidgets import (
+from PySide6.QtCore import Qt, Signal
+from PySide6.QtWidgets import (
     QFrame,
     QGridLayout,
     QHBoxLayout,
@@ -21,11 +21,11 @@ from PyQt5.QtWidgets import (
 class HomeWidget(QWidget):
     """Action-oriented home page with stats, recent activity, system status, and search."""
 
-    go_dashboard = pyqtSignal()
-    go_dataset = pyqtSignal()
-    go_visualizations = pyqtSignal()
-    go_chatbot = pyqtSignal()
-    search_requested = pyqtSignal(str)
+    go_dashboard = Signal()
+    go_dataset = Signal()
+    go_visualizations = Signal()
+    go_chatbot = Signal()
+    search_requested = Signal(str)
 
     def __init__(self, db=None) -> None:
         super().__init__()

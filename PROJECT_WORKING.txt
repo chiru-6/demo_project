@@ -1,0 +1,559 @@
+================================================================================
+                    TEST DATA MANAGEMENT SYSTEM
+                         PROJECT WORKING GUIDE
+================================================================================
+
+This document explains how the Test Data Management System works, its 
+architecture, components, and data flow.
+
+================================================================================
+1. PROJECT OVERVIEW
+================================================================================
+
+The Test Data Management System is a PySide6 desktop application for managing
+and analyzing aircraft test data. It provides:
+
+- Interactive dashboard with KPIs, charts, and filters
+- Raw dataset viewing and filtering
+- Data entry forms
+- Data visualizations (charts)
+- AI-powered chatbot for natural language queries
+- Dark/Light theme support
+
+================================================================================
+2. ARCHITECTURE
+================================================================================
+
+The project follows an MVC-like architecture:
+
+┌─────────────────────────────────────────────────────────────────┐
+│                         app.py                                  │
+│  Entry point: Sets up logging, Qt app, creates controller       │
+└───────────────────────┬─────────────────────────────────────────┘
+                        │
+                        ▼
+┌─────────────────────────────────────────────────────────────────┐
+│                   controllers/controller.py                     │
+│  - get_db(): Creates DatabaseManager                            │
+│  - import_csv_if_needed(): Imports CSV on startup               │
+│  - create_main_window(db): Creates MainWindow                   │
+└───────────────────────┬─────────────────────────────────────────┘
+                        │
+                        ▼
+┌─────────────────────────────────────────────────────────────────┐
+│                  views/main_window.py                           │
+│  Main window with sidebar navigation, tabs, theme toggle        │
+│  Coordinates all views and handles signals                      │
+└───────┬───────────────┬───────────────┬───────────────┬──────────┘
+        │               │               │               │
+        ▼               ▼               ▼               ▼
+┌──────────────┐ ┌──────────────┐ ┌──────────────┐ ┌──────────────┐
+│  Home View   │ │  Dashboard   │ │  Dataset     │ │  Add Entry   │
+│              │ │  View        │ │  View        │ │  View        │
+└──────────────┘ └──────────────┘ └──────────────┘ └──────────────┘
+        │               │               │               │
+        └───────────────┴───────────────┴───────────────┘
+                              │
+                              ▼
+                    ┌──────────────────┐
+                    │  models/db.py    │
+                    │  DatabaseManager │
+                    └──────────────────┘
+                              │
+                              ▼
+                    ┌──────────────────┐
+                    │  database.db     │
+                    │  SQLite Database │
+                    └──────────────────┘
+
+================================================================================
+3. DIRECTORY STRUCTURE
+================================================================================
+
+HAL_Project/
+├── app.py                    # Entry point (creates app, calls controller)
+├── main.py                   # Legacy entry (delegates to app.py)
+├── database.py              # Backward-compat shim (imports from models.db)
+├── requirements.txt          # Dependencies (PySide6, pandas, ollama)
+│
+├── models/                   # Data layer
+│   ├── __init__.py
+│   ├── db.py                # DatabaseManager class (SQLite operations)
+│   ├── logic.py             # Business logic (placeholder)
+│   └── appdata.py           # App constants (CSV paths)
+│
+├── views/                   # UI layer (all screens)
+│   ├── __init__.py
+│   ├── main_window.py       # Main window (sidebar, tabs, theme)
+│   ├── home_view.py         # Home page (stats, activity, search)
+│   ├── dashboard_view.py    # Dashboard (KPIs, charts, filters)
+│   ├── dataset_view.py      # Dataset table (filters, search)
+│   ├── add_entry_view.py    # Add entry form
+│   ├── visualizations_view.py  # Charts (Qt Charts)
+│   └── chatbot_view.py      # AI chatbot (Ollama)
+│
+├── controllers/             # Application logic
+│   ├── __init__.py
+│   └── controller.py        # Startup logic (DB init, CSV import, window)
+│
+├── widgets/                  # Legacy widgets (unused, can be removed)
+│
+├── txt/                      # Documentation files
+│   ├── CODING_STANDARDS_COMPLETE.txt
+│   ├── CODE_STANDARDS.md
+│   ├── CHANGELOG.md
+│   └── ...
+│
+├── logs/                     # Application logs
+│   └── app.log
+│
+├── database.db               # SQLite database (created on first run)
+├── dataset.csv               # CSV import file (optional)
+└── README.md                 # User documentation
+
+================================================================================
+4. KEY COMPONENTS
+================================================================================
+
+4.1 MODELS (Data Layer)
+────────────────────────
+
+models/db.py - DatabaseManager
+  - init_database(): Creates lca_test_data table
+  - import_csv(csv_path): Imports CSV if DB is empty
+  - add_entry(entry_data): Adds new test record
+  - get_all_data(): Returns all records as DataFrame
+  - query_data(query): Executes SQL query
+  - get_statistics(): Returns dict with counts (projects, rigs, types, etc.)
+
+models/appdata.py
+  - DEFAULT_CSV_PATHS: Tuple of CSV paths to try on startup
+
+4.2 VIEWS (UI Layer)
+─────────────────────
+
+views/main_window.py - MainWindow
+  - Sidebar navigation (Home, Dashboard, Dataset, Visualizations, Add Entry, Chatbot)
+  - Dark/Light theme toggle
+  - Coordinates all child views
+  - Handles signals between views (e.g., entry_added → refresh dashboard)
+
+views/home_view.py - HomeWidget
+  - Quick stats bar (Total Tests, OK %, Active Projects, Last Updated)
+  - Recent activity list (QListWidget)
+  - System status (Database, AI Service, Records)
+  - Global search bar (switches to Dataset with filter)
+  - Navigation cards
+
+views/dashboard_view.py - DashboardWidget
+  - KPI cards (Total Records, OK, NOT OK) with change indicators
+  - Filters panel (Project, Test Rig dropdowns + Apply button)
+  - Charts section:
+    * OK vs NOT OK bar chart
+    * Test Type Distribution pie chart
+    * Monthly Trend line chart
+  - AI insight box (auto-generated recommendations)
+  - Clickable insight cards (Top Projects, Top Test Rigs, Top Test Types)
+    → Clicking opens Dataset with filter applied
+
+views/dataset_view.py - DatasetWidget
+  - Filters (Project, Test Rig, Results dropdowns)
+  - Data table (QTableWidget) showing all records
+  - set_filter_and_search(project, test_rig, search_text):
+    Called from Home search or Dashboard insight clicks
+
+views/add_entry_view.py - AddEntryWidget
+  - Form with all test data fields
+  - Validation (required fields)
+  - Emits entry_added signal on success
+
+views/visualizations_view.py - VisualizationsWidget
+  - Chart selector dropdown
+  - Qt Charts integration (pie, bar charts)
+  - Theme-aware (dark/light mode)
+
+views/chatbot_view.py - ChatbotWidget
+  - Ollama integration for AI responses
+  - Natural language → SQL query mapping
+  - Chat history display
+
+4.3 CONTROLLERS (Application Logic)
+────────────────────────────────────
+
+controllers/controller.py
+  - get_db(db_path): Creates DatabaseManager
+  - import_csv_if_needed(db, logger, csv_paths):
+    Tries CSV paths, imports if DB is empty
+  - create_main_window(db): Creates and returns MainWindow instance
+
+================================================================================
+5. DATA FLOW
+================================================================================
+
+5.1 Application Startup
+────────────────────────
+
+1. app.py main() called
+2. setup_logging() → creates logs/app.log
+3. QApplication created
+4. controller.get_db() → DatabaseManager initialized
+   → Creates database.db if missing
+   → Creates lca_test_data table
+5. controller.import_csv_if_needed()
+   → Checks for dataset.csv or LCA_Test_Data.csv
+   → Imports if DB is empty
+6. controller.create_main_window(db) → MainWindow(db)
+   → Creates all child views (Home, Dashboard, Dataset, etc.)
+   → Connects signals
+7. window.show()
+8. app.exec() → Event loop starts
+
+5.2 Adding a New Entry
+───────────────────────
+
+1. User fills form in AddEntryWidget
+2. User clicks "Add Entry"
+3. Validation checks required fields
+4. add_entry() calls db.add_entry(entry_data)
+5. DatabaseManager inserts into lca_test_data table
+6. entry_added signal emitted
+7. MainWindow.on_entry_added() handler:
+   - Updates status bar
+   - Calls home_tab.add_recent_activity("✔ New test added")
+   - Calls dashboard_tab.refresh_data()
+   - Calls visualizations_tab.refresh_data()
+
+5.3 Home Search Flow
+─────────────────────
+
+1. User types in Home search bar and presses Enter
+2. HomeWidget._on_search() → search_requested.emit(text)
+3. MainWindow._on_global_search(text):
+   - Switches to Dataset tab (index 2)
+   - Calls dataset_tab.set_filter_and_search(search_text=text)
+4. DatasetWidget.set_filter_and_search():
+   - Sets _search_text
+   - refresh_data() → loads all data
+   - apply_filters() → filters rows where search_text appears in
+     project, test_rig, or type_of_test columns
+
+5.4 Dashboard Insight Click Flow
+─────────────────────────────────
+
+1. User clicks "Top Projects" or "Top Test Rigs" card
+2. DashboardWidget.eventFilter() catches MouseButtonRelease
+3. open_dataset_filtered.emit(project, test_rig)
+4. MainWindow._on_open_dataset_filtered(project, test_rig):
+   - Switches to Dataset tab
+   - Calls dataset_tab.set_filter_and_search(project=project, test_rig=test_rig)
+5. DatasetWidget sets combo boxes and applies filters
+
+5.5 Dashboard Filter Flow
+──────────────────────────
+
+1. User selects Project/Test Rig in dropdowns
+2. User clicks "Apply"
+3. DashboardWidget._apply_filters_and_refresh()
+4. refresh_data():
+   - Gets all data from DB
+   - Filters DataFrame by selected project/rig
+   - Recalculates KPIs from filtered data
+   - Rebuilds charts with filtered data
+   - Updates insight cards with filtered top items
+
+================================================================================
+6. DATABASE SCHEMA
+================================================================================
+
+Table: lca_test_data
+
+Columns:
+  - id (INTEGER PRIMARY KEY AUTOINCREMENT)
+  - lru_name (TEXT NOT NULL)
+  - project (TEXT)
+  - division_group (TEXT)
+  - system (TEXT)
+  - part_number (TEXT)
+  - serial_no (TEXT)
+  - received_data (TEXT)
+  - type_of_test (TEXT)
+  - test_rig (TEXT)
+  - date_of_pi (TEXT)
+  - results_remarks (TEXT)
+  - date_of_clearance (TEXT)
+  - created_at (TIMESTAMP DEFAULT CURRENT_TIMESTAMP)
+  - updated_at (TIMESTAMP DEFAULT CURRENT_TIMESTAMP)
+
+================================================================================
+7. SIGNALS AND SLOTS (PySide6 Signal System)
+================================================================================
+
+HomeWidget signals:
+  - go_dashboard: Emitted when Dashboard card clicked
+  - go_dataset: Emitted when Dataset card clicked
+  - go_visualizations: Emitted when Visualizations card clicked
+  - go_chatbot: Emitted when Chatbot card clicked
+  - search_requested(str): Emitted when search bar Enter pressed
+
+DashboardWidget signals:
+  - open_dataset_filtered(str, str): Emitted when insight card clicked
+    (project, test_rig)
+
+AddEntryWidget signals:
+  - entry_added: Emitted when entry successfully added
+
+MainWindow connections:
+  - home_tab.search_requested → _on_global_search()
+  - dashboard_tab.open_dataset_filtered → _on_open_dataset_filtered()
+  - add_entry_tab.entry_added → on_entry_added()
+
+================================================================================
+8. THEMING
+================================================================================
+
+Light Theme (default):
+  - Background: #f8fafc
+  - Primary accent: #4f46e5
+  - Light accent: #e0e7ff
+  - Text: #1f2937
+  - Cards: white with shadow (blur 20, offset 6)
+
+Dark Theme:
+  - Background: #1a1d23
+  - Accent: #7eb6fa
+  - Cards: #22262e, #2d323c
+
+Toggle: Sidebar button (🌙/☀️) → MainWindow._toggle_night_mode()
+  → Sets global stylesheet (LIGHT_STYLESHEET or DARK_STYLESHEET)
+
+================================================================================
+9. CHARTS (Qt Charts)
+================================================================================
+
+Dashboard charts:
+  - OK vs NOT OK: QBarSeries with QBarSet
+  - Test Type Distribution: QPieSeries
+  - Monthly Trend: QLineSeries (by date_of_pi or created_at)
+
+Visualizations page:
+  - Results Distribution: QPieSeries
+  - Test Rigs Analysis: QBarSeries
+  - Projects Overview: QBarSeries
+  - Division/Group Distribution: QPieSeries
+  - Type of Test Analysis: QBarSeries
+  - Clearance Status: QBarSeries
+
+Charts are theme-aware (ChartThemeLight/ChartThemeDark).
+
+================================================================================
+10. AI CHATBOT (Ollama Integration)
+================================================================================
+
+ChatbotWidget uses Ollama for natural language queries:
+
+1. User types question
+2. get_chatbot_response(prompt):
+   - Maps natural language to SQL patterns:
+     * "how many" → COUNT queries
+     * "list all" → SELECT queries
+     * System-specific (HYD, ELE, etc.)
+   - Executes SQL via db.query_data()
+   - Sends context + query results to Ollama
+   - Returns natural language response
+
+Model: llama3.2 (configurable in chatbot_view.py)
+
+Requirements:
+  - Ollama installed and running (ollama serve)
+  - Model pulled (ollama pull llama3.2)
+  - Python ollama package installed
+
+================================================================================
+11. CSV IMPORT
+================================================================================
+
+On startup, controller.import_csv_if_needed():
+
+1. Checks for dataset.csv (preferred) or LCA_Test_Data.csv
+2. If found and DB is empty:
+   - Reads CSV with pandas
+   - Maps column names (e.g., "LRU Name" → "lru_name")
+   - Inserts into lca_test_data table
+3. If DB already has data:
+   - Skips import (prevents duplicates)
+   - Logs message
+
+Column mapping:
+  "LRU Name" → lru_name
+  "Project" → project
+  "Division / Group" → division_group
+  "System" → system
+  "Part Number" → part_number
+  "Serial No" → serial_no
+  "Received Data" → received_data
+  "Type of Test" → type_of_test
+  "Test Rig" → test_rig
+  "Date of PI" → date_of_pi
+  "Results & Remarks" → results_remarks
+  "Date of Clearance" → date_of_clearance
+
+================================================================================
+12. LOGGING
+================================================================================
+
+Logging configured in app.py setup_logging():
+
+- Level: INFO
+- Format: "%(asctime)s [%(levelname)s] %(name)s: %(message)s"
+- Handlers:
+  * File: logs/app.log (UTF-8)
+  * Console: stdout
+
+Logs:
+  - Database initialization
+  - CSV import attempts
+  - Entry additions
+  - Query executions
+  - Errors (with traceback)
+
+================================================================================
+13. KEY FEATURES IMPLEMENTATION
+================================================================================
+
+13.1 Quick Stats Bar (Home)
+────────────────────────────
+- Loads stats from db.get_statistics()
+- Calculates OK % from results counts
+- Updates on showEvent (when Home tab shown)
+
+13.2 Recent Activity
+─────────────────────
+- QListWidget with max 10 items
+- add_recent_activity(msg) adds to top
+- Called from MainWindow.on_entry_added()
+
+13.3 System Status
+───────────────────
+- Database: Always "Connected 🟢" (if db exists)
+- AI Service: "Online 🟢" (assumed if Ollama available)
+- Records: Shows count from stats
+
+13.4 Dashboard Filters
+───────────────────────
+- Project/Test Rig dropdowns populated from stats
+- Apply button filters DataFrame before:
+  - Calculating KPIs
+  - Building charts
+  - Updating insight cards
+
+13.5 Clickable Insight Cards
+─────────────────────────────
+- eventFilter() catches MouseButtonRelease
+- Extracts first project/rig from card text
+- Emits open_dataset_filtered signal
+- MainWindow switches to Dataset and applies filter
+
+13.6 Global Search
+──────────────────
+- Searches in project, test_rig, type_of_test columns
+- Case-insensitive substring match
+- Applied in DatasetWidget.apply_filters()
+
+================================================================================
+14. DEPENDENCIES
+================================================================================
+
+PySide6>=6.5.0
+  - Qt framework (widgets, core, gui, charts)
+  - Replaces PyQt5
+
+pandas>=2.0.0
+  - Data manipulation (DataFrames)
+  - CSV import
+  - Data analysis
+
+ollama>=0.1.0
+  - AI chatbot integration
+  - Natural language processing
+
+pylint>=3.0.0
+  - Code linting (optional)
+
+================================================================================
+15. RUNNING THE APPLICATION
+================================================================================
+
+Method 1: Direct
+  python app.py
+
+Method 2: Legacy entry
+  python main.py  (delegates to app.py)
+
+The app will:
+1. Create database.db if missing
+2. Import dataset.csv if DB is empty
+3. Show main window with Home tab selected
+
+================================================================================
+16. FILE DEPENDENCIES
+================================================================================
+
+app.py
+  → controllers.controller
+  → models.db
+
+controllers.controller.py
+  → models.db
+  → models.appdata
+  → views.main_window
+
+views/main_window.py
+  → views.home_view
+  → views.dashboard_view
+  → views.dataset_view
+  → views.add_entry_view
+  → views.visualizations_view
+  → views.chatbot_view
+
+All views
+  → models.db (DatabaseManager)
+
+================================================================================
+17. FUTURE ENHANCEMENTS (Not Implemented)
+================================================================================
+
+- Export dashboard as PDF
+- Export dataset as CSV
+- Role-based views (Admin vs Viewer)
+- Notification bell with badge
+- Real-time data updates
+- Advanced date range picker
+- Data validation rules
+- Audit trail/logging
+- Multi-user support
+- Cloud sync
+
+================================================================================
+18. TROUBLESHOOTING
+================================================================================
+
+Issue: Charts not showing
+  → Ensure PySide6.QtCharts is installed (included in PySide6)
+
+Issue: Chatbot not working
+  → Check Ollama is running: ollama serve
+  → Verify model: ollama pull llama3.2
+  → Check ollama Python package: pip install ollama
+
+Issue: CSV not importing
+  → Check file exists: dataset.csv or LCA_Test_Data.csv
+  → Check DB is empty (if not, import skipped)
+  → Check logs/app.log for errors
+
+Issue: Dark mode not working
+  → Check stylesheet is applied globally
+  → Verify QApplication.instance().setStyleSheet() is called
+
+================================================================================
+END OF DOCUMENT
+================================================================================

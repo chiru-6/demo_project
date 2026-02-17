@@ -4,8 +4,8 @@ This module contains the MainWindow class which provides the primary user interf
 with a tabbed layout for different functionalities.
 """
 
-from PyQt5.QtCore import QEvent, Qt
-from PyQt5.QtWidgets import (
+from PySide6.QtCore import QEvent, Qt
+from PySide6.QtWidgets import (
     QApplication,
     QFrame,
     QHBoxLayout,

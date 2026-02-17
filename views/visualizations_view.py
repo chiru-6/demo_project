@@ -1,7 +1,7 @@
 """Visualizations view: Qt Charts for test data analysis."""
 
 import pandas as pd
-from PyQt5.QtChart import (
+from PySide6.QtCharts import (
     QBarCategoryAxis,
     QBarSeries,
     QBarSet,
@@ -10,9 +10,9 @@ from PyQt5.QtChart import (
     QPieSeries,
     QValueAxis,
 )
-from PyQt5.QtCore import Qt
-from PyQt5.QtGui import QPainter
-from PyQt5.QtWidgets import (
+from PySide6.QtCore import Qt
+from PySide6.QtGui import QPainter
+from PySide6.QtWidgets import (
     QComboBox,
     QHBoxLayout,
     QLabel,
