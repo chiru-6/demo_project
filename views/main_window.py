@@ -534,15 +534,30 @@ class MainWindow(QMainWindow):
         for btn, (icon, label) in zip(self.sidebar_buttons, self._sidebar_items):
             btn.setText(f"{icon}  {label}")
             btn.setStyleSheet("text-align: left; padding-left: 8px;")
+        self.chatbot_btn.setText("🤖  Chatbot")
+        self.chatbot_btn.setStyleSheet("text-align: left; padding-left: 8px;")
+        if self.night_mode_btn.isChecked():
+            self.night_mode_btn.setText("☀️  Light mode")
+        else:
+            self.night_mode_btn.setText("🌙  Dark mode")
+        self.night_mode_btn.setStyleSheet("text-align: left; padding-left: 8px;")
         from PySide6.QtCore import QTimer
         QTimer.singleShot(10, self._apply_splitter_sizes)
 
     def _collapse_sidebar(self) -> None:
-        """Hide labels and shrink sidebar."""
+        """Hide labels and shrink sidebar. Show icon-only for theme toggle."""
         self.sidebar.setFixedWidth(64)
         for btn, (icon, _) in zip(self.sidebar_buttons, self._sidebar_items):
             btn.setText(icon)
             btn.setStyleSheet("")
+        self.chatbot_btn.setText("🤖")
+        self.chatbot_btn.setStyleSheet("")
+        # Show current-mode icon: ☀️ when dark (switch to light), 🌙 when light (switch to dark)
+        if self.night_mode_btn.isChecked():
+            self.night_mode_btn.setText("☀️")
+        else:
+            self.night_mode_btn.setText("🌙")
+        self.night_mode_btn.setStyleSheet("")
         from PySide6.QtCore import QTimer
         QTimer.singleShot(10, self._apply_splitter_sizes)
     
@@ -555,6 +570,8 @@ class MainWindow(QMainWindow):
         else:
             QApplication.instance().setStyleSheet(LIGHT_STYLESHEET)
             self.night_mode_btn.setText("🌙 Dark mode")
+        if self.sidebar.width() <= 64:
+            self.night_mode_btn.setText("☀️" if self._night_mode else "🌙")
         # Redraw visualizations and dashboard so chart themes match
         self.visualizations_tab.refresh_data()
         self.dashboard_tab.refresh_data()

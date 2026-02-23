@@ -9,6 +9,7 @@ from PySide6.QtCharts import (
     QChartView,
     QLineSeries,
     QPieSeries,
+    QPieSlice,
     QValueAxis,
 )
 from PySide6.QtCore import QEvent, Qt, Signal
@@ -30,7 +31,7 @@ from PySide6.QtWidgets import (
 
 
 class _InsightDetailDialog(QDialog):
-    """Dialog for enlarged insight view. Ensures close button works."""
+    """Dialog for enlarged insight view."""
 
     def __init__(self, parent=None):
         super().__init__(parent)
@@ -40,7 +41,7 @@ class _InsightDetailDialog(QDialog):
 
     def closeEvent(self, event):
         event.accept()
-        self.reject()
+        self.done(QDialog.DialogCode.Rejected)
 
 
 class DashboardWidget(QWidget):
@@ -99,11 +100,14 @@ class DashboardWidget(QWidget):
         self.filter_month.setMinimumWidth(100)
         self.filter_month.addItem("All")
         filters_layout.addWidget(self.filter_month)
-        apply_btn = QPushButton("Apply")
-        apply_btn.setObjectName("refreshBtn")
-        apply_btn.setCursor(Qt.PointingHandCursor)
-        apply_btn.clicked.connect(self._apply_filters_and_refresh)
-        filters_layout.addWidget(apply_btn)
+        for combo in (self.filter_project, self.filter_rig, self.filter_year, self.filter_month):
+            combo.currentIndexChanged.connect(self._apply_filters_and_refresh)
+        reset_btn = QPushButton("Refresh")
+        reset_btn.setObjectName("refreshBtn")
+        reset_btn.setCursor(Qt.PointingHandCursor)
+        reset_btn.setToolTip("Reset all filters to default (All)")
+        reset_btn.clicked.connect(self._reset_filters_and_refresh)
+        filters_layout.addWidget(reset_btn)
         top_row.addWidget(filters_frame)
         main_layout.addLayout(top_row)
 
@@ -351,10 +355,24 @@ class DashboardWidget(QWidget):
         self._update_ai_insight(df, total, ok_count)
 
     def _update_filter_combos(self) -> None:
+        # Preserve current selections before repopulating
+        proj_sel = self.filter_project.currentText()
+        rig_sel = self.filter_rig.currentText()
+        year_sel = self.filter_year.currentText()
+        month_data = self.filter_month.currentData()
+        month_text = self.filter_month.currentText()
+
+        for combo in (self.filter_project, self.filter_rig, self.filter_year, self.filter_month):
+            combo.blockSignals(True)
+
         proj = list(self._stats.get("projects", {}).keys())
         rigs = list(self._stats.get("test_rigs", {}).keys())
-        self.filter_project.clear(); self.filter_project.addItem("All"); self.filter_project.addItems(sorted(proj))
-        self.filter_rig.clear();     self.filter_rig.addItem("All");     self.filter_rig.addItems(sorted(rigs))
+        self.filter_project.clear()
+        self.filter_project.addItem("All")
+        self.filter_project.addItems(sorted(proj))
+        self.filter_rig.clear()
+        self.filter_rig.addItem("All")
+        self.filter_rig.addItems(sorted(rigs))
         try:
             df = self.db.get_all_data()
             col = "date_of_pi" if "date_of_pi" in df.columns else "created_at"
@@ -362,13 +380,50 @@ class DashboardWidget(QWidget):
                 s = pd.to_datetime(df[col], errors="coerce", dayfirst=True).dropna()
                 if not s.empty:
                     years = sorted(s.dt.year.unique().astype(int).tolist())
-                    self.filter_year.clear(); self.filter_year.addItem("All"); self.filter_year.addItems(map(str, years))
+                    self.filter_year.clear()
+                    self.filter_year.addItem("All")
+                    self.filter_year.addItems(map(str, years))
                     months = [(i, ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"][i-1]) for i in range(1,13)]
-                    self.filter_month.clear(); self.filter_month.addItem("All")
+                    self.filter_month.clear()
+                    self.filter_month.addItem("All")
                     for i, name in months:
                         self.filter_month.addItem(f"{i:02d} - {name}", i)
         except Exception:
             pass
+
+        # Restore selections if they still exist in the new options
+        idx = self.filter_project.findText(proj_sel)
+        if idx >= 0:
+            self.filter_project.setCurrentIndex(idx)
+        idx = self.filter_rig.findText(rig_sel)
+        if idx >= 0:
+            self.filter_rig.setCurrentIndex(idx)
+        idx = self.filter_year.findText(year_sel)
+        if idx >= 0:
+            self.filter_year.setCurrentIndex(idx)
+        if month_data is not None:
+            for i in range(self.filter_month.count()):
+                if self.filter_month.itemData(i) == month_data:
+                    self.filter_month.setCurrentIndex(i)
+                    break
+        elif month_text:
+            idx = self.filter_month.findText(month_text)
+            if idx >= 0:
+                self.filter_month.setCurrentIndex(idx)
+        for combo in (self.filter_project, self.filter_rig, self.filter_year, self.filter_month):
+            combo.blockSignals(False)
+
+    def _reset_filters_and_refresh(self) -> None:
+        """Reset all filters to All and refresh data."""
+        for combo in (self.filter_project, self.filter_rig, self.filter_year, self.filter_month):
+            combo.blockSignals(True)
+        self.filter_project.setCurrentIndex(0)
+        self.filter_rig.setCurrentIndex(0)
+        self.filter_year.setCurrentIndex(0)
+        self.filter_month.setCurrentIndex(0)
+        for combo in (self.filter_project, self.filter_rig, self.filter_year, self.filter_month):
+            combo.blockSignals(False)
+        self._apply_filters_and_refresh()
 
     def _is_dark_mode(self) -> bool:
         mw = self.window()
@@ -405,34 +460,22 @@ class DashboardWidget(QWidget):
             ax_y = QValueAxis(); ax_y.setLabelFormat("%d")
             self.chart_ok_vs_notok.chart.addAxis(ax_y, Qt.AlignLeft);   series.attachAxis(ax_y)
 
-        # Insight chart (Projects / Test Rigs / Test Types - based on _selected_insight_viz)
+        # Insight chart (Projects / Test Rigs / Test Types) — always pie to match enlarged view
         col_map = {"project": ("project", "Top Projects"), "test_rig": ("test_rig", "Top Test Rigs"), "type_of_test": ("type_of_test", "Test Type Distribution")}
         col_name, title = col_map.get(self._selected_insight_viz, ("test_rig", "Top Test Rigs"))
         data_col = df.get(col_name, pd.Series())
         if not data_col.empty:
             ch = self.chart_insight.chart
             ch.setTheme(chart_theme)
+            ch.legend().setVisible(False)  # Hide truncated legend; slice labels show full text
             vc = data_col.value_counts().head(8)
-            if len(vc) <= 6:
-                pie = QPieSeries()
-                for k, v in vc.items():
-                    pie.append(str(k), int(v))
-                ch.addSeries(pie)
-            else:
-                bar_set = QBarSet("Count")
-                bar_set.setColor(QColor("#4f46e5"))
-                bar_set.append([int(v) for v in vc.values])
-                series = QBarSeries()
-                series.append(bar_set)
-                ch.addSeries(series)
-                ax_x = QBarCategoryAxis()
-                ax_x.append([str(k) for k in vc.index])
-                ch.addAxis(ax_x, Qt.AlignBottom)
-                series.attachAxis(ax_x)
-                ax_y = QValueAxis()
-                ax_y.setLabelFormat("%d")
-                ch.addAxis(ax_y, Qt.AlignLeft)
-                series.attachAxis(ax_y)
+            pie = QPieSeries()
+            pie.setLabelsVisible(True)
+            pie.setLabelsPosition(QPieSlice.LabelOutside)
+            for k, v in vc.items():
+                sl = pie.append(f"{k} ({v})", int(v))
+                sl.setLabelVisible(True)
+            ch.addSeries(pie)
             ch.setTitle(title)
 
         # Monthly trend
@@ -511,9 +554,9 @@ class DashboardWidget(QWidget):
         df = self._current_df
         if df.empty:
             return
-        dlg = _InsightDetailDialog(self)
+        dlg = _InsightDetailDialog(parent=self.window())
         dlg.setWindowTitle("Insight Details")
-        dlg.setMinimumSize(700, 550)
+        dlg.setMinimumSize(800, 650)
         layout = QVBoxLayout(dlg)
         layout.addWidget(QLabel("📊 Enlarged View — Close window to return to Dashboard"))
         scroll = QScrollArea()
@@ -526,6 +569,7 @@ class DashboardWidget(QWidget):
         ok = int(results.value_counts().get("OK", 0)) if not results.empty else 0
         not_ok = total - ok if not results.empty else 0
         insights_text = f"Total Records: {total}  |  OK: {ok}  |  NOT OK: {not_ok}\n\n"
+        # Always show Top Projects, Top Test Rigs, Top Test Types
         if "project" in df.columns:
             proj = df["project"].value_counts().head(5)
             insights_text += "Top Projects:\n" + "\n".join(f"  • {k}: {v}" for k, v in proj.items()) + "\n\n"
@@ -535,12 +579,21 @@ class DashboardWidget(QWidget):
         if "type_of_test" in df.columns:
             types = df["type_of_test"].value_counts().head(5)
             insights_text += "Top Test Types:\n" + "\n".join(f"  • {k}: {v}" for k, v in types.items())
+        # For insight chart, add full breakdown of selected category (all items, line-wise)
+        if chart_key == "insight":
+            col_map = {"project": ("project", "Top Projects"), "test_rig": ("test_rig", "Top Test Rigs"), "type_of_test": ("type_of_test", "Test Type Distribution")}
+            col_name, title = col_map.get(self._selected_insight_viz, ("test_rig", "Top Test Rigs"))
+            vc = df[col_name].value_counts().head(8) if col_name in df.columns else pd.Series()
+            if not vc.empty:
+                insights_text += f"\n{title} — Full breakdown (one per line):\n"
+                insights_text += "\n".join(f"  • {k}: {v}" for k, v in vc.items())
         insights_label = QLabel(insights_text)
         insights_label.setWordWrap(True)
+        insights_label.setStyleSheet("font-size: 13px; line-height: 1.4;")
         cl.addWidget(insights_label)
         # Chart placeholder (simplified - reuse same data)
         chart_frame = QFrame()
-        chart_frame.setMinimumHeight(280)
+        chart_frame.setMinimumHeight(420 if chart_key == "insight" else 280)
         chart_lay = QVBoxLayout(chart_frame)
         chart = QChart()
         chart.setAnimationOptions(QChart.SeriesAnimations)
@@ -566,15 +619,19 @@ class DashboardWidget(QWidget):
             chart.addAxis(ax_y, Qt.AlignLeft)
             series.attachAxis(ax_y)
         elif chart_key == "insight":
-            col_map = {"project": "project", "test_rig": "test_rig", "type_of_test": "type_of_test"}
-            col = col_map.get(self._selected_insight_viz, "test_rig")
-            vc = df[col].value_counts().head(8) if col in df.columns else pd.Series()
+            col_map = {"project": ("project", "Top Projects"), "test_rig": ("test_rig", "Top Test Rigs"), "type_of_test": ("type_of_test", "Test Type Distribution")}
+            col_name, title = col_map.get(self._selected_insight_viz, ("test_rig", "Top Test Rigs"))
+            vc = df[col_name].value_counts().head(8) if col_name in df.columns else pd.Series()
             if not vc.empty:
+                chart.legend().setVisible(False)  # Slice labels show full text; no truncated legend
                 pie = QPieSeries()
+                pie.setLabelsVisible(True)
+                pie.setLabelsPosition(QPieSlice.LabelOutside)
                 for k, v in vc.items():
-                    pie.append(str(k), int(v))
+                    sl = pie.append(f"{k} ({v})", int(v))
+                    sl.setLabelVisible(True)
                 chart.addSeries(pie)
-                chart.setTitle(f"{col.replace('_', ' ').title()} Distribution")
+                chart.setTitle(title)
         elif chart_key == "trend":
             col = "date_of_pi" if "date_of_pi" in df.columns else "created_at"
             if col in df.columns:
@@ -601,6 +658,11 @@ class DashboardWidget(QWidget):
         cl.addWidget(chart_frame)
         scroll.setWidget(content)
         layout.addWidget(scroll)
+        close_btn = QPushButton("Close")
+        close_btn.setObjectName("refreshBtn")
+        close_btn.setCursor(Qt.PointingHandCursor)
+        close_btn.clicked.connect(dlg.reject)
+        layout.addWidget(close_btn)
         dlg.exec()
 
     def add_shadow(self, widget: QFrame) -> None:

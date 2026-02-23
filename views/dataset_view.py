@@ -34,11 +34,12 @@ class _TableWithOverlayButton(QWidget):
         layout.addWidget(self.table)
         self.add_entry_btn = QPushButton("+")
         self.add_entry_btn.setObjectName("floatingAddBtn")
-        self.add_entry_btn.setFixedSize(56, 56)
+        self.add_entry_btn.setFixedSize(52, 52)
         self.add_entry_btn.setCursor(Qt.PointingHandCursor)
         self.add_entry_btn.setStyleSheet(
             "#floatingAddBtn { background-color: #4f46e5; color: white; "
-            "border-radius: 28px; font-size: 28px; border: none; padding: 0; }"
+            "border-radius: 26px; font-size: 26px; font-weight: bold; border: none; "
+            "padding: 0; min-width: 52px; min-height: 52px; max-width: 52px; max-height: 52px; }"
             "#floatingAddBtn:hover { background-color: #4338ca; }"
         )
         self.add_entry_btn.setParent(self)
@@ -330,3 +331,7 @@ class DatasetWidget(QWidget):
                     item.setToolTip("Click to view LRU details")
                 self.table.setItem(i, j, item)
         self.table.resizeColumnsToContents()
+        # Ensure date_of_clearance column is clearly visible (min width for dates)
+        if "date_of_clearance" in display_df.columns:
+            col_idx = list(display_df.columns).index("date_of_clearance")
+            self.table.setColumnWidth(col_idx, max(120, self.table.columnWidth(col_idx)))
