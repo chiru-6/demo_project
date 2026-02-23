@@ -258,6 +258,17 @@ HAL_Project/
 └── README.md              # This file
 ```
 
+## Data and file storage
+
+- **Database:** The SQLite database file is created in the **project root** (same folder as `main.py` / `app.py`). Default name: `database.db` (or as set when creating the app).
+- **LRU test data CSV files (optional):** When you upload a CSV in **Add Entry** for “Test Data” (optional), the file is **copied** into the project folder so it stays with the project:
+  - **Folder:** `<project_folder>/lru_test_data/<LRU_name>/`
+  - **Example:** If the project is `D:\HAL_Project` and the LRU name is `EPGS Controller`, the CSV is stored at:
+    - `D:\HAL_Project\lru_test_data\EPGS Controller\<your_file>.csv`
+  - The LRU name is sanitized for the folder (invalid path characters like `\ / : * ? " < > |` are replaced with `_`).
+  - One subfolder per LRU; you can place multiple CSV files in the same LRU folder; the app uses the **most recently imported** CSV for that LRU when showing the **Test Data** tab in the LRU Details panel.
+- **Attachments (PDFs, images):** Stored by path in the database; the actual files stay where you selected them (or you can move them into a project folder and re-add if you want everything in one place).
+
 ## Database Schema
 
 The SQLite database contains the following columns:

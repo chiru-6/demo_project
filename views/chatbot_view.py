@@ -29,16 +29,15 @@ class ChatbotWidget(QWidget):
 
     def init_ui(self) -> None:
         layout = QVBoxLayout(self)
-        title = QLabel("🤖 AI Chatbot Assistant")
-        title.setStyleSheet("font-size: 24px; font-weight: bold; padding: 10px;")
-        layout.addWidget(title)
+        layout.setContentsMargins(0, 0, 0, 0)
+        layout.setSpacing(8)
         info_label = QLabel(
             "💡 Ask questions about your test data in natural language. "
             "Make sure Ollama is running locally."
         )
         info_label.setObjectName("infoLabel")
         info_label.setWordWrap(True)
-        info_label.setStyleSheet("#infoLabel { padding: 10px; border-radius: 5px; }")
+        info_label.setStyleSheet("#infoLabel { padding: 8px; border-radius: 5px; font-size: 12px; }")
         layout.addWidget(info_label)
         examples_label = QLabel(
             "Example queries: 'How many records?', 'Show all projects', "
@@ -46,7 +45,7 @@ class ChatbotWidget(QWidget):
         )
         examples_label.setObjectName("examplesLabel")
         examples_label.setWordWrap(True)
-        examples_label.setStyleSheet("#examplesLabel { padding: 5px; }")
+        examples_label.setStyleSheet("#examplesLabel { padding: 4px; font-size: 11px; }")
         layout.addWidget(examples_label)
         self.chat_display = QTextEdit()
         self.chat_display.setObjectName("chatDisplay")
@@ -229,41 +228,96 @@ class ChatbotWidget(QWidget):
                 elif "test rig" in prompt_lower:
                     sql_query = "SELECT DISTINCT test_rig FROM lca_test_data"
             query_result_str = None
+            direct_answer = None
             if sql_query:
                 try:
                     query_result = self.db.query_data(sql_query)
-                    query_result_str = (
-                        query_result.to_string()
-                        if not query_result.empty
-                        else "No results found"
-                    )
+                    if not query_result.empty:
+                        query_result_str = query_result.to_string()
+                        # Hard-coded direct answers for common queries (fallback if Ollama fails)
+                        if "COUNT(*)" in sql_query.upper() or "count" in sql_query.lower():
+                            if "results_remarks" in sql_query.upper():
+                                if "GROUP BY" in sql_query.upper():
+                                    # Grouped results
+                                    direct_answer = "Test results breakdown:\n"
+                                    for _, row in query_result.iterrows():
+                                        status = row.get("results_remarks", "Unknown")
+                                        count = row.get("count", 0)
+                                        direct_answer += f"- {status}: {count}\n"
+                                else:
+                                    # Single count
+                                    count_val = query_result.iloc[0].get("count", 0)
+                                    if "NOT OK" in sql_query.upper() or "not ok" in prompt_lower:
+                                        direct_answer = f"There are {count_val} NOT OK tests."
+                                    elif "OK" in sql_query.upper() and "NOT" not in sql_query.upper():
+                                        direct_answer = f"There are {count_val} OK tests."
+                                    else:
+                                        direct_answer = f"Count: {count_val}"
+                            elif "project" in sql_query.lower():
+                                if "GROUP BY" in sql_query.upper():
+                                    direct_answer = "Projects:\n"
+                                    for _, row in query_result.iterrows():
+                                        proj = row.get("project", "Unknown")
+                                        count = row.get("count", 0)
+                                        direct_answer += f"- {proj}: {count} tests\n"
+                                else:
+                                    count_val = query_result.iloc[0].get("count", 0)
+                                    direct_answer = f"Total: {count_val} tests"
+                            elif "test_rig" in sql_query.lower():
+                                if "GROUP BY" in sql_query.upper():
+                                    direct_answer = "Test rigs:\n"
+                                    for _, row in query_result.iterrows():
+                                        rig = row.get("test_rig", "Unknown")
+                                        count = row.get("count", 0)
+                                        direct_answer += f"- {rig}: {count} tests\n"
+                                else:
+                                    count_val = query_result.iloc[0].get("count", 0)
+                                    direct_answer = f"Total: {count_val} tests"
+                            else:
+                                count_val = query_result.iloc[0].get("total", query_result.iloc[0].get("count", 0))
+                                direct_answer = f"Total records: {count_val}"
+                        elif "DISTINCT" in sql_query.upper():
+                            col_name = list(query_result.columns)[0]
+                            items = query_result[col_name].dropna().tolist()
+                            direct_answer = f"{col_name.replace('_', ' ').title()}:\n" + "\n".join(f"- {item}" for item in items[:20])
+                    else:
+                        query_result_str = "No results found"
                 except Exception as error:
                     query_result_str = f"Query error: {str(error)}"
+            
+            # Try Ollama first, fallback to direct answer if it fails
             user_message = f"{context}\n\nUser Question: {prompt}"
             if query_result_str:
                 user_message += f"\n\nQuery Result:\n{query_result_str}"
-            response = ollama.chat(
-                model="llama3.2",
-                messages=[
-                    {
-                        "role": "system",
-                        "content": (
-                            "You are a helpful assistant for an LCA Test Data "
-                            "Management System.\n\n"
-                            "- Answer in a simple, easy-to-read way.\n"
-                            "- Prefer short sentences and bullet lists.\n"
-                            "- Do NOT show SQL code, tables, or markdown fences "
-                            "unless the user explicitly asks for SQL.\n"
-                            "- For questions like \"list all ...\", just return a clean "
-                            "bullet list of the items, nothing else.\n"
-                            "- Avoid long explanations of what you are doing; go "
-                            "straight to the answer.\n"
-                        ),
-                    },
-                    {"role": "user", "content": user_message},
-                ],
-            )
-            return response["message"]["content"]
+            
+            try:
+                response = ollama.chat(
+                    model="llama3.2",
+                    messages=[
+                        {
+                            "role": "system",
+                            "content": (
+                                "You are a helpful assistant for an LCA Test Data "
+                                "Management System.\n\n"
+                                "- Answer in a simple, easy-to-read way.\n"
+                                "- Prefer short sentences and bullet lists.\n"
+                                "- Do NOT show SQL code, tables, or markdown fences "
+                                "unless the user explicitly asks for SQL.\n"
+                                "- For questions like \"list all ...\", just return a clean "
+                                "bullet list of the items, nothing else.\n"
+                                "- Avoid long explanations of what you are doing; go "
+                                "straight to the answer.\n"
+                            ),
+                        },
+                        {"role": "user", "content": user_message},
+                    ],
+                )
+                return response["message"]["content"]
+            except Exception as ollama_error:
+                # Fallback to direct answer if Ollama fails
+                if direct_answer:
+                    return direct_answer
+                raise ollama_error
         except ImportError:
             return (
                 "Ollama is not installed.\n\n"

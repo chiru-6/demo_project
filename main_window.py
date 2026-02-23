@@ -44,6 +44,7 @@ LIGHT_STYLESHEET = """
     #dashboardRoot { background-color: #f9fafb; border-radius: 12px; }
     QFrame#statsFrame { background: #ffffff; border: 1px solid #e5e7eb; border-radius: 12px; }
     QLabel#statCard { background: #f9fafb; color: #374151; border: 1px solid #e5e7eb; border-radius: 10px; font-size: 14px; font-weight: 500; padding: 12px 18px; min-width: 180px; }
+    #statCardLabel { color: #111827; font-size: 20px; font-weight: bold; }
     QFrame#filtersPanel { background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 10px; }
     QPushButton#filterToggle { background: #4b5563; color: white; }
     QGroupBox { color: #1f2937; border: 1px solid #e5e7eb; border-radius: 6px; margin-top: 8px; font-weight: bold; }
@@ -94,6 +95,7 @@ DARK_STYLESHEET = """
     #dashboardRoot { background-color: #111827; border-radius: 12px; }
     QFrame#statsFrame { background: #2d323c; border: 1px solid #404552; border-radius: 12px; }
     QLabel#statCard { background: #363c48; color: #e5e7eb; border: 1px solid #404552; border-radius: 10px; font-size: 14px; font-weight: 500; padding: 12px 18px; min-width: 180px; }
+    #statCardLabel { color: #111827; font-size: 20px; font-weight: bold; }
     QFrame#filtersPanel { background: #2d323c; border: 1px solid #404552; border-radius: 10px; }
     QPushButton#filterToggle { background: #404552; color: #e5e7eb; }
     QPushButton#filterToggle:hover { background: #4b5563; }

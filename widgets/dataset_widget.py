@@ -39,15 +39,16 @@ class DatasetWidget(QWidget):
     def init_ui(self) -> None:
         """Initializes the dataset user interface."""
         layout = QVBoxLayout(self)
-        layout.setSpacing(16)
-        layout.setContentsMargins(20, 20, 20, 20)
+        layout.setSpacing(6)
+        layout.setContentsMargins(20, 6, 20, 16)
 
         # Title
         title = QLabel("🗂 Dataset — Raw Test Data")
         title.setStyleSheet(
-            "font-size: 22px; font-weight: bold; padding: 8px 0; letter-spacing: 0.5px;"
+            "font-size: 22px; font-weight: bold; padding: 0; margin: 0; letter-spacing: 0.5px;"
         )
-        layout.addWidget(title)
+        title.setContentsMargins(0, 0, 0, 0)
+        layout.addWidget(title, 0)
 
         # Collapsible Filters section
         self.filter_toggle_btn = QPushButton("▼ Hide Filters")

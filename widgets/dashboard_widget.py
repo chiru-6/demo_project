@@ -92,8 +92,11 @@ class DashboardWidget(QWidget):
             background-color: #e0e7ff;
             border-radius: 12px;
             padding: 12px;
+        }
+        #statCardLabel {
+            color: #111827;
+            font-size: 20px;
             font-weight: bold;
-            color: #1e3a8a;
         }
 
         #insightCard {
@@ -128,6 +131,7 @@ class DashboardWidget(QWidget):
         card_layout.setContentsMargins(10, 10, 10, 10)
 
         label = QLabel(text)
+        label.setObjectName("statCardLabel")
         label.setAlignment(Qt.AlignCenter)
         card_layout.addWidget(label)
 

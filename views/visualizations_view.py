@@ -46,10 +46,23 @@ class VisualizationsWidget(QWidget):
             "Projects Overview",
             "Division/Group Distribution",
             "Type of Test Analysis",
+            "System Distribution",
             "Clearance Status",
         ])
         self.viz_combo.currentTextChanged.connect(self.update_visualization)
         controls_layout.addWidget(self.viz_combo)
+        controls_layout.addWidget(QLabel("Year:"))
+        self.filter_year = QComboBox()
+        self.filter_year.setMinimumWidth(90)
+        self.filter_year.addItem("All")
+        controls_layout.addWidget(self.filter_year)
+        controls_layout.addWidget(QLabel("Month:"))
+        self.filter_month = QComboBox()
+        self.filter_month.setMinimumWidth(100)
+        self.filter_month.addItem("All")
+        controls_layout.addWidget(self.filter_month)
+        self.filter_year.currentTextChanged.connect(self._apply_date_filter)
+        self.filter_month.currentTextChanged.connect(self._apply_date_filter)
         refresh_btn = QPushButton("🔄 Refresh")
         refresh_btn.clicked.connect(self.refresh_data)
         controls_layout.addWidget(refresh_btn)
@@ -64,9 +77,46 @@ class VisualizationsWidget(QWidget):
     def refresh_data(self) -> None:
         try:
             self.df = self.db.get_all_data()
-            self.update_visualization()
+            self.filter_year.blockSignals(True)
+            self.filter_month.blockSignals(True)
+            self._populate_date_filters()
+            self.filter_year.blockSignals(False)
+            self.filter_month.blockSignals(False)
+            self._apply_date_filter()
         except Exception as error:
             self.show_error_chart(str(error))
+
+    def _populate_date_filters(self) -> None:
+        col = "date_of_pi" if "date_of_pi" in self.df.columns else "created_at"
+        self.filter_year.clear()
+        self.filter_year.addItem("All")
+        self.filter_month.clear()
+        self.filter_month.addItem("All")
+        if col in self.df.columns and not self.df.empty:
+            s = pd.to_datetime(self.df[col], errors="coerce", dayfirst=True).dropna()
+            if not s.empty:
+                years = sorted(s.dt.year.unique().astype(int).tolist())
+                self.filter_year.addItems(map(str, years))
+                months = [(i, ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"][i-1]) for i in range(1, 13)]
+                for i, name in months:
+                    self.filter_month.addItem(f"{i:02d} - {name}", i)
+
+    def _apply_date_filter(self) -> None:
+        df = self.db.get_all_data()
+        year_sel = self.filter_year.currentText()
+        month_sel = self.filter_month.currentText()
+        col = "date_of_pi" if "date_of_pi" in df.columns else "created_at"
+        if col in df.columns and not df.empty:
+            s = pd.to_datetime(df[col], errors="coerce", dayfirst=True).dropna()
+            if not s.empty and year_sel and year_sel != "All":
+                df = df.loc[s.dt.year == int(year_sel)].copy()
+                s = pd.to_datetime(df[col], errors="coerce", dayfirst=True).dropna()
+            if not s.empty and month_sel and month_sel != "All":
+                month_val = self.filter_month.currentData()
+                if month_val is not None:
+                    df = df.loc[s.dt.month == int(month_val)].copy()
+        self.df = df
+        self.update_visualization()
 
     def _is_dark_mode(self) -> bool:
         mw = self.window()
@@ -103,6 +153,8 @@ class VisualizationsWidget(QWidget):
                 self._build_bar_from_counts(
                     "type_of_test", "Type of Test Distribution"
                 )
+            elif viz_type == "System Distribution":
+                self._build_bar_from_counts("system", "System Distribution")
             elif viz_type == "Clearance Status":
                 self._build_clearance_bar()
         except Exception as error:
