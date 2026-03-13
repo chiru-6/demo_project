@@ -359,3 +359,5 @@ DCMB GPRU,ALH,TD/Sagar,HYD,22460057,452 / 1610000356412024,Unit received for ins
 "5RW GEN, DCMB GPRU",AMCA,ELE Group,ELE,HDP0018,454 / 1610000358412024,Unit received for inspection,PI Starter,Hydraulic Test Bench,25-12-2024,NOT OK,
 DCMB GPRU,LCH,ELE Group,ELE,AVN722,455 / 1610000359412024,Unit received for inspection,Calibration,AMCA Rig 1,06-09-2025,Pending,
 DCMB GPRU,ALH,A/C Division,HYD,AVN501,456 / 1610000360412024,Unit received for inspection,Endurance Test,TEJAS Rig A,14-06-2025,OK,18-06-2025
+Hydraulic Pump Unit 22,LCA,Engine Division,ELE,22460960,340 / 1610000034002192024,Unit received for inspection,Environmental Test,IJT EPGS,07-10-2024,OK,12-10-2024
+"5RW GEN, DCMB GPRU 222",IJT,Engine Division,PNEU,HDP146,450 / 1610000061114512024,Unit received for inspection,Type Test,TEJAS Rig A,09-11-2025,Pending,22-11-2025

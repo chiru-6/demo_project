@@ -258,7 +258,8 @@ class MainWindow(QMainWindow):
         visualizations_tab: Visualizations widget instance.
         chatbot_tab: Chatbot widget instance.
     """
-    
+    themeChanged = Signal()
+
     def __init__(self, db) -> None:
         """Initializes the main window.
 
@@ -572,6 +573,7 @@ class MainWindow(QMainWindow):
             self.night_mode_btn.setText("🌙 Dark mode")
         if self.sidebar.width() <= 64:
             self.night_mode_btn.setText("☀️" if self._night_mode else "🌙")
+        self.themeChanged.emit()
         # Redraw visualizations and dashboard so chart themes match
         self.visualizations_tab.refresh_data()
         self.dashboard_tab.refresh_data()

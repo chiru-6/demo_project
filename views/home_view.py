@@ -1,9 +1,11 @@
 """Home view: landing page with quick stats, activity, status, and navigation."""
 
+import os
 from datetime import datetime
-from typing import List
+from typing import List, Optional
 
 from PySide6.QtCore import Qt, Signal
+from PySide6.QtGui import QPixmap
 from PySide6.QtWidgets import (
     QFrame,
     QGridLayout,
@@ -82,13 +84,46 @@ class HomeWidget(QWidget):
         if text:
             self.search_requested.emit(text)
 
-    def _create_card(self, title: str, description: str, button_text: str, signal) -> QFrame:
+    def _get_assets_path(self, filename: str) -> str:
+        """Resolve path to card image. Checks assets/cards/ then assets/."""
+        project_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+        for candidate in (
+            os.path.join(project_root, "assets", "cards", filename),
+            os.path.join(project_root, "assets", filename),
+        ):
+            if os.path.exists(candidate):
+                return candidate
+        return os.path.join(project_root, "assets", "cards", filename)
+
+    def _create_card(
+        self,
+        title: str,
+        description: str,
+        button_text: str,
+        signal,
+        image_path: Optional[str] = None,
+    ) -> QFrame:
         card = QFrame()
         card.setObjectName("homeCard")
         card.setFrameShape(QFrame.StyledPanel)
         layout = QVBoxLayout(card)
         layout.setContentsMargins(20, 20, 20, 20)
         layout.setSpacing(10)
+
+        # Image area (optional) — place above title
+        if image_path:
+            full_path = image_path if os.path.isabs(image_path) else self._get_assets_path(image_path)
+            if os.path.exists(full_path):
+                img_label = QLabel()
+                img_label.setObjectName("homeCardImage")
+                img_label.setAlignment(Qt.AlignCenter)
+                img_label.setMinimumHeight(100)
+                img_label.setMaximumHeight(140)
+                pixmap = QPixmap(full_path)
+                if not pixmap.isNull():
+                    scaled = pixmap.scaled(200, 120, Qt.KeepAspectRatio, Qt.SmoothTransformation)
+                    img_label.setPixmap(scaled)
+                layout.addWidget(img_label)
 
         title_label = QLabel(title)
         title_label.setObjectName("homeCardTitle")
@@ -175,10 +210,10 @@ class HomeWidget(QWidget):
 
         grid = QGridLayout()
         grid.setSpacing(16)
-        grid.addWidget(self._create_card("📊 Dashboard",       "Overview of all test data with filters and summary statistics.", "Open dashboard",      self.go_dashboard),      0, 0)
-        grid.addWidget(self._create_card("🗂 Dataset Manager", "View and edit the underlying dataset, import new CSV files.",    "Open dataset manager",self.go_dataset),        0, 1)
-        grid.addWidget(self._create_card("📈 Visualizations",  "Interactive charts for projects, test rigs, results and more.", "View charts",         self.go_visualizations), 1, 0)
-        grid.addWidget(self._create_card("🤖 AI Chatbot",      "Ask natural-language questions about your test data.",          "Chat with AI",        self.go_chatbot),        1, 1)
+        grid.addWidget(self._create_card("📊 Dashboard",       "Overview of all test data with filters and summary statistics.", "Open dashboard",      self.go_dashboard,      "dashboard.png"),      0, 0)
+        grid.addWidget(self._create_card("🗂 Dataset Manager", "View and edit the underlying dataset, import new CSV files.",    "Open dataset manager",self.go_dataset,        "dataset.png"), 0, 1)
+        grid.addWidget(self._create_card("📈 Visualizations",  "Interactive charts for projects, test rigs, results and more.", "View charts",         self.go_visualizations, "visualizations.png"),  1, 0)
+        grid.addWidget(self._create_card("🤖 AI Chatbot",      "Ask natural-language questions about your test data.",          "Chat with AI",        self.go_chatbot,        "ai_chatbot.png"),      1, 1)
         content.addLayout(grid, stretch=3)
 
         # Right panel
@@ -240,8 +275,9 @@ class HomeWidget(QWidget):
         #quickStatValue { font-size: 28px; font-weight: 700; }
         #quickStatLabel { font-size: 12px; }
         #quickStatTrend { font-size: 11px; }
-        #homeCard { border-radius: 14px; }
+        #homeCard { border-radius: 14px; min-height: 220px; }
         #homeCard:hover { border-color: #4f46e5; }
+        #homeCardImage { background: transparent; border-radius: 8px; }
         #homeCardTitle { font-size: 17px; font-weight: 600; }
         #homeCardDesc { font-size: 13px; }
         QPushButton#homeCardButton { border: none; padding: 7px 16px; border-radius: 7px; font-size: 13px; font-weight: 600; }

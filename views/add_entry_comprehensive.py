@@ -1,6 +1,8 @@
 """Comprehensive Add Entry form with all dropdowns and new fields."""
 
 import os
+import random
+
 from PySide6.QtCore import QDate, Qt, Signal
 from PySide6.QtGui import QPixmap
 from PySide6.QtWidgets import (
@@ -9,7 +11,6 @@ from PySide6.QtWidgets import (
     QDialog,
     QFrame,
     QDialogButtonBox,
-    QDoubleSpinBox,
     QFileDialog,
     QFormLayout,
     QGroupBox,
@@ -21,7 +22,6 @@ from PySide6.QtWidgets import (
     QMessageBox,
     QPushButton,
     QScrollArea,
-    QSpinBox,
     QVBoxLayout,
     QWidget,
 )
@@ -106,6 +106,14 @@ class OptionalDateWidget(QWidget):
             return parsed
         return self._value
 
+    def set_date(self, qdate: QDate) -> None:
+        """Set the date from a QDate."""
+        if qdate and qdate.isValid():
+            self._value = qdate
+            self._line.setText(qdate.toString("dd-MM-yyyy"))
+        else:
+            self.clear()
+
     def clear(self):
         self._value = None
         self._line.clear()
@@ -163,15 +171,13 @@ class ComprehensiveAddEntryWidget(QWidget):
         return combo
 
     def _populate_dropdowns(self) -> None:
-        """Populate dropdowns from database."""
+        """Populate dropdowns from database. LRU combo shows only existing LRUs; placeholder hints 'Add New LRU'."""
         try:
             df = self.db.get_all_data()
-            if not df.empty:
-                if "lru_name" in df.columns:
-                    lru_names = sorted(df["lru_name"].dropna().unique().tolist())
-                    self.lru_name_combo.clear()
-                    self.lru_name_combo.addItem("Add New LRU...")
-                    self.lru_name_combo.addItems(lru_names)
+            if not df.empty and "lru_name" in df.columns:
+                lru_names = sorted(df["lru_name"].dropna().unique().tolist())
+                self.lru_name_combo.clear()
+                self.lru_name_combo.addItems(lru_names)
         except Exception:
             pass
 
@@ -182,162 +188,47 @@ class ComprehensiveAddEntryWidget(QWidget):
         layout = QVBoxLayout(scroll_widget)
         layout.setSpacing(16)
 
-        # LRU Identification Section
-        lru_group = QGroupBox("LRU Identification")
-        lru_layout = QFormLayout()
-        self.lru_name_combo = self._create_combo_with_manual([], "Add New LRU or select...")
-        lru_layout.addRow("LRU Name *:", self.lru_name_combo)
-        self.lru_category = self._create_combo_with_manual([
-            "Avionics", "Power Systems", "Communication", "Navigation",
-            "Flight Control", "Monitoring System", "Data Acquisition",
-            "Safety System", "Environmental Control"
-        ])
-        lru_layout.addRow("LRU Category:", self.lru_category)
-        self.platform = self._create_combo_with_manual([
-            "Fixed Wing", "Rotary Wing", "UAV", "Fighter Jet",
-            "Transport Aircraft", "Commercial Aircraft", "Helicopter"
-        ])
-        lru_layout.addRow("Platform / Aircraft Type:", self.platform)
-        self.manufacturer = self._create_combo_with_manual([
-            "Honeywell", "Collins Aerospace", "Thales", "HAL", "BEL",
-            "Custom Vendor", "In-house Development"
-        ])
-        lru_layout.addRow("Manufacturer:", self.manufacturer)
+        # Entry fields (match dataset.csv columns)
+        entry_group = QGroupBox("Entry Details")
+        entry_layout = QFormLayout()
+        self.lru_name_combo = self._create_combo_with_manual([], "Type new LRU or select existing...")
+        entry_layout.addRow("LRU Name *:", self.lru_name_combo)
         self.part_number = QLineEdit()
-        lru_layout.addRow("Part Number:", self.part_number)
+        entry_layout.addRow("Part Number:", self.part_number)
         self.serial_no = QLineEdit()
-        lru_layout.addRow("Serial No *:", self.serial_no)
-        lru_group.setLayout(lru_layout)
-        layout.addWidget(lru_group)
-
-        # Test Identification Section
-        test_group = QGroupBox("Test Identification")
-        test_layout = QFormLayout()
-        self.project = self._create_combo_with_manual(["AMCA", "TEJAS", "LCH", "IJT"])
-        test_layout.addRow("Project *:", self.project)
-        self.division_group = self._create_combo_with_manual(["A/C Division", "Avionics Division"])
-        test_layout.addRow("Division / Group *:", self.division_group)
+        entry_layout.addRow("Serial No *:", self.serial_no)
+        self.project = self._create_combo_with_manual(["AMCA", "TEJAS", "LCH", "IJT", "LCA", "ALH", "MIG-21 Upgrade"])
+        entry_layout.addRow("Project *:", self.project)
+        self.division_group = self._create_combo_with_manual(["A/C Division", "Avionics Division", "TD/Sagar", "ELE Group", "Hydraulics", "Quality Assurance", "Engine Division", "Avionics Group"])
+        entry_layout.addRow("Division / Group *:", self.division_group)
         self.system = self._create_combo_with_manual(["HYD", "ELE", "PNEU", "GEN", "AVIONICS"])
-        test_layout.addRow("System *:", self.system)
+        entry_layout.addRow("System *:", self.system)
         self.type_of_test = self._create_combo_with_manual([
-            "Type Test", "Qualification Test", "Acceptance Test",
-            "Environmental Test", "Functional Test", "Stress Test",
-            "Reliability Test", "EMI/EMC Test", "Vibration Test", "Thermal Test"
+            "Type Test", "Qualification Test", "Acceptance Test", "PI", "PI Starter",
+            "Environmental Test", "Functional Test", "Stress Test", "Calibration",
+            "Reliability Test", "EMI/EMC Test", "Vibration Test", "Thermal Test", "Endurance Test"
         ])
-        test_layout.addRow("Test Type *:", self.type_of_test)
-        self.test_standard = self._create_combo_with_manual([
-            "DO-160", "MIL-STD-810", "MIL-STD-461", "ARINC 600",
-            "IEC 60068", "Custom Specification"
-        ])
-        test_layout.addRow("Test Standard:", self.test_standard)
+        entry_layout.addRow("Type of Test *:", self.type_of_test)
         self.test_rig = self._create_combo_with_manual([
-            "Hydraulic", "Avionics", "DT EPGS", "LCA EPGS", "IJT EPGS"
+            "Hydraulic", "Avionics", "DT EPGS", "LCA EPGS", "IJT EPGS",
+            "Hydraulic Test Bench", "Avionics Rig", "Engine Test Cell",
+            "TEJAS Rig A", "AMCA Rig 1"
         ])
-        test_layout.addRow("Test Rig *:", self.test_rig)
-        self.test_lab = self._create_combo_with_manual([
-            "Internal Lab", "Certified External Lab", "HAL Lab",
-            "DRDO Lab", "Third-Party Lab"
-        ])
-        test_layout.addRow("Test Lab:", self.test_lab)
-        self.test_engineer = self._create_combo_with_manual([])
-        test_layout.addRow("Test Engineer:", self.test_engineer)
-        test_group.setLayout(test_layout)
-        layout.addWidget(test_group)
-
-        # Environmental Conditions
-        env_group = QGroupBox("Environmental Conditions")
-        env_layout = QFormLayout()
-        self.temperature_range = self._create_combo_with_manual([
-            "-55°C to +70°C", "-40°C to +85°C", "-20°C to +60°C",
-            "Standard Ambient", "High Temperature", "Low Temperature"
-        ])
-        env_layout.addRow("Temperature Range:", self.temperature_range)
-        self.humidity_level = self._create_combo_with_manual([
-            "0-20%", "20-50%", "50-80%", "80-95%"
-        ])
-        env_layout.addRow("Humidity Level:", self.humidity_level)
-        self.vibration_level = self._create_combo_with_manual([
-            "Low", "Medium", "High", "MIL Standard Profile", "Custom Profile"
-        ])
-        env_layout.addRow("Vibration Level:", self.vibration_level)
-        self.altitude_condition = self._create_combo_with_manual([
-            "Sea Level", "10,000 ft", "20,000 ft", "35,000 ft", "High Altitude Simulation"
-        ])
-        env_layout.addRow("Altitude Condition:", self.altitude_condition)
-        env_group.setLayout(env_layout)
-        layout.addWidget(env_group)
-
-        # Electrical Parameters
-        elec_group = QGroupBox("Electrical Parameters")
-        elec_layout = QFormLayout()
-        self.voltage_input = self._create_combo_with_manual([
-            "0V DC", "5V DC", "12V DC", "24V DC", "28V DC", "115V AC", "230V AC"
-        ])
-        elec_layout.addRow("Voltage Input:", self.voltage_input)
-        self.power_consumption = self._create_combo_with_manual([
-            "<10W", "10-50W", "50-100W", ">100W"
-        ])
-        elec_layout.addRow("Power Consumption Range:", self.power_consumption)
-        elec_group.setLayout(elec_layout)
-        layout.addWidget(elec_group)
-
-        # Test Result Section
-        result_group = QGroupBox("Test Result")
-        result_layout = QFormLayout()
-        self.date_of_pi = OptionalDateWidget()
-        result_layout.addRow("Date of PI *:", self.date_of_pi)
-        self.results_remarks = self._create_combo_with_manual([
-            "Pass", "Fail", "Conditional Pass", "Retest Required", "Under Review"
-        ])
-        result_layout.addRow("Test Result Status *:", self.results_remarks)
-        self.failure_type = self._create_combo_with_manual([
-            "Hardware Failure", "Software Bug", "Overheating",
-            "EMI Interference", "Voltage Instability", "Mechanical Damage",
-            "Calibration Error"
-        ])
-        result_layout.addRow("Failure Type (if Fail):", self.failure_type)
-        self.severity_level = self._create_combo_with_manual([
-            "Minor", "Moderate", "Major", "Critical"
-        ])
-        result_layout.addRow("Severity Level:", self.severity_level)
-        self.corrective_action = self._create_combo_with_manual([
-            "Not Required", "Under Investigation", "Fix Implemented", "Verified", "Closed"
-        ])
-        result_layout.addRow("Corrective Action Status:", self.corrective_action)
-        self.date_of_clearance = OptionalDateWidget()
-        result_layout.addRow("Date of Clearance:", self.date_of_clearance)
-        result_group.setLayout(result_layout)
-        layout.addWidget(result_group)
-
-        # Reliability & Statistics
-        reliability_group = QGroupBox("Reliability & Statistics")
-        rel_layout = QFormLayout()
-        self.mtbf_category = self._create_combo_with_manual([
-            "<100 hrs", "100-500 hrs", "500-1000 hrs", ">1000 hrs"
-        ])
-        rel_layout.addRow("MTBF Category:", self.mtbf_category)
-        self.reliability_rating = self._create_combo_with_manual([
-            "Excellent", "Good", "Acceptable", "Risky", "Poor"
-        ])
-        rel_layout.addRow("Reliability Rating:", self.reliability_rating)
-        reliability_group.setLayout(rel_layout)
-        layout.addWidget(reliability_group)
-
-        # Administrative
-        admin_group = QGroupBox("Administrative")
-        admin_layout = QFormLayout()
-        self.approval_status = self._create_combo_with_manual([
-            "Draft", "Submitted", "Approved", "Rejected", "Archived"
-        ])
-        admin_layout.addRow("Approval Status:", self.approval_status)
-        self.revision_number = self._create_combo_with_manual([
-            "Rev A", "Rev B", "Rev C", "Rev 1.0", "Rev 2.0"
-        ])
-        admin_layout.addRow("Revision Number:", self.revision_number)
+        entry_layout.addRow("Test Rig *:", self.test_rig)
         self.received_data = QLineEdit()
-        admin_layout.addRow("Received Data:", self.received_data)
-        admin_group.setLayout(admin_layout)
-        layout.addWidget(admin_group)
+        self.received_data.setPlaceholderText("e.g. Unit received for inspection")
+        entry_layout.addRow("Received Data:", self.received_data)
+        self.date_of_pi = OptionalDateWidget()
+        entry_layout.addRow("Date of PI *:", self.date_of_pi)
+        self.results_remarks = self._create_combo_with_manual([
+            "OK", "NOT OK", "Pass", "Fail", "Conditional Pass", "Retest Required",
+            "Under Review", "Pending"
+        ])
+        entry_layout.addRow("Results & Remarks *:", self.results_remarks)
+        self.date_of_clearance = OptionalDateWidget()
+        entry_layout.addRow("Date of Clearance:", self.date_of_clearance)
+        entry_group.setLayout(entry_layout)
+        layout.addWidget(entry_group)
 
         # File Uploads Section
         files_group = QGroupBox("File Attachments & Test Data")
@@ -405,7 +296,14 @@ class ComprehensiveAddEntryWidget(QWidget):
         )
         self.clear_btn.clicked.connect(self.clear_form)
         self.clear_btn.setToolTip("Clear all form values")
+        self.random_btn = QPushButton("🎲 Random")
+        self.random_btn.setStyleSheet(
+            "background-color: #9C27B0; color: white; padding: 10px; font-size: 14px;"
+        )
+        self.random_btn.clicked.connect(self._fill_random)
+        self.random_btn.setToolTip("Fill all fields with random values")
         btn_layout.addWidget(self.submit_btn)
+        btn_layout.addWidget(self.random_btn)
         btn_layout.addWidget(self.clear_btn)
         btn_layout.addStretch()
         layout.addLayout(btn_layout)
@@ -423,9 +321,85 @@ class ComprehensiveAddEntryWidget(QWidget):
             return combo.itemText(idx)
         return ""
 
+    def _set_combo_random(self, combo: QComboBox, options: list) -> None:
+        """Set combo to a random option from the list (must exist in combo items)."""
+        valid = [o for o in options if combo.findText(o) >= 0]
+        if valid:
+            choice = random.choice(valid)
+            idx = combo.findText(choice)
+            combo.setCurrentIndex(idx)
+            combo._selected_from_dropdown = True
+            combo._last_valid_index = idx
+
+    def _fill_random(self) -> None:
+        """Fill all form fields with random values."""
+        lru_names = [
+            "EPGS Controller", "DCMB GPRU", "Hydraulic Pump Unit", "5RW GEN",
+            "Starter Motor Assembly", "5RW GEN, DCMB GPRU"
+        ]
+        part_prefixes = ["AVN", "STM", "EPGS", "GCCAIA", "HDP", "22460"]
+        projects = ["AMCA", "TEJAS", "LCH", "IJT", "LCA", "ALH", "MIG-21 Upgrade"]
+        divisions = [
+            "A/C Division", "Avionics Division", "TD/Sagar", "ELE Group",
+            "Hydraulics", "Quality Assurance", "Engine Division", "Avionics Group"
+        ]
+        systems = ["HYD", "ELE", "PNEU", "GEN", "AVIONICS"]
+        test_types = [
+            "Type Test", "Qualification Test", "Acceptance Test", "PI", "PI Starter",
+            "Environmental Test", "Functional Test", "Calibration", "Endurance Test"
+        ]
+        test_rigs = [
+            "Hydraulic", "Avionics", "LCA EPGS", "IJT EPGS", "Hydraulic Test Bench",
+            "Avionics Rig", "Engine Test Cell", "TEJAS Rig A", "AMCA Rig 1"
+        ]
+        results = ["OK", "NOT OK", "Pass", "Fail", "Under Review", "Pending"]
+        received = ["Unit received for inspection", "Unit received for PI", "Unit for calibration"]
+
+        # LRU Name - pick from existing or type new
+        if self.lru_name_combo.count() > 0 and random.random() > 0.3:
+            valid = [self.lru_name_combo.itemText(i) for i in range(self.lru_name_combo.count())]
+            if valid:
+                choice = random.choice(valid)
+                idx = self.lru_name_combo.findText(choice)
+                self.lru_name_combo.setCurrentIndex(idx)
+                self.lru_name_combo._selected_from_dropdown = True
+                self.lru_name_combo._last_valid_index = idx
+        else:
+            self.lru_name_combo.setCurrentIndex(-1)
+            self.lru_name_combo.lineEdit().clear()
+            self.lru_name_combo.lineEdit().setText(random.choice(lru_names))
+            self.lru_name_combo._selected_from_dropdown = False
+
+        self.part_number.setText(
+            random.choice(part_prefixes) + str(random.randint(100, 999))
+        )
+        serial = f"{random.randint(90, 450)} / 16100000{random.randint(1000000, 9999999)}2024"
+        self.serial_no.setText(serial)
+
+        self._set_combo_random(self.project, projects)
+        self._set_combo_random(self.division_group, divisions)
+        self._set_combo_random(self.system, systems)
+        self._set_combo_random(self.type_of_test, test_types)
+        self._set_combo_random(self.test_rig, test_rigs)
+        self.received_data.setText(random.choice(received))
+        self._set_combo_random(self.results_remarks, results)
+
+        # Random dates (within last 2 years)
+        base = QDate.currentDate()
+        days_pi = random.randint(-730, 0)
+        date_pi = base.addDays(days_pi)
+        self.date_of_pi.set_date(date_pi)
+
+        if random.random() > 0.3:
+            days_clear = days_pi + random.randint(1, 30)
+            date_clear = base.addDays(days_clear)
+            self.date_of_clearance.set_date(date_clear)
+        else:
+            self.date_of_clearance.clear()
+
     def add_entry(self) -> None:
         lru_text = self.lru_name_combo.currentText() or self.lru_name_combo.lineEdit().text()
-        if not lru_text or lru_text == "Add New LRU...":
+        if not lru_text or not lru_text.strip():
             QMessageBox.warning(self, "Validation Error", "Please enter LRU Name.")
             return
 
@@ -433,7 +407,7 @@ class ComprehensiveAddEntryWidget(QWidget):
         date_pi = self.date_of_pi.date()
         date_pi_str = date_pi.toString("dd-MM-yyyy") if date_pi and date_pi.isValid() else ""
         required = {
-            "LRU Name": lru_text if lru_text and lru_text != "Add New LRU..." else "",
+            "LRU Name": lru_text.strip(),
             "Project": self._get_combo_value(self.project),
             "Division / Group": self._get_combo_value(self.division_group),
             "System": self._get_combo_value(self.system),
@@ -449,7 +423,7 @@ class ComprehensiveAddEntryWidget(QWidget):
             return
 
         entry_data = {
-            "lru_name": lru_text,
+            "lru_name": lru_text.strip(),
             "project": required["Project"],
             "division_group": required["Division / Group"],
             "system": required["System"],
@@ -461,29 +435,12 @@ class ComprehensiveAddEntryWidget(QWidget):
             "date_of_pi": required["Date of PI"],
             "results_remarks": required["Results & Remarks"],
             "date_of_clearance": (self.date_of_clearance.date().toString("dd-MM-yyyy") if self.date_of_clearance.date() and self.date_of_clearance.date().isValid() else ""),
-            "lru_category": self._get_combo_value(self.lru_category),
-            "platform_aircraft_type": self._get_combo_value(self.platform),
-            "manufacturer": self._get_combo_value(self.manufacturer),
-            "test_standard": self._get_combo_value(self.test_standard),
-            "test_lab": self._get_combo_value(self.test_lab),
-            "temperature_range": self._get_combo_value(self.temperature_range),
-            "humidity_level": self._get_combo_value(self.humidity_level),
-            "vibration_level": self._get_combo_value(self.vibration_level),
-            "altitude_condition": self._get_combo_value(self.altitude_condition),
-            "voltage_input": self._get_combo_value(self.voltage_input),
-            "power_consumption_range": self._get_combo_value(self.power_consumption),
-            "failure_type": self._get_combo_value(self.failure_type),
-            "severity_level": self._get_combo_value(self.severity_level),
-            "corrective_action_status": self._get_combo_value(self.corrective_action),
-            "mtbf_category": self._get_combo_value(self.mtbf_category),
-            "reliability_rating": self._get_combo_value(self.reliability_rating),
-            "test_engineer": self._get_combo_value(self.test_engineer),
-            "approval_status": self._get_combo_value(self.approval_status),
-            "revision_number": self._get_combo_value(self.revision_number),
         }
 
         success, message = self.db.add_entry(entry_data)
         if success:
+            # Append new entry to dataset.csv so it appears on the dataset page
+            self._append_to_dataset_csv(entry_data)
             # Add uploaded files as attachments and CSV test data
             for file_info in self.uploaded_files:
                 if file_info['type'] == 'CSV':
@@ -526,6 +483,43 @@ class ComprehensiveAddEntryWidget(QWidget):
             return dest_path
         except Exception:
             return source_path
+
+    def _append_to_dataset_csv(self, entry_data: dict) -> None:
+        """Append the new entry to dataset.csv so it appears on the dataset page."""
+        try:
+            import csv
+            project_dir = os.path.dirname(os.path.abspath(self.db.db_path))
+            csv_path = os.path.join(project_dir, "dataset.csv")
+            if not os.path.exists(csv_path):
+                csv_path = os.path.join(project_dir, "LCA_Test_Data.csv")
+            if not os.path.exists(csv_path):
+                return
+            col_map = {
+                "LRU Name": "lru_name",
+                "Project": "project",
+                "Division / Group": "division_group",
+                "System": "system",
+                "Part Number": "part_number",
+                "Serial No": "serial_no",
+                "Received Data": "received_data",
+                "Type of Test": "type_of_test",
+                "Test Rig": "test_rig",
+                "Date of PI": "date_of_pi",
+                "Results & Remarks": "results_remarks",
+                "Date of Clearance": "date_of_clearance",
+            }
+            with open(csv_path, "r", newline="", encoding="utf-8") as f:
+                reader = csv.DictReader(f)
+                headers = reader.fieldnames or list(col_map.keys())
+            row = {}
+            for h in headers:
+                key = col_map.get(h)
+                row[h] = entry_data.get(key, "") if key else ""
+            with open(csv_path, "a", newline="", encoding="utf-8") as f:
+                writer = csv.DictWriter(f, fieldnames=headers, extrasaction="ignore")
+                writer.writerow(row)
+        except Exception:
+            pass
 
     def _on_files_dropped(self, paths: list) -> None:
         """Handle multiple files dropped. Auto-detect CSV as test data, others as attachments."""
@@ -674,21 +668,22 @@ class ComprehensiveAddEntryWidget(QWidget):
             self.file_preview_label.setPixmap(QPixmap())
 
     def clear_form(self) -> None:
-        """Clear all form values."""
+        """Clear all form values and reset to empty state."""
         for widget in self.findChildren(QComboBox):
-            widget.setCurrentIndex(-1)  # Clear selection
+            widget.setCurrentIndex(-1)
             if widget.isEditable():
                 le = widget.lineEdit()
                 le.clear()
-                # Reset dropdown selection flag
+            if hasattr(widget, "_selected_from_dropdown"):
                 widget._selected_from_dropdown = False
+            if hasattr(widget, "_last_valid_index"):
+                widget._last_valid_index = -1
         for widget in self.findChildren(QLineEdit):
             widget.clear()
         for widget in self.findChildren(QDateEdit):
             widget.setDate(QDate.currentDate())
         self.date_of_pi.clear()
         self.date_of_clearance.clear()
-        # Clear uploaded files
         self.uploaded_files = []
         self.uploaded_files_list.clear()
         self.file_preview_label.setText("Select a file to preview")

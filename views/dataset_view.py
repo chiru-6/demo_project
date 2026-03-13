@@ -1,5 +1,7 @@
 """Dataset view: raw test data table with filters, LRU detail panel, and Add Entry popup."""
 
+import os
+
 import pandas as pd
 from PySide6.QtCore import Qt
 from PySide6.QtGui import QFont
@@ -13,6 +15,7 @@ from PySide6.QtWidgets import (
     QPushButton,
     QSizePolicy,
     QSplitter,
+    QTabWidget,
     QTableWidget,
     QTableWidgetItem,
     QVBoxLayout,
@@ -20,6 +23,7 @@ from PySide6.QtWidgets import (
 )
 
 from .add_entry_comprehensive import ComprehensiveAddEntryWidget
+from .dataset_relations_panel import DatasetRelationsPanel
 from .lru_detail_panel import LRUDetailPanel
 
 
@@ -69,19 +73,37 @@ class AddEntryPopup(QWidget):
         layout = QVBoxLayout(self)
         self.form = ComprehensiveAddEntryWidget(db)
         layout.addWidget(self.form)
-        self.form.entry_added.connect(self.close)
+        self.form.entry_added.connect(self._on_entry_added)
+
+    def _on_entry_added(self):
+        self.form.clear_form()
+        self.close()
+
+    def closeEvent(self, event):
+        """Clear form when popup is closed (with or without adding)."""
+        self.form.clear_form()
+        event.accept()
 
 
 class DatasetWidget(QWidget):
     """Dataset widget: table with filters, clickable LRU details, Add Entry popup."""
 
+    # CSV column name variants for filtering (dataset.csv uses "Project", db uses "project")
+    _COL_PROJECT = ("project", "Project")
+    _COL_TEST_RIG = ("test_rig", "Test Rig")
+    _COL_RESULTS = ("results_remarks", "Results & Remarks")
+    _COL_LRU = ("lru_name", "LRU Name")
+    _COL_TYPE_OF_TEST = ("type_of_test", "Type of Test")
+
     def __init__(self, db):
         super().__init__()
         self.db = db
         self.df = pd.DataFrame()
+        self._csv_path = None
         self._filters_visible = True
         self._search_text = ""
         self.entry_added_signal = None
+        self._add_entry_popup = None
 
         layout = QVBoxLayout(self)
         layout.setSpacing(6)
@@ -160,11 +182,13 @@ class DatasetWidget(QWidget):
         fl.addStretch()
         layout.addWidget(self.filters_panel)
 
-        # Content: splitter (table | LRU detail)
+        # Tabs: Raw Data | Relations & Analytics
+        self.content_tabs = QTabWidget()
+        self.content_tabs.setObjectName("datasetTabs")
+
+        # Tab 1: Raw Data (table | LRU detail)
         splitter = QSplitter(Qt.Horizontal)
         splitter.setChildrenCollapsible(False)
-
-        # Left: table with Add Entry button overlayed at bottom-right (no extra row)
         left = _TableWithOverlayButton()
         self.table = left.table
         self.table.setObjectName("dashboardTable")
@@ -176,8 +200,6 @@ class DatasetWidget(QWidget):
         self.add_entry_btn = left.add_entry_btn
         self.add_entry_btn.clicked.connect(self._open_add_entry)
         splitter.addWidget(left)
-
-        # Right: LRU detail panel (hidden by default)
         self.detail_panel = LRUDetailPanel(self.db)
         self.detail_panel.setMaximumWidth(0)
         self.detail_panel.setVisible(False)
@@ -186,15 +208,28 @@ class DatasetWidget(QWidget):
         splitter.addWidget(self.detail_panel)
         splitter.setStretchFactor(0, 3)
         splitter.setStretchFactor(1, 1)
+        self.content_tabs.addTab(splitter, "📋 Raw Data")
 
-        layout.addWidget(splitter, 1)
+        # Tab 2: Relations & Analytics (entity tables, sub-tables, pivots)
+        self.relations_panel = DatasetRelationsPanel()
+        self.content_tabs.addTab(self.relations_panel, "🔗 Relations & Analytics")
+
+        layout.addWidget(self.content_tabs, 1)
 
         self.refresh_data()
 
     def _open_add_entry(self):
-        popup = AddEntryPopup(self.db, self)
-        popup.form.entry_added.connect(self._on_entry_added)
-        popup.show()
+        if self._add_entry_popup is None:
+            self._add_entry_popup = AddEntryPopup(self.db, self)
+            self._add_entry_popup.form.entry_added.connect(self._on_entry_added)
+        self._add_entry_popup.form.clear_form()
+        self._add_entry_popup.form._populate_dropdowns()
+        # Ensure LRU combo starts empty (placeholder visible)
+        self._add_entry_popup.form.lru_name_combo.setCurrentIndex(-1)
+        self._add_entry_popup.form.lru_name_combo.lineEdit().clear()
+        self._add_entry_popup.show()
+        self._add_entry_popup.raise_()
+        self._add_entry_popup.activateWindow()
 
     def _on_entry_added(self):
         self.refresh_data()
@@ -202,22 +237,21 @@ class DatasetWidget(QWidget):
             self.entry_added_signal.emit()
 
     def _on_cell_clicked(self, row, col):
-        h = []
-        for i in range(self.table.columnCount()):
-            hi = self.table.horizontalHeaderItem(i)
-            if hi:
-                h.append(hi.text().lower().replace(" ", "_"))
-        if "lru_name" not in h:
+        col_lru = self._col(self._COL_LRU)
+        if not col_lru:
             return
-        idx = h.index("lru_name")
-        if col != idx:
+        idx = list(self.df.columns).index(col_lru) if col_lru in self.df.columns else -1
+        if idx < 0 or col != idx:
             return
         item = self.table.item(row, col)
         if not item:
             return
-        self.detail_panel.show_lru(item.text())
+        lru_name = item.text()
+        self.detail_panel.show_lru(lru_name)
         self.detail_panel.setVisible(True)
         self.detail_panel.setMaximumWidth(400)
+        # Also update Relations tab with LRU filter
+        self.relations_panel.set_filter("LRU Name", lru_name)
 
     def _hide_detail_panel(self):
         self.detail_panel.setMaximumWidth(0)
@@ -239,11 +273,41 @@ class DatasetWidget(QWidget):
             "▼ Hide Filters" if self._filters_visible else "▶ Show Filters"
         )
 
+    def _get_csv_path(self):
+        """Return path to dataset.csv or LCA_Test_Data.csv in project directory."""
+        project_dir = os.path.dirname(os.path.abspath(self.db.db_path))
+        for name in ("dataset.csv", "LCA_Test_Data.csv"):
+            p = os.path.join(project_dir, name)
+            if os.path.exists(p):
+                return p
+        return None
+
+    def _load_from_csv(self):
+        """Load data live from dataset.csv. Returns DataFrame or empty."""
+        csv_path = self._get_csv_path()
+        if not csv_path:
+            return pd.DataFrame()
+        self._csv_path = csv_path
+        df = pd.read_csv(csv_path)
+        df.columns = df.columns.str.strip()
+        return df
+
+    def _col(self, choices):
+        """Return first column name that exists in df, from choices."""
+        for c in choices:
+            if c in self.df.columns:
+                return c
+        return None
+
     def refresh_data(self):
+        """Load data live from dataset.csv (reflects file changes)."""
         try:
-            self.df = self.db.get_all_data()
+            self.df = self._load_from_csv()
             if self.df.empty:
-                QMessageBox.information(self, "No Data", "No data found in the database.")
+                QMessageBox.information(
+                    self, "No Data",
+                    "No dataset.csv or LCA_Test_Data.csv found, or file is empty."
+                )
                 return
             self._update_filters()
             self.apply_filters()
@@ -253,41 +317,49 @@ class DatasetWidget(QWidget):
     def _update_filters(self):
         self.project_filter.clear()
         self.project_filter.addItem("All")
-        if "project" in self.df.columns:
+        col = self._col(self._COL_PROJECT)
+        if col:
             self.project_filter.addItems(
-                sorted(self.df["project"].dropna().unique().tolist())
+                sorted(self.df[col].dropna().unique().astype(str).tolist())
             )
         self.rig_filter.clear()
         self.rig_filter.addItem("All")
-        if "test_rig" in self.df.columns:
+        col = self._col(self._COL_TEST_RIG)
+        if col:
             self.rig_filter.addItems(
-                sorted(self.df["test_rig"].dropna().unique().tolist())
+                sorted(self.df[col].dropna().unique().astype(str).tolist())
             )
         self.results_filter.clear()
         self.results_filter.addItem("All")
-        if "results_remarks" in self.df.columns:
+        col = self._col(self._COL_RESULTS)
+        if col:
             self.results_filter.addItems(
-                sorted(self.df["results_remarks"].dropna().unique().tolist())
+                sorted(self.df[col].dropna().unique().astype(str).tolist())
             )
 
     def apply_filters(self):
         if self.df.empty:
             return
         df = self.df.copy()
-        if self.project_filter.currentText() != "All":
-            df = df[df["project"] == self.project_filter.currentText()]
-        if self.rig_filter.currentText() != "All":
-            df = df[df["test_rig"] == self.rig_filter.currentText()]
-        if self.results_filter.currentText() != "All":
-            df = df[df["results_remarks"] == self.results_filter.currentText()]
+        col_p = self._col(self._COL_PROJECT)
+        if col_p and self.project_filter.currentText() != "All":
+            df = df[df[col_p].astype(str) == self.project_filter.currentText()]
+        col_r = self._col(self._COL_TEST_RIG)
+        if col_r and self.rig_filter.currentText() != "All":
+            df = df[df[col_r].astype(str) == self.rig_filter.currentText()]
+        col_res = self._col(self._COL_RESULTS)
+        if col_res and self.results_filter.currentText() != "All":
+            df = df[df[col_res].astype(str) == self.results_filter.currentText()]
         if self._search_text:
             q = self._search_text.lower()
             mask = pd.Series(False, index=df.index)
-            for c in ("project", "test_rig", "type_of_test"):
-                if c in df.columns:
-                    mask |= df[c].astype(str).str.lower().str.contains(q, na=False)
+            for choices in (self._COL_PROJECT, self._COL_TEST_RIG, self._COL_TYPE_OF_TEST):
+                col = self._col(choices)
+                if col and col in df.columns:
+                    mask |= df[col].astype(str).str.lower().str.contains(q, na=False)
             df = df[mask]
         self._populate_table(df)
+        self.relations_panel.set_data(df)
 
     def set_filter_and_search(self, project="", test_rig="", search_text=""):
         self._search_text = (search_text or "").strip()
@@ -298,27 +370,14 @@ class DatasetWidget(QWidget):
             self.rig_filter.setCurrentText(test_rig)
         self.apply_filters()
 
-    # Columns to show (match dataset.csv / datasheet); hide lru_category and all columns to the right
-    DATASHEET_COLUMNS = [
-        "lru_name", "project", "division_group", "system", "part_number",
-        "serial_no", "received_data", "type_of_test", "test_rig",
-        "date_of_pi", "results_remarks", "date_of_clearance",
-    ]
-
     def _populate_table(self, df):
-        drop = ["id", "created_at", "updated_at"]
-        display_df = df.drop(columns=drop, errors="ignore")
-        # Keep only datasheet columns (same as dataset.csv)
-        keep = [c for c in self.DATASHEET_COLUMNS if c in display_df.columns]
-        display_df = display_df[keep]
+        """Populate table with all columns from df (live from dataset.csv)."""
+        display_df = df.copy()
         self.table.setRowCount(len(display_df))
         self.table.setColumnCount(len(display_df.columns))
-        self.table.setHorizontalHeaderLabels(
-            [c.replace("_", " ").title() for c in display_df.columns]
-        )
-        lru_idx = None
-        if "lru_name" in display_df.columns:
-            lru_idx = list(display_df.columns).index("lru_name")
+        self.table.setHorizontalHeaderLabels(list(display_df.columns))
+        col_lru = self._col(self._COL_LRU)
+        lru_idx = list(display_df.columns).index(col_lru) if col_lru and col_lru in display_df.columns else None
         for i, row in enumerate(display_df.itertuples(index=False)):
             for j, val in enumerate(row):
                 item = QTableWidgetItem(str(val) if pd.notna(val) else "")
@@ -331,7 +390,8 @@ class DatasetWidget(QWidget):
                     item.setToolTip("Click to view LRU details")
                 self.table.setItem(i, j, item)
         self.table.resizeColumnsToContents()
-        # Ensure date_of_clearance column is clearly visible (min width for dates)
-        if "date_of_clearance" in display_df.columns:
-            col_idx = list(display_df.columns).index("date_of_clearance")
-            self.table.setColumnWidth(col_idx, max(120, self.table.columnWidth(col_idx)))
+        # Ensure date columns are clearly visible (min width for dates)
+        for date_col in ("date_of_clearance", "Date of Clearance", "date_of_pi", "Date of PI"):
+            if date_col in display_df.columns:
+                col_idx = list(display_df.columns).index(date_col)
+                self.table.setColumnWidth(col_idx, max(120, self.table.columnWidth(col_idx)))
